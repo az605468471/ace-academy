@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿奇学院 · 管理后台</title>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --bg:#0a0a1a; --card:rgba(20,20,40,0.85); --border:rgba(139,137,255,0.2); --accent:#8b89ff; --accent2:#7c3aed; --green:#4ade80; --red:#f87171; --text:#e0e0e0; --dim:#666; }
+        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); }
+        .nav { position:sticky; top:0; z-index:100; background:rgba(10,10,26,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; }
+        .nav-title { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:700; }
+        .nav-title i { color:var(--accent); }
+        .nav-back { color:var(--accent); font-size:13px; text-decoration:none; }
+        .body { max-width:600px; margin:0 auto; padding:16px; padding-bottom:80px; }
+        .note { background:rgba(139,137,255,0.08); border:1px solid var(--border); border-radius:10px; padding:12px; margin-bottom:16px; font-size:12px; color:#c4b5fd; line-height:1.6; }
+        .stat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:16px; }
+        .stat-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; }
+        .stat-label { font-size:12px; color:var(--dim); margin-bottom:4px; }
+        .stat-value { font-family:'Orbitron'; font-size:20px; font-weight:800; }
+        .stat-value.green { color:var(--green); }
+        .stat-value.red { color:var(--red); }
+        .stat-value.blue { color:#60a5fa; }
+        .stat-value.purple { color:var(--accent); }
+        .stat-sub { font-size:11px; color:var(--dim); margin-top:4px; }
+        .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
+        .card-title { font-size:15px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+        .card-title i { color:var(--accent); }
+        .card-title .refresh { margin-left:auto; background:rgba(139,137,255,0.1); border:1px solid var(--border); color:var(--accent); padding:4px 10px; border-radius:8px; font-size:12px; cursor:pointer; font-family:inherit; }
+        .data-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(139,137,255,0.05); font-size:13px; }
+        .data-row:last-child { border:none; }
+        .data-row .l { color:var(--dim); }
+        .data-row .v { color:#fff; font-weight:600; }
+        .data-row .v.green { color:var(--green); }
+        .data-row .v.red { color:var(--red); }
+        .badge { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+        .badge.green { background:rgba(74,222,128,0.15); color:var(--green); }
+        .badge.red { background:rgba(248,113,113,0.15); color:var(--red); }
+        .btn-action { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:10px 20px; border-radius:10px; font-size:13px; cursor:pointer; font-family:inherit; margin-top:8px; }
+        .btn-warn { background:transparent; color:var(--red); border:1px solid var(--red); padding:10px 20px; border-radius:10px; font-size:13px; cursor:pointer; font-family:inherit; margin-top:8px; }
+        .contract-addr { font-family:monospace; font-size:12px; color:var(--accent); word-break:break-all; }
+        .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+        .toast.show { opacity:1; }
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-title"><i class="ph-fill ph-shield-star"></i> 管理后台</div>
+    <a href="index.html" class="nav-back"><i class="ph ph-arrow-left"></i> 返回首页</a>
+</div>
+
+<div class="body">
+    <div class="note">
+        <i class="ph ph-info"></i> 管理后台只读取链上数据。当前连接: <span style="color:var(--accent)">0x90F8...c9C1（管理员）</span>
+    </div>
+
+    <!-- 全网统计 -->
+    <div class="card">
+        <div class="card-title"><i class="ph-fill ph-chart-bar"></i> 全网统计 <button class="refresh" onclick="showToast('数据已刷新')">刷新</button></div>
+        <div class="stat-grid">
+            <div class="stat-card"><div class="stat-label">ACE价格</div><div class="stat-value green">0.0125U</div><div class="stat-sub">+2.3% (24h)</div></div>
+            <div class="stat-card"><div class="stat-label">总用户数</div><div class="stat-value purple">128</div><div class="stat-sub">学员105 / 推广者23</div></div>
+            <div class="stat-card"><div class="stat-label">底池规模</div><div class="stat-value blue">8,500U</div><div class="stat-sub">持续注入中</div></div>
+            <div class="stat-card"><div class="stat-label">已销毁ACE</div><div class="stat-value red">15,000</div><div class="stat-sub">1.5%手续费+回购</div></div>
+            <div class="stat-card"><div class="stat-label">总学费收入</div><div class="stat-value green">26,000U</div><div class="stat-sub">学员+推广者</div></div>
+            <div class="stat-card"><div class="stat-label">ACE总量</div><div class="stat-value">9,985,000</div><div class="stat-sub">初始10,000,000</div></div>
+        </div>
+    </div>
+
+    <!-- 资金钱包 -->
+    <div class="card">
+        <div class="card-title"><i class="ph-fill ph-wallet"></i> 资金钱包</div>
+        <div class="data-row"><span class="l">平台运营USDT</span><span class="v green">12,000U</span></div>
+        <div class="data-row"><span class="l">护盘基金</span><span class="v">4,800U / 5,000U</span></div>
+        <div class="data-row"><span class="l">公益基金USDT</span><span class="v green">1,240U</span></div>
+        <div class="data-row"><span class="l">公益基金ACE</span><span class="v">2,500 ACE</span></div>
+        <div class="data-row"><span class="l">底池USDT</span><span class="v">8,500U</span></div>
+        <div class="data-row"><span class="l">底池ACE</span><span class="v">680,000 ACE</span></div>
+    </div>
+
+    <!-- 做市状态 -->
+    <div class="card">
+        <div class="card-title"><i class="ph-fill ph-chart-line-up"></i> 做市管理</div>
+        <div class="data-row"><span class="l">24h涨跌</span><span class="v green">+2.3%</span></div>
+        <div class="data-row"><span class="l">跌5%自动回购</span><span class="v">未触发</span></div>
+        <div class="data-row"><span class="l">涨10%自动压价</span><span class="v">未触发</span></div>
+        <div class="data-row"><span class="l">护盘基金状态</span><span class="v green">正常 (4,800/5,000U)</span></div>
+        <div class="data-row"><span class="l">月度回购</span><span class="v">下次: 2026-09-01</span></div>
+    </div>
+
+    <!-- 推广统计 -->
+    <div class="card">
+        <div class="card-title"><i class="ph-fill ph-users-three"></i> 推广统计</div>
+        <div class="stat-grid">
+            <div class="stat-card"><div class="stat-label">推广者人数</div><div class="stat-value purple">23</div><div class="stat-sub">第1批(1000U): 23/100</div></div>
+            <div class="stat-card"><div class="stat-label">合伙人</div><div class="stat-value">0</div><div class="stat-sub">上限50人</div></div>
+        </div>
+        <div class="data-row"><span class="l">当前推广者价格</span><span class="v">1,000U</span></div>
+        <div class="data-row"><span class="l">直推总发放USDT</span><span class="v">5,200U</span></div>
+        <div class="data-row"><span class="l">团队奖励总发放ACE</span><span class="v">3,500 ACE</span></div>
+    </div>
+
+    <!-- 合约地址 -->
+    <div class="card">
+        <div class="card-title"><i class="ph-fill ph-code"></i> 合约地址</div>
+        <div class="data-row"><span class="l">ACEToken</span><span class="contract-addr">0x9561...0f06a7</span></div>
+        <div class="data-row"><span class="l">ACECourse</span><span class="contract-addr">0x0290...a10C16</span></div>
+        <div class="data-row"><span class="l">ACEReferral</span><span class="contract-addr">0x59d3...39FBa1</span></div>
+        <div class="data-row"><span class="l">ACELock</span><span class="contract-addr">0xe982...eD0E9C</span></div>
+        <div class="data-row"><span class="l">MarketManager</span><span class="contract-addr">0x9b1f...72FDFF</span></div>
+        <div class="data-row"><span class="l">Certificate</span><span class="contract-addr">0x67B5...152e3e</span></div>
+    </div>
+
+    <!-- 权限状态 -->
+    <div class="card">
+        <div class="card-title"><i class="ph-fill ph-shield-check"></i> 权限状态</div>
+        <div class="data-row"><span class="l">ACEToken权限</span><span class="v"><span class="badge green">已丢弃</span></span></div>
+        <div class="data-row"><span class="l">Course权限</span><span class="v"><span class="badge green">已丢弃</span></span></div>
+        <div class="data-row"><span class="l">Referral权限</span><span class="v"><span class="badge red">未丢弃</span></span></div>
+        <div class="data-row"><span class="l">Lock权限</span><span class="v"><span class="badge red">未丢弃</span></span></div>
+        <div class="data-row"><span class="l">Market权限</span><span class="v"><span class="badge red">未丢弃</span></span></div>
+    </div>
+
+    <!-- 管理操作 -->
+    <div class="card">
+        <div class="card-title"><i class="ph-fill ph-gear"></i> 管理操作</div>
+        <div class="data-row"><span class="l">补充护盘基金</span><button class="btn-action" onclick="showToast('待接入钱包')">补充</button></div>
+        <div class="data-row"><span class="l">提取护盘超出部分</span><button class="btn-action" onclick="showToast('待接入钱包')">提取</button></div>
+        <div class="data-row"><span class="l">月度回购销毁</span><button class="btn-action" onclick="showToast('待接入钱包')">执行</button></div>
+        <div class="data-row"><span class="l">紧急暂停</span><button class="btn-warn" onclick="showToast('待接入钱包')">暂停</button></div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show';
+    setTimeout(() => t.className = 'toast', 2500);
+}
+</script>
+<script src="nav.js"></script><script>createNav("home")</script>
+</body>
+</html>

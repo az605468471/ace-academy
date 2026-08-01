@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿奇学院 · 综合考试</title>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Noto Sans SC',sans-serif; background:#12122e; color:#fff; min-height:100vh; }
+        .header { background:#1a1a2e; padding:16px 20px; position:sticky; top:0; z-index:100; border-bottom:1px solid #333; }
+        .header-inner { max-width:600px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+        .header-logo { font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; }
+        .header-logo i { color:#8b89ff; }
+        .header-back { color:#8b89ff; text-decoration:none; font-size:13px; }
+        .body { max-width:600px; margin:0 auto; padding:16px; padding-bottom:80px; }
+
+        /* 开始页面 */
+        .start-card { background:#1e1e36; border-radius:16px; padding:32px; text-align:center; margin-top:40px; }
+        .start-icon { font-size:48px; color:#8b89ff; margin-bottom:16px; }
+        .start-title { font-size:22px; font-weight:800; margin-bottom:8px; }
+        .start-desc { font-size:14px; color:#888; line-height:1.6; margin-bottom:24px; }
+        .start-info { background:#12122e; border-radius:12px; padding:16px; margin-bottom:24px; text-align:left; }
+        .start-info-row { display:flex; justify-content:space-between; padding:6px 0; font-size:13px; }
+        .start-info-row span:first-child { color:#888; }
+        .start-info-row span:last-child { color:#fff; font-weight:600; }
+        .btn-start { background:#4f46e5; color:#fff; border:none; padding:16px 48px; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; font-family:inherit; }
+        .btn-start:hover { background:#6366f1; }
+
+        /* 考试页面 */
+        .exam-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+        .exam-progress { font-size:13px; color:#888; }
+        .exam-timer { background:#3a1a1a; color:#f87171; padding:6px 12px; border-radius:8px; font-size:14px; font-weight:600; }
+        .exam-timer.warning { animation:pulse 1s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+
+        .progress-bar { height:4px; background:#333; border-radius:2px; margin-bottom:20px; overflow:hidden; }
+        .progress-fill { height:100%; background:#4f46e5; border-radius:2px; transition:width 0.3s; }
+
+        .question-card { background:#1e1e36; border-radius:12px; padding:20px; margin-bottom:16px; }
+        .question-type { font-size:12px; color:#7dd3fc; margin-bottom:8px; }
+        .question-text { font-size:15px; font-weight:600; line-height:1.6; margin-bottom:16px; }
+
+        .option-item { background:#12122e; border:2px solid #333; border-radius:10px; padding:14px 16px; margin-bottom:8px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:12px; }
+        .option-item:hover { border-color:#4f46e5; }
+        .option-item.selected { border-color:#4f46e5; background:#2a2a5a; }
+        .option-item.correct { border-color:#4ade80; background:#1a3a1a; }
+        .option-item.wrong { border-color:#f87171; background:#3a1a1a; }
+        .option-letter { width:28px; height:28px; border-radius:50%; background:#333; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+        .option-item.selected .option-letter { background:#4f46e5; }
+        .option-item.correct .option-letter { background:#4ade80; color:#000; }
+        .option-item.wrong .option-letter { background:#f87171; color:#000; }
+        .option-text { font-size:14px; }
+
+        .btn-next { background:#4f46e5; color:#fff; border:none; padding:14px 32px; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; width:100%; margin-top:8px; }
+        .btn-next:hover { background:#6366f1; }
+        .btn-next:disabled { background:#333; color:#666; cursor:not-allowed; }
+
+        /* 结果页面 */
+        .result-card { background:#1e1e36; border-radius:16px; padding:32px; text-align:center; margin-top:20px; }
+        .result-icon { font-size:56px; margin-bottom:16px; }
+        .result-icon.pass { color:#4ade80; }
+        .result-icon.fail { color:#f87171; }
+        .result-title { font-size:24px; font-weight:800; margin-bottom:8px; }
+        .result-score { font-size:36px; font-weight:800; margin:16px 0; }
+        .result-score.pass { color:#4ade80; }
+        .result-score.fail { color:#f87171; }
+        .result-desc { font-size:14px; color:#888; margin-bottom:24px; line-height:1.6; }
+
+        .review-section { margin-top:20px; }
+        .review-title { font-size:14px; font-weight:700; margin-bottom:12px; color:#888; }
+        .review-item { background:#1e1e36; border-radius:10px; padding:14px; margin-bottom:8px; }
+        .review-q { font-size:13px; font-weight:600; margin-bottom:6px; }
+        .review-a { font-size:12px; color:#4ade80; }
+        .review-a.wrong { color:#f87171; }
+
+        .btn-action { padding:14px 32px; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; border:none; margin:4px; }
+        .btn-mint { background:#4ade80; color:#000; }
+        .btn-mint:hover { background:#5af08a; }
+        .btn-retry { background:#4f46e5; color:#fff; }
+        .btn-retry:hover { background:#6366f1; }
+
+        .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#4f46e5; color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+        .toast.show { opacity:1; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-inner">
+        <div class="header-logo"><i class="ph-fill ph-exam"></i> 综合考试</div>
+        <a href="learning.html" class="header-back"><i class="ph ph-arrow-left"></i> 返回学习</a>
+    </div>
+</div>
+
+<div class="body" id="examBody">
+
+    <!-- 开始页面 -->
+    <div class="start-card" id="startCard">
+        <div class="start-icon"><i class="ph-fill ph-exam"></i></div>
+        <div class="start-title">综合考试</div>
+        <div class="start-desc">学完所有课程后参加考试<br>通过后可铸造链上证书</div>
+        <div class="start-info">
+            <div class="start-info-row"><span>考试方向</span><span>AI应用</span></div>
+            <div class="start-info-row"><span>题目数量</span><span>10题</span></div>
+            <div class="start-info-row"><span>题型</span><span>选择题 + 判断题</span></div>
+            <div class="start-info-row"><span>及格分数</span><span>70分</span></div>
+            <div class="start-info-row"><span>考试时长</span><span>20分钟</span></div>
+            <div class="start-info-row"><span>考试次数</span><span>不限</span></div>
+        </div>
+        <button class="btn-start" onclick="startExam()">开始考试</button>
+    </div>
+
+    <!-- 考试内容（动态生成） -->
+    <div id="examContent" style="display:none"></div>
+
+    <!-- 结果页面（动态生成） -->
+    <div id="resultContent" style="display:none"></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// 题库（AI应用方向，10题）
+const QUESTIONS = [
+    {
+        type: '单选题',
+        q: '人工智能（AI）的核心目标是什么？',
+        options: ['完全替代人类工作', '让机器具备类似人类的智能行为', '让电脑运行更快', '替代互联网'],
+        answer: 1
+    },
+    {
+        type: '单选题',
+        q: 'ChatGPT属于哪种类型的AI？',
+        options: ['图像识别AI', '语音识别AI', '大语言模型（LLM）', '机器人控制AI'],
+        answer: 2
+    },
+    {
+        type: '判断题',
+        q: 'AI可以完全替代人类的创意工作，不需要人类参与。',
+        options: ['正确', '错误'],
+        answer: 1
+    },
+    {
+        type: '单选题',
+        q: '提示词工程（Prompt Engineering）的核心是什么？',
+        options: ['写越长的提示词越好', '用准确的描述引导AI输出想要的结果', '用英文比中文效果好', '复制别人的提示词就行'],
+        answer: 1
+    },
+    {
+        type: '单选题',
+        q: 'Midjourney主要用于什么？',
+        options: ['AI写代码', 'AI生成图片', 'AI做视频', 'AI翻译'],
+        answer: 1
+    },
+    {
+        type: '判断题',
+        q: 'Stable Diffusion是开源的AI绘画工具，可以免费在本地运行。',
+        options: ['正确', '错误'],
+        answer: 0
+    },
+    {
+        type: '单选题',
+        q: '使用AI做PPT时，AI主要负责什么？',
+        options: ['代替你演讲', '生成PPT内容和设计模板', '打印PPT', '管理PPT文件'],
+        answer: 1
+    },
+    {
+        type: '单选题',
+        q: 'AI配音工具相比人工配音的主要优势是什么？',
+        options: ['音质更好', '速度快、成本低、可批量生成', '情感更丰富', '可以完全替代专业配音员'],
+        answer: 1
+    },
+    {
+        type: '判断题',
+        q: 'AI生成的所有内容都是准确可靠的，可以直接使用不需要审核。',
+        options: ['正确', '错误'],
+        answer: 1
+    },
+    {
+        type: '单选题',
+        q: '学习AI应用最有效的方式是什么？',
+        options: ['只看理论不看实操', '边学边动手实操，解决实际问题', '买最贵的课程', '等AI自己学会教自己'],
+        answer: 1
+    },
+];
+
+let currentQ = 0;
+let answers = [];
+let selectedOption = -1;
+let timerInterval = null;
+let timeLeft = 20 * 60; // 20分钟
+let showAnswer = false;
+
+function startExam() {
+    document.getElementById('startCard').style.display = 'none';
+    document.getElementById('examContent').style.display = 'block';
+    currentQ = 0;
+    answers = [];
+    timeLeft = 20 * 60;
+    startTimer();
+    renderQuestion();
+}
+
+function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        const min = Math.floor(timeLeft / 60);
+        const sec = timeLeft % 60;
+        const timerEl = document.getElementById('timer');
+        if (timerEl) {
+            timerEl.textContent = `${min}:${sec.toString().padStart(2,'0')}`;
+            if (timeLeft < 60) timerEl.classList.add('warning');
+        }
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            submitExam();
+        }
+    }, 1000);
+}
+
+function renderQuestion() {
+    const q = QUESTIONS[currentQ];
+    selectedOption = answers[currentQ] !== undefined ? answers[currentQ] : -1;
+    showAnswer = false;
+
+    const total = QUESTIONS.length;
+    const progress = ((currentQ + 1) / total * 100).toFixed(0);
+
+    let optionsHtml = '';
+    q.options.forEach((opt, i) => {
+        let cls = '';
+        if (selectedOption === i) cls = 'selected';
+        optionsHtml += `
+            <div class="option-item ${cls}" onclick="selectOption(${i})">
+                <div class="option-letter">${String.fromCharCode(65 + i)}</div>
+                <div class="option-text">${opt}</div>
+            </div>`;
+    });
+
+    document.getElementById('examContent').innerHTML = `
+        <div class="exam-header">
+            <div class="exam-progress">第 ${currentQ + 1} / ${total} 题</div>
+            <div class="exam-timer" id="timer">20:00</div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width:${progress}%"></div>
+        </div>
+        <div class="question-card">
+            <div class="question-type">${q.type}</div>
+            <div class="question-text">${q.q}</div>
+            ${optionsHtml}
+        </div>
+        <button class="btn-next" id="nextBtn" onclick="nextQuestion()" ${selectedOption === -1 ? 'disabled' : ''}>
+            ${currentQ === total - 1 ? '提交考试' : '下一题'}
+        </button>
+    `;
+
+    // 恢复计时器显示
+    const min = Math.floor(timeLeft / 60);
+    const sec = timeLeft % 60;
+    const timerEl = document.getElementById('timer');
+    if (timerEl) {
+        timerEl.textContent = `${min}:${sec.toString().padStart(2,'0')}`;
+        if (timeLeft < 60) timerEl.classList.add('warning');
+    }
+}
+
+function selectOption(idx) {
+    selectedOption = idx;
+    answers[currentQ] = idx;
+    document.querySelectorAll('.option-item').forEach((el, i) => {
+        el.classList.remove('selected');
+        if (i === idx) el.classList.add('selected');
+    });
+    document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+    if (selectedOption === -1) return;
+    if (currentQ < QUESTIONS.length - 1) {
+        currentQ++;
+        renderQuestion();
+    } else {
+        submitExam();
+    }
+}
+
+function submitExam() {
+    if (timerInterval) clearInterval(timerInterval);
+
+    let correct = 0;
+    let reviewHtml = '';
+    QUESTIONS.forEach((q, i) => {
+        const userAns = answers[i];
+        const isCorrect = userAns === q.answer;
+        if (isCorrect) correct++;
+        reviewHtml += `
+            <div class="review-item">
+                <div class="review-q">${i + 1}. ${q.q}</div>
+                <div class="review-a ${isCorrect ? '' : 'wrong'}">
+                    ${isCorrect ? '<i class="ph-fill ph-check-circle"></i> ' : '<i class="ph-fill ph-x-circle"></i> '}
+                    你的答案：${userAns !== undefined ? q.options[userAns] : '未作答'}
+                    ${!isCorrect ? ' | 正确答案：' + q.options[q.answer] : ''}
+                </div>
+            </div>`;
+    });
+
+    const score = Math.round(correct / QUESTIONS.length * 100);
+    const passed = score >= 70;
+
+    document.getElementById('examContent').style.display = 'none';
+    document.getElementById('resultContent').style.display = 'block';
+    document.getElementById('resultContent').innerHTML = `
+        <div class="result-card">
+            <div class="result-icon ${passed ? 'pass' : 'fail'}">
+                <i class="ph-fill ${passed ? 'ph-check-circle' : 'ph-x-circle'}"></i>
+            </div>
+            <div class="result-title">${passed ? '考试通过！' : '未通过'}</div>
+            <div class="result-score ${passed ? 'pass' : 'fail'}">${score}分</div>
+            <div class="result-desc">
+                答对 ${correct} / ${QUESTIONS.length} 题<br>
+                及格线：70分<br>
+                ${passed ? '恭喜你！可以铸造链上证书了' : '再接再厉，可以重新考试（次数不限）'}
+            </div>
+            ${passed ?
+                '<button class="btn-action btn-mint" onclick="goMintCert()"><i class="ph-fill ph-certificate"></i> 铸造链上证书</button>'
+                :
+                '<button class="btn-action btn-retry" onclick="retryExam()"><i class="ph-fill ph-arrow-clockwise"></i> 重新考试</button>'
+            }
+        </div>
+        <div class="review-section">
+            <div class="review-title">答题回顾</div>
+            ${reviewHtml}
+        </div>
+    `;
+
+    document.getElementById('examBody').scrollIntoView({behavior:'smooth'});
+}
+
+function goMintCert() {
+    showToast('正在跳转到证书页面...');
+    setTimeout(() => {
+        window.location.href = 'learning.html';
+    }, 1000);
+}
+
+function retryExam() {
+    document.getElementById('resultContent').style.display = 'none';
+    document.getElementById('startCard').style.display = 'block';
+    currentQ = 0;
+    answers = [];
+    timeLeft = 20 * 60;
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show';
+    setTimeout(() => t.className = 'toast', 2500);
+}
+</script>
+
+<script src="nav.js"></script><script>createNav("learn")</script>
+</body>
+</html>

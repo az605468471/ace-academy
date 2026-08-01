@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿奇学院 · 我的学习</title>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Noto Sans SC',sans-serif; background:#12122e; color:#fff; min-height:100vh; }
+        .header { background:#1a1a2e; padding:16px 20px; position:sticky; top:0; z-index:100; border-bottom:1px solid #333; }
+        .header-inner { max-width:600px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+        .header-logo { font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px; }
+        .header-logo i { color:#8b89ff; }
+        .header-back { color:#8b89ff; text-decoration:none; font-size:13px; }
+        .body { max-width:600px; margin:0 auto; padding:16px; padding-bottom:80px; }
+
+        .progress-overview { background:linear-gradient(135deg,#1e1e36,#2a2a5a); border-radius:16px; padding:20px; margin-bottom:16px; }
+        .progress-overview-title { font-size:13px; color:#888; margin-bottom:8px; }
+        .progress-overview-num { font-size:32px; font-weight:800; color:#fff; }
+        .progress-overview-num span { font-size:16px; color:#888; font-weight:400; }
+        .progress-bar-big { height:8px; background:#333; border-radius:4px; margin-top:12px; overflow:hidden; }
+        .progress-bar-fill { height:100%; background:linear-gradient(90deg,#4f46e5,#7c3aed); border-radius:4px; transition:width 0.5s; }
+
+        .stat-row { display:flex; gap:12px; margin-bottom:16px; }
+        .stat-box { flex:1; background:#1e1e36; border-radius:12px; padding:14px; text-align:center; }
+        .stat-num { font-size:20px; font-weight:800; color:#8b89ff; }
+        .stat-label { font-size:11px; color:#888; margin-top:4px; }
+
+        .section-title { font-size:15px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+        .section-title i { color:#8b89ff; }
+
+        .week-section { margin-bottom:20px; }
+        .week-label { font-size:13px; color:#7dd3fc; font-weight:600; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+
+        .course-item { background:#1e1e36; border-radius:12px; padding:16px; margin-bottom:10px; border:1px solid #2a2a4a; transition:border 0.2s; }
+        .course-item.done { border-color:#4ade80; opacity:0.7; }
+        .course-item.current { border-color:#4f46e5; box-shadow:0 0 0 1px #4f46e5; }
+        .course-item.locked { opacity:0.4; }
+
+        .course-row { display:flex; align-items:flex-start; justify-content:space-between; }
+        .course-info { flex:1; }
+        .course-num { width:28px; height:28px; border-radius:50%; background:#333; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; margin-right:12px; }
+        .course-item.done .course-num { background:#4ade80; color:#000; }
+        .course-item.current .course-num { background:#4f46e5; color:#fff; }
+
+        .course-title { font-size:14px; font-weight:600; color:#fff; margin-bottom:4px; }
+        .course-meta { font-size:12px; color:#888; display:flex; gap:12px; }
+        .course-meta span { display:flex; align-items:center; gap:3px; }
+
+        .course-status { display:flex; align-items:center; gap:8px; margin-top:0; }
+        .status-done { color:#4ade80; font-size:13px; font-weight:600; }
+        .status-current { color:#8b89ff; font-size:13px; font-weight:600; }
+        .status-locked { color:#555; font-size:13px; }
+
+        .course-actions { margin-top:12px; display:flex; gap:8px; }
+        .btn-learn { background:#4f46e5; color:#fff; border:none; padding:8px 16px; border-radius:8px; font-size:13px; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:4px; }
+        .btn-learn:hover { background:#6366f1; }
+        .btn-complete { background:transparent; color:#4ade80; border:1px solid #4ade80; padding:8px 16px; border-radius:8px; font-size:13px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:4px; }
+        .btn-complete:hover { background:#1a3a1a; }
+        .btn-complete:disabled { color:#555; border-color:#333; cursor:not-allowed; }
+
+        .exam-card { background:linear-gradient(135deg,#3a1a3a,#5a2a5a); border-radius:12px; padding:20px; margin-top:20px; text-align:center; }
+        .exam-card.locked { opacity:0.5; }
+        .exam-icon { font-size:36px; color:#c4b5fd; margin-bottom:8px; }
+        .exam-title { font-size:16px; font-weight:700; margin-bottom:4px; }
+        .exam-desc { font-size:13px; color:#aaa; margin-bottom:12px; }
+        .btn-exam { background:#7c3aed; color:#fff; border:none; padding:12px 32px; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; }
+        .btn-exam:hover { background:#8b5cf6; }
+        .btn-exam:disabled { background:#333; color:#666; cursor:not-allowed; }
+
+        .cert-card { background:linear-gradient(135deg,#1a3a1a,#2a5a2a); border-radius:12px; padding:20px; margin-top:16px; text-align:center; display:none; }
+        .cert-icon { font-size:36px; color:#4ade80; margin-bottom:8px; }
+        .cert-title { font-size:16px; font-weight:700; color:#4ade80; margin-bottom:4px; }
+        .cert-desc { font-size:13px; color:#aaa; margin-bottom:12px; }
+        .btn-cert { background:#4ade80; color:#000; border:none; padding:12px 32px; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; }
+
+        .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#4f46e5; color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+        .toast.show { opacity:1; }
+
+        .nav-bar { position:fixed; bottom:0; left:0; right:0; background:#1a1a2e; border-top:1px solid #333; display:flex; padding:8px; z-index:100; }
+        .nav-item { flex:1; text-align:center; padding:8px; color:#666; font-size:11px; cursor:pointer; text-decoration:none; }
+        .nav-item.active { color:#8b89ff; }
+        .nav-item i { font-size:20px; display:block; margin-bottom:2px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-inner">
+        <div class="header-logo"><i class="ph-fill ph-graduation-cap"></i> 我的学习</div>
+        <a href="ai-planner.html" class="header-back"><i class="ph ph-arrow-left"></i> 重新规划</a>
+    </div>
+</div>
+
+<div class="body">
+
+    <!-- 进度概览 -->
+    <div class="progress-overview">
+        <div class="progress-overview-title">学习进度</div>
+        <div class="progress-overview-num"><span id="doneCount">0</span><span> / <span id="totalCount">0</span> 门课程</span></div>
+        <div class="progress-bar-big">
+            <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+        </div>
+    </div>
+
+    <!-- 统计 -->
+    <div class="stat-row">
+        <div class="stat-box">
+            <div class="stat-num" id="totalHours">0h</div>
+            <div class="stat-label">总学习时长</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num" id="learnedHours">0h</div>
+            <div class="stat-label">已学时长</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-num" id="tokenReleased">0</div>
+            <div class="stat-label">已释放代币</div>
+        </div>
+    </div>
+
+    <!-- 课程列表 -->
+    <div class="section-title"><i class="ph-fill ph-list-checks"></i> 课程列表</div>
+    <div id="courseList"></div>
+
+    <!-- 考试 -->
+    <div class="exam-card locked" id="examCard">
+        <div class="exam-icon"><i class="ph-fill ph-exam"></i></div>
+        <div class="exam-title">综合考试</div>
+        <div class="exam-desc">学完所有课程后解锁考试，通过后获得链上证书</div>
+        <button class="btn-exam" id="examBtn" disabled onclick="startExam()">参加考试</button>
+    </div>
+
+    <!-- 证书 -->
+    <div class="cert-card" id="certCard">
+        <div class="cert-icon"><i class="ph-fill ph-certificate"></i></div>
+        <div class="cert-title">恭喜！你已通过考试</div>
+        <div class="cert-desc">点击下方按钮铸造你的链上证书，永久不可篡改</div>
+        <button class="btn-cert" onclick="mintCert()">铸造链上证书</button>
+    </div>
+
+</div>
+
+<!-- 底部导航 -->
+<div class="nav-bar">
+    <a href="course-library.html" class="nav-item"><i class="ph ph-books"></i>课程库</a>
+    <a href="ai-planner.html" class="nav-item"><i class="ph ph-brain"></i>规划师</a>
+    <a href="learning.html" class="nav-item active"><i class="ph-fill ph-graduation-cap"></i>学习</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// 学习方案数据（从AI规划师生成，这里用模拟数据）
+let learnPlan = [
+    {week:1, courses:[
+        {title:'AI人人通 — 什么是AI', duration:3, level:'入门', link:'https://www.bilibili.com/video/BV1uNk1YxEJQ/', done:false},
+        {title:'ChatGPT实战 — 提示词技巧', duration:4, level:'入门', link:'https://www.bilibili.com/video/BV1FvXLYSEQj/', done:false},
+    ]},
+    {week:2, courses:[
+        {title:'AI做图片 — Midjourney/SD', duration:3, level:'进阶', link:'https://www.bilibili.com/video/BV1RL4y1T7qK/', done:false},
+        {title:'AI做视频 — 剪映AI/AI配音', duration:3, level:'进阶', link:'https://www.bilibili.com/video/BV1KJYrz4Epm/', done:false},
+    ]},
+    {week:3, courses:[
+        {title:'AI办公提效 — PPT/Excel/数据分析', duration:4, level:'进阶', link:'https://www.bilibili.com/video/BV1xwVr6FEh4/', done:false},
+    ]},
+];
+
+let examPassed = false;
+let certMinted = false;
+
+function renderCourses() {
+    const container = document.getElementById('courseList');
+    let html = '';
+    let courseNum = 0;
+    let doneCount = 0;
+    let totalHours = 0;
+    let learnedHours = 0;
+
+    // 找到第一个未完成的课程索引
+    let firstUndone = -1;
+    let tempNum = 0;
+    for (let w of learnPlan) {
+        for (let c of w.courses) {
+            if (!c.done && firstUndone === -1) firstUndone = tempNum;
+            tempNum++;
+        }
+    }
+
+    for (let w of learnPlan) {
+        html += `<div class="week-section">`;
+        html += `<div class="week-label"><i class="ph ph-calendar-blank"></i> 第${w.week}周</div>`;
+
+        for (let c of w.courses) {
+            let itemClass = '';
+            let statusHtml = '';
+            let actionsHtml = '';
+
+            if (c.done) {
+                itemClass = 'done';
+                statusHtml = '<div class="status-done"><i class="ph-fill ph-check-circle"></i> 已完成</div>';
+                actionsHtml = `<a href="${c.link}" target="_blank" class="btn-learn"><i class="ph ph-arrow-square-out"></i> 复习</a>`;
+                doneCount++;
+                learnedHours += c.duration;
+            } else if (courseNum === firstUndone) {
+                itemClass = 'current';
+                statusHtml = '<div class="status-current"><i class="ph-fill ph-play-circle"></i> 进行中</div>';
+                actionsHtml = `
+                    <a href="${c.link}" target="_blank" class="btn-learn"><i class="ph-fill ph-play"></i> 开始学习</a>
+                    <button class="btn-complete" onclick="completeCourse(${courseNum})"><i class="ph ph-check"></i> 完成本课</button>`;
+            } else {
+                itemClass = 'locked';
+                statusHtml = '<div class="status-locked"><i class="ph ph-lock"></i> 未解锁</div>';
+            }
+
+            totalHours += c.duration;
+
+            html += `
+                <div class="course-item ${itemClass}">
+                    <div class="course-row">
+                        <div class="course-num">${courseNum + 1}</div>
+                        <div class="course-info">
+                            <div class="course-title">${c.title}</div>
+                            <div class="course-meta">
+                                <span><i class="ph ph-clock"></i> ${c.duration}小时</span>
+                                <span><i class="ph ph-barbell"></i> ${c.level}</span>
+                            </div>
+                        </div>
+                        <div class="course-status">${statusHtml}</div>
+                    </div>
+                    ${actionsHtml ? `<div class="course-actions">${actionsHtml}</div>` : ''}
+                </div>`;
+            courseNum++;
+        }
+        html += `</div>`;
+    }
+
+    container.innerHTML = html;
+
+    // 更新统计
+    const totalCount = courseNum;
+    document.getElementById('doneCount').textContent = doneCount;
+    document.getElementById('totalCount').textContent = totalCount;
+    document.getElementById('totalHours').textContent = totalHours + 'h';
+    document.getElementById('learnedHours').textContent = learnedHours + 'h';
+
+    const pct = totalCount > 0 ? (doneCount / totalCount * 100) : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+
+    // 代币释放：报名30% + 每门课释放一部分 + 考试40%
+    // 简化显示：每门课完成释放 (60%/总课程数)
+    const tokenPerCourse = Math.floor(1000 * 0.6 / totalCount);
+    const tokenReleased = doneCount * tokenPerCourse;
+    document.getElementById('tokenReleased').textContent = tokenReleased;
+
+    // 考试解锁
+    const allDone = doneCount === totalCount;
+    const examBtn = document.getElementById('examBtn');
+    const examCard = document.getElementById('examCard');
+    if (allDone && !examPassed) {
+        examBtn.disabled = false;
+        examCard.classList.remove('locked');
+    } else {
+        examBtn.disabled = true;
+        examCard.classList.add('locked');
+    }
+}
+
+function completeCourse(idx) {
+    // 找到对应课程并标记完成
+    let num = 0;
+    for (let w of learnPlan) {
+        for (let c of w.courses) {
+            if (num === idx) {
+                c.done = true;
+                showToast('课程已完成！代币已释放');
+                break;
+            }
+            num++;
+        }
+    }
+    renderCourses();
+}
+
+function startExam() {
+    // 简单模拟考试
+    showToast('考试功能开发中...');
+    // 实际考试会是一个答题页面
+    // 这里先模拟通过
+    setTimeout(() => {
+        examPassed = true;
+        document.getElementById('examCard').style.display = 'none';
+        document.getElementById('certCard').style.display = 'block';
+        showToast('考试通过！可以铸造证书了');
+    }, 1500);
+}
+
+function mintCert() {
+    showToast('正在铸造链上证书...');
+    setTimeout(() => {
+        certMinted = true;
+        showToast('证书铸造成功！永久记录在区块链上');
+        document.getElementById('certCard').innerHTML = `
+            <div class="cert-icon"><i class="ph-fill ph-seal-check"></i></div>
+            <div class="cert-title">证书已铸造</div>
+            <div class="cert-desc">你的学习成果已永久记录在区块链上<br>证书ID: ARK-EDU-2026-0001</div>
+            <div style="background:#1a1a2e;border-radius:8px;padding:12px;margin-top:12px">
+                <div style="font-size:12px;color:#888;margin-bottom:4px">证书详情</div>
+                <div style="font-size:13px;color:#fff">方向：AI应用</div>
+                <div style="font-size:13px;color:#fff">课程：5门</div>
+                <div style="font-size:13px;color:#fff">学习时长：17小时</div>
+                <div style="font-size:13px;color:#4ade80;margin-top:4px">状态：已认证 ✓</div>
+            </div>`;
+    }, 2000);
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show';
+    setTimeout(() => t.className = 'toast', 2500);
+}
+
+// 初始化
+window.addEventListener('load', renderCourses);
+</script>
+
+<script src="nav.js"></script><script>createNav("learn")</script>
+</body>
+</html>

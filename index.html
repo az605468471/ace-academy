@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿奇学院 · ACE Academy</title>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --bg: #0a0a1a;
+            --card: rgba(20,20,40,0.85);
+            --border: rgba(139,137,255,0.2);
+            --accent: #8b89ff;
+            --accent2: #7c3aed;
+            --green: #4ade80;
+            --text: #e0e0e0;
+            --dim: #666;
+        }
+        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+        .bg-img { position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; background:url('images/login-bg.png') center/cover; opacity:0.25; }
+        .bg-grad { position:fixed; top:0; left:0; right:0; bottom:0; z-index:1; background:linear-gradient(180deg,rgba(10,10,26,0.6) 0%,rgba(10,10,26,0.95) 100%); }
+        .wrap { position:relative; z-index:10; }
+        
+        /* 顶部导航 */
+        .nav { position:sticky; top:0; z-index:100; background:rgba(10,10,26,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:12px 20px; }
+        .nav-inner { max-width:600px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { display:flex; align-items:center; gap:8px; }
+        .nav-logo-icon { width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; }
+        .nav-logo-icon span { font-family:'Orbitron'; font-size:16px; font-weight:900; color:#fff; }
+        .nav-logo-text { font-family:'Orbitron'; font-size:16px; font-weight:700; }
+        .nav-price { background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.2); border-radius:8px; padding:6px 12px; font-size:12px; }
+        .nav-price .val { color:var(--green); font-weight:700; font-family:'Orbitron'; }
+        .nav-login { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:8px 20px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:flex; align-items:center; gap:6px; }
+        
+        /* Hero */
+        .hero { max-width:600px; margin:0 auto; padding:60px 20px 40px; text-align:center; }
+        .hero-title { font-family:'Orbitron'; font-size:32px; font-weight:900; letter-spacing:2px; margin-bottom:12px; background:linear-gradient(135deg,#8b89ff,#7c3aed,#c4b5fd); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .hero-sub { font-size:16px; color:var(--dim); margin-bottom:32px; }
+        .hero-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+        .hero-btn { padding:16px 32px; border-radius:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:flex; align-items:center; gap:8px; }
+        .hero-btn-primary { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; box-shadow:0 4px 20px rgba(139,137,255,0.3); }
+        .hero-btn-secondary { background:transparent; color:var(--accent); border:2px solid var(--accent); }
+        
+        /* 统计卡片 */
+        .stats { max-width:600px; margin:0 auto; padding:0 20px 40px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+        .stat { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; backdrop-filter:blur(10px); }
+        .stat-num { font-family:'Orbitron'; font-size:24px; font-weight:800; color:var(--accent); }
+        .stat-label { font-size:11px; color:var(--dim); margin-top:4px; }
+        
+        /* 方向卡片 */
+        .section { max-width:600px; margin:0 auto; padding:20px; }
+        .section-title { font-size:18px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+        .section-title i { color:var(--accent); }
+        .dir-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+        .dir-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; cursor:pointer; transition:all 0.3s; text-decoration:none; }
+        .dir-card:hover { border-color:var(--accent); transform:translateY(-4px); box-shadow:0 8px 30px rgba(139,137,255,0.2); }
+        .dir-card i { font-size:28px; color:var(--accent); margin-bottom:8px; }
+        .dir-card-title { font-size:15px; font-weight:700; color:#fff; }
+        .dir-card-desc { font-size:12px; color:var(--dim); margin-top:4px; }
+        
+        /* 特性 */
+        .features { display:grid; grid-template-columns:1fr; gap:12px; }
+        .feature { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; gap:12px; align-items:flex-start; }
+        .feature-icon { width:40px; height:40px; border-radius:10px; background:rgba(139,137,255,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .feature-icon i { font-size:20px; color:var(--accent); }
+        .feature-text h4 { font-size:14px; font-weight:600; margin-bottom:4px; }
+        .feature-text p { font-size:12px; color:var(--dim); line-height:1.5; }
+        
+        /* 底部导航 */
+        .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(10,10,26,0.95); backdrop-filter:blur(20px); border-top:1px solid var(--border); display:flex; padding:8px; z-index:100; }
+        .nav-item { flex:1; text-align:center; padding:8px; color:var(--dim); font-size:11px; cursor:pointer; text-decoration:none; }
+        .nav-item.active { color:var(--accent); }
+        .nav-item i { font-size:20px; display:block; margin-bottom:2px; }
+        
+        .footer { max-width:600px; margin:0 auto; padding:20px; text-align:center; font-size:12px; color:var(--dim); padding-bottom:80px; }
+    </style>
+</head>
+<body>
+<div class="bg-img"></div>
+<div class="bg-grad"></div>
+
+<div class="wrap">
+<script>createNav("home")</script>
+    <div id="navPlaceholder"></div>
+    <div class="nav">
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <div class="nav-logo-icon"><span>A</span></div>
+                <div class="nav-logo-text">ACE</div>
+            </div>
+            <div class="nav-price">ACE <span class="val">0.0125U</span> <span style="color:var(--green)">+2.3%</span></div>
+            <a href="login.html" class="nav-login"><i class="ph-fill ph-sign-in"></i> 登录</a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="hero-title">ACE ACADEMY</div>
+        <div class="hero-sub" data-i18n="hero_title"></div>
+        <div style="font-size:14px;color:var(--dim);margin-top:4px" data-i18n="hero_sub"></div>
+        <div class="hero-btns">
+            <a href="login.html?ref=0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1" class="hero-btn hero-btn-primary"><i class="ph-fill ph-graduation-cap"></i> <span data-i18n="start_learning"></span></a>
+            <a href="course-library.html" class="hero-btn hero-btn-secondary"><i class="ph-fill ph-books"></i> <span data-i18n="browse_courses"></span></a>
+        </div>
+    </div>
+
+    <!-- 统计 -->
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-num">5</div>
+            <div class="stat-label" data-i18n="stat_directions"></div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">25</div>
+            <div class="stat-label" data-i18n="stat_courses"></div>
+        </div>
+        <div class="stat">
+            <div class="stat-num">10M</div>
+            <div class="stat-label" data-i18n="stat_total"></div>
+        </div>
+    </div>
+
+    <!-- 课程方向 -->
+    <div class="section">
+        <div class="section-title"><i class="ph-fill ph-compass"></i> <span data-i18n="dir_title"></span></div>
+        <div class="dir-grid">
+            <a href="course-library.html" class="dir-card">
+                <i class="ph-fill ph-robot"></i>
+                <div class="dir-card-title" data-i18n="dir_ai"></div>
+                <div class="dir-card-desc" data-i18n="dir_ai_desc"></div>
+            </a>
+            <a href="course-library.html" class="dir-card">
+                <i class="ph-fill ph-currency-btc"></i>
+                <div class="dir-card-title" data-i18n="dir_block"></div>
+                <div class="dir-card-desc" data-i18n="dir_block_desc"></div>
+            </a>
+            <a href="course-library.html" class="dir-card">
+                <i class="ph-fill ph-storefront"></i>
+                <div class="dir-card-title" data-i18n="dir_ecom"></div>
+                <div class="dir-card-desc" data-i18n="dir_ecom_desc"></div>
+            </a>
+            <a href="course-library.html" class="dir-card">
+                <i class="ph-fill ph-megaphone"></i>
+                <div class="dir-card-title" data-i18n="dir_mkt"></div>
+                <div class="dir-card-desc" data-i18n="dir_mkt_desc"></div>
+            </a>
+            <a href="course-library.html" class="dir-card" style="grid-column:span 2">
+                <i class="ph-fill ph-code"></i>
+                <div class="dir-card-title" data-i18n="dir_code"></div>
+                <div class="dir-card-desc" data-i18n="dir_code_desc"></div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 平台特性 -->
+    <div class="section">
+        <div class="section-title"><i class="ph-fill ph-star"></i> <span data-i18n="feat_title"></span></div>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon"><i class="ph-fill ph-brain"></i></div>
+                <div class="feature-text">
+                    <h4 data-i18n="feat_ai_title"></h4>
+                    <p data-i18n="feat_ai_desc"></p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="ph-fill ph-certificate"></i></div>
+                <div class="feature-text">
+                    <h4 data-i18n="feat_cert_title"></h4>
+                    <p data-i18n="feat_cert_desc"></p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="ph-fill ph-coins"></i></div>
+                <div class="feature-text">
+                    <h4 data-i18n="feat_token_title"></h4>
+                    <p data-i18n="feat_token_desc"></p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="ph-fill ph-users-three"></i></div>
+                <div class="feature-text">
+                    <h4 data-i18n="feat_promo_title"></h4>
+                    <p data-i18n="feat_promo_desc"></p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="ph-fill ph-shield-check"></i></div>
+                <div class="feature-text">
+                    <h4 data-i18n="feat_safe_title"></h4>
+                    <p data-i18n="feat_safe_desc"></p>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon"><i class="ph-fill ph-heart"></i></div>
+                <div class="feature-text">
+                    <h4 data-i18n="feat_charity_title"></h4>
+                    <p data-i18n="feat_charity_desc"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="section" style="text-align:center; padding-bottom:40px">
+        <div style="font-size:20px; font-weight:700; margin-bottom:8px" data-i18n="cta_title"></div>
+        <div style="font-size:14px; color:var(--dim); margin-bottom:24px" data-i18n="cta_sub"></div>
+        <a href="login.html?ref=0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1" class="hero-btn hero-btn-primary" style="margin:0 auto"><i class="ph-fill ph-rocket-launch"></i> <span data-i18n="register_now"></span></a>
+    </div>
+
+    <div class="footer">
+        ACE Academy · 阿奇学院<br>
+        学技能 · 拿证书 · 赚代币<br>
+        © 2026 ACE Academy. All rights reserved.
+    </div>
+</div>
+
+<!-- 底部导航 -->
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item active"><i class="ph-fill ph-house"></i>首页</a>
+    <a href="course-library.html" class="nav-item"><i class="ph ph-books"></i>课程</a>
+    <a href="login.html" class="nav-item"><i class="ph ph-sign-in"></i>登录</a>
+</div>
+
+<script src="nav.js"></script>
+</body>
+</html>

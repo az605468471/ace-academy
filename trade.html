@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿奇学院 · 交易市场</title>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --bg:#0a0a1a; --card:rgba(20,20,40,0.85); --border:rgba(139,137,255,0.2); --accent:#8b89ff; --accent2:#7c3aed; --green:#4ade80; --red:#f87171; --text:#e0e0e0; --dim:#666; }
+        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); }
+        .nav { position:sticky; top:0; z-index:100; background:rgba(10,10,26,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { display:flex; align-items:center; gap:8px; }
+        .nav-logo-icon { width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; }
+        .nav-logo-icon span { font-family:'Orbitron'; font-size:14px; font-weight:900; color:#fff; }
+        .nav-back { color:var(--accent); font-size:13px; text-decoration:none; }
+        .body { max-width:600px; margin:0 auto; padding:16px; padding-bottom:80px; }
+        .price-card { background:linear-gradient(135deg,rgba(30,30,54,0.9),rgba(42,42,90,0.6)); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:16px; text-align:center; }
+        .price-label { font-size:12px; color:var(--dim); }
+        .price-value { font-family:'Orbitron'; font-size:36px; font-weight:800; color:var(--green); margin:8px 0; }
+        .price-change { font-size:14px; color:var(--green); }
+        .price-stats { display:flex; justify-content:space-around; margin-top:16px; padding-top:16px; border-top:1px solid var(--border); }
+        .price-stat { text-align:center; }
+        .price-stat .v { font-size:14px; font-weight:700; color:#fff; }
+        .price-stat .l { font-size:11px; color:var(--dim); }
+        .balance-row { display:flex; gap:12px; margin-bottom:16px; }
+        .bal-box { flex:1; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center; }
+        .bal-num { font-family:'Orbitron'; font-size:18px; font-weight:700; color:var(--accent); }
+        .bal-label { font-size:11px; color:var(--dim); margin-top:4px; }
+        .trade-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
+        .trade-title { font-size:15px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:6px; }
+        .trade-title i { font-size:20px; }
+        .trade-title.buy i { color:var(--green); }
+        .trade-title.sell i { color:var(--red); }
+        .input-group { margin-bottom:12px; }
+        .input-label { font-size:12px; color:var(--dim); margin-bottom:6px; }
+        .input-box { width:100%; background:rgba(10,10,26,0.6); border:1px solid var(--border); border-radius:10px; padding:14px; color:#fff; font-size:14px; outline:none; font-family:inherit; }
+        .input-box:focus { border-color:var(--accent); }
+        .input-suffix { display:flex; align-items:center; gap:8px; }
+        .input-suffix .input-box { flex:1; }
+        .input-suffix .suffix { font-size:13px; color:var(--dim); }
+        .trade-info { background:rgba(10,10,26,0.4); border-radius:10px; padding:12px; margin:12px 0; }
+        .trade-info-row { display:flex; justify-content:space-between; font-size:13px; padding:4px 0; }
+        .trade-info-row .l { color:var(--dim); }
+        .trade-info-row .v { color:#fff; font-weight:600; }
+        .trade-info-row .v.green { color:var(--green); }
+        .trade-info-row .v.red { color:var(--red); }
+        .btn-trade { width:100%; padding:16px; border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; border:none; }
+        .btn-buy { background:linear-gradient(135deg,#16a34a,#22c55e); color:#fff; }
+        .btn-sell { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; }
+        .btn-trade:disabled { background:#333; color:#555; cursor:not-allowed; }
+        .history { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
+        .history-title { font-size:14px; font-weight:700; margin-bottom:12px; }
+        .history-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(139,137,255,0.1); font-size:13px; }
+        .history-item:last-child { border:none; }
+        .hist-addr { color:var(--dim); font-family:monospace; }
+        .hist-action { font-weight:600; }
+        .hist-action.buy { color:var(--green); }
+        .hist-action.sell { color:var(--red); }
+        .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+        .toast.show { opacity:1; }
+        .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(10,10,26,0.95); border-top:1px solid var(--border); display:flex; padding:8px; z-index:100; }
+        .nav-item { flex:1; text-align:center; padding:8px; color:var(--dim); font-size:11px; cursor:pointer; text-decoration:none; }
+        .nav-item.active { color:var(--accent); }
+        .nav-item i { font-size:20px; display:block; margin-bottom:2px; }
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-logo">
+        <div class="nav-logo-icon"><span>A</span></div>
+        <span style="font-family:'Orbitron';font-size:14px;font-weight:700">ACE</span>
+    </div>
+    <a href="learning.html" class="nav-back"><i class="ph ph-arrow-left"></i> 返回</a>
+</div>
+
+<div class="body">
+    <!-- 价格 -->
+    <div class="price-card">
+        <div class="price-label">ACE 当前价格</div>
+        <div class="price-value">0.0125 <span style="font-size:16px">U</span></div>
+        <div class="price-change">+2.3% (24h)</div>
+        <div class="price-stats">
+            <div class="price-stat"><div class="v">8,500 U</div><div class="l">底池</div></div>
+            <div class="price-stat"><div class="v">15,000</div><div class="l">已销毁</div></div>
+            <div class="price-stat"><div class="v">9,985,000</div><div class="l">当前总量</div></div>
+        </div>
+    </div>
+
+    <!-- 余额 -->
+    <div class="balance-row">
+        <div class="bal-box">
+            <div class="bal-num">1,200</div>
+            <div class="bal-label">ACE 余额</div>
+        </div>
+        <div class="bal-box">
+            <div class="bal-num">500 U</div>
+            <div class="bal-label">USDT 余额</div>
+        </div>
+    </div>
+
+    <!-- 买入 -->
+    <div class="trade-card">
+        <div class="trade-title buy"><i class="ph-fill ph-arrow-down-left"></i> 买入 ACE</div>
+        <div class="input-group">
+            <div class="input-label">支付金额</div>
+            <div class="input-suffix">
+                <input type="number" class="input-box" id="buyAmount" placeholder="0.00" oninput="calcBuy()">
+                <span class="suffix">USDT</span>
+            </div>
+        </div>
+        <div class="trade-info">
+            <div class="trade-info-row"><span class="l">预计获得</span><span class="v green" id="buyExpected">-- ACE</span></div>
+            <div class="trade-info-row"><span class="l">手续费</span><span class="v" id="buyFee">--</span></div>
+            <div class="trade-info-row"><span class="l">价格</span><span class="v">1 ACE = 0.0125 USDT</span></div>
+        </div>
+        <button class="btn-trade btn-buy" onclick="buyACE()"><i class="ph-fill ph-shopping-cart"></i> 买入 ACE</button>
+    </div>
+
+    <!-- 卖出 -->
+    <div class="trade-card">
+        <div class="trade-title sell"><i class="ph-fill ph-arrow-up-right"></i> 卖出 ACE</div>
+        <div class="input-group">
+            <div class="input-label">卖出数量</div>
+            <div class="input-suffix">
+                <input type="number" class="input-box" id="sellAmount" placeholder="0" oninput="calcSell()">
+                <span class="suffix">ACE</span>
+            </div>
+        </div>
+        <div class="trade-info">
+            <div class="trade-info-row"><span class="l">预计获得</span><span class="v" id="sellExpected">-- USDT</span></div>
+            <div class="trade-info-row"><span class="l">手续费(2%)</span><span class="v red" id="sellFee">-- ACE</span></div>
+            <div class="trade-info-row"><span class="l">├ 销毁(1.5%)</span><span class="v" style="color:#888" id="sellBurn">-- ACE</span></div>
+            <div class="trade-info-row"><span class="l">└ 公益(0.5%)</span><span class="v" style="color:#888" id="sellCharity">-- ACE</span></div>
+            <div class="trade-info-row"><span class="l">实际到账</span><span class="v green" id="sellActual">-- USDT</span></div>
+        </div>
+        <button class="btn-trade btn-sell" onclick="sellACE()"><i class="ph-fill ph-currency-btc"></i> 卖出 ACE</button>
+    </div>
+
+    <!-- 交易记录 -->
+    <div class="history">
+        <div class="history-title"><i class="ph-fill ph-clock-counter-clockwise"></i> 最近交易</div>
+        <div class="history-item">
+            <span class="hist-addr">0x1234...5678</span>
+            <span class="hist-action buy">买入 1,000 ACE</span>
+            <span style="color:var(--dim)">12.5U</span>
+        </div>
+        <div class="history-item">
+            <span class="hist-addr">0x9abc...def0</span>
+            <span class="hist-action sell">卖出 500 ACE</span>
+            <span style="color:var(--dim)">6.1U</span>
+        </div>
+        <div class="history-item">
+            <span class="hist-addr">0x5678...9abc</span>
+            <span class="hist-action buy">买入 2,000 ACE</span>
+            <span style="color:var(--dim)">25U</span>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item"><i class="ph ph-house"></i>首页</a>
+    <a href="learning.html" class="nav-item"><i class="ph-fill ph-graduation-cap"></i>学习</a>
+    <a href="trade.html" class="nav-item active"><i class="ph-fill ph-currency-btc"></i>交易</a>
+    <a href="profile.html" class="nav-item"><i class="ph ph-user"></i>我的</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ACE_PRICE = 0.0125;
+
+function calcBuy() {
+    const usdt = parseFloat(document.getElementById('buyAmount').value) || 0;
+    const ace = usdt / ACE_PRICE;
+    document.getElementById('buyExpected').textContent = ace.toFixed(2) + ' ACE';
+    document.getElementById('buyFee').textContent = '0 USDT (买入免费)';
+}
+
+function calcSell() {
+    const ace = parseFloat(document.getElementById('sellAmount').value) || 0;
+    const total = ace * ACE_PRICE;
+    const fee = ace * 0.02;
+    const burn = ace * 0.015;
+    const charity = ace * 0.005;
+    const actual = total * 0.98;
+    document.getElementById('sellExpected').textContent = total.toFixed(4) + ' USDT';
+    document.getElementById('sellFee').textContent = fee.toFixed(2) + ' ACE';
+    document.getElementById('sellBurn').textContent = burn.toFixed(2) + ' ACE';
+    document.getElementById('sellCharity').textContent = charity.toFixed(2) + ' ACE';
+    document.getElementById('sellActual').textContent = actual.toFixed(4) + ' USDT';
+}
+
+function buyACE() {
+    const amt = document.getElementById('buyAmount').value;
+    if (!amt || parseFloat(amt) <= 0) { showToast('请输入金额'); return; }
+    showToast('买入功能待接入钱包');
+}
+
+function sellACE() {
+    const amt = document.getElementById('sellAmount').value;
+    if (!amt || parseFloat(amt) <= 0) { showToast('请输入数量'); return; }
+    showToast('卖出功能待接入钱包');
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show';
+    setTimeout(() => t.className = 'toast', 2500);
+}
+</script>
+
+<script src="nav.js"></script><script>createNav("trade")</script>
+</body>
+</html>
