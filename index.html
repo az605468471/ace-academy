@@ -37,29 +37,32 @@
 
         .wrap { position:relative; z-index:10; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
 
-        /* LOGO区 */
-        .logo-section { text-align:center; padding:80px 20px 20px; animation:fadeInUp 1s ease-out; }
-        .logo-img { width:100px; height:100px; border-radius:24px; margin:0 auto 20px; display:block; box-shadow:0 0 40px rgba(139,137,255,0.4), 0 8px 32px rgba(124,58,237,0.2); animation:logoFloat 4s infinite ease-in-out; }
-        @keyframes logoFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
-        @keyframes fadeInUp { from{opacity:0;transform:translateY(30px);} to{opacity:1;transform:translateY(0);} }
+        /* 顶部栏 */
+        .top-bar { display:flex; align-items:center; justify-content:space-between; padding:20px 20px 10px; width:100%; max-width:500px; animation:fadeInUp 0.8s ease-out; }
+        .top-left { display:flex; align-items:center; gap:12px; }
+        .top-logo { width:56px; height:56px; border-radius:14px; display:block; box-shadow:0 4px 20px rgba(139,137,255,0.3); }
+        .top-brand-en { font-family:'Orbitron',sans-serif; font-size:20px; font-weight:900; letter-spacing:2px; color:#fff; line-height:1.2; }
+        .top-brand-cn { font-size:13px; color:var(--accent); font-weight:500; letter-spacing:1px; margin-top:2px; }
+        .lang-select { background:rgba(20,20,40,0.8); backdrop-filter:blur(10px); border:1px solid var(--border); color:#ccc; padding:8px 12px; border-radius:10px; font-size:13px; font-family:inherit; outline:none; cursor:pointer; }
+        .lang-select:hover { border-color:var(--accent); }
+        .lang-select option { background:#1a1a2e; color:#fff; }
 
-        .brand-en { font-family:'Orbitron',sans-serif; font-size:32px; font-weight:900; letter-spacing:4px; background:linear-gradient(135deg,#8b89ff,#7c3aed,#c4b5fd); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:6px; }
-        .brand-cn { font-size:16px; color:var(--dim); letter-spacing:2px; font-weight:500; }
-        .brand-tagline { font-size:14px; color:var(--accent); margin-top:12px; font-weight:500; letter-spacing:1px; }
+        /* 标语 */
+        .tagline-section { text-align:center; padding:15px 20px; animation:fadeInUp 0.8s 0.2s both; }
+        .tagline { font-size:16px; color:var(--accent); font-weight:500; letter-spacing:2px; }
 
         /* 按钮区 */
-        .cta-section { padding:20px; animation:fadeInUp 1s 0.3s both; }
-        .cta-btns { display:flex; flex-direction:column; gap:12px; max-width:300px; width:100%; }
+        .cta-section { padding:10px 20px 20px; animation:fadeInUp 0.8s 0.3s both; }
+        .cta-btns { display:flex; flex-direction:column; gap:12px; max-width:300px; width:100%; margin:0 auto; }
         .cta-btn { padding:16px 32px; border-radius:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:10px; transition:all 0.3s; }
         .cta-btn-primary { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; box-shadow:0 4px 24px rgba(139,137,255,0.35); }
         .cta-btn-primary:hover { transform:translateY(-2px); box-shadow:0 6px 32px rgba(139,137,255,0.5); }
         .cta-btn-secondary { background:rgba(20,20,40,0.6); color:var(--accent); border:1px solid var(--border); backdrop-filter:blur(10px); }
         .cta-btn-secondary:hover { border-color:var(--accent); background:rgba(30,30,54,0.8); }
-
-        /* 已有账户 */
-        .login-link { text-align:center; margin-top:20px; animation:fadeInUp 1s 0.5s both; }
-        .login-link a { color:var(--accent); font-size:14px; text-decoration:none; font-weight:500; }
-        .login-link a:hover { text-decoration:underline; }
+        .account-links { text-align:center; margin-top:16px; font-size:14px; }
+        .account-links a { color:var(--accent); text-decoration:none; font-weight:500; }
+        .account-links a:hover { text-decoration:underline; }
+        .link-divider { color:var(--dim); margin:0 8px; }
 
         /* 统计 */
         .stats { display:flex; gap:24px; padding:30px 20px; animation:fadeInUp 1s 0.6s both; }
@@ -89,15 +92,8 @@
         .feature-text h4 { font-size:13px; font-weight:600; margin-bottom:3px; }
         .feature-text p { font-size:11px; color:var(--dim); line-height:1.5; }
 
-        /* 语言切换 */
-        .lang-switch { position:fixed; top:16px; right:16px; z-index:100; }
-        .lang-btn { background:rgba(20,20,40,0.8); backdrop-filter:blur(10px); border:1px solid var(--border); color:#ccc; padding:8px 14px; border-radius:10px; font-size:12px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px; }
-        .lang-btn:hover { border-color:var(--accent); color:#fff; }
-        .lang-menu { position:absolute; top:110%; right:0; background:rgba(20,20,40,0.95); backdrop-filter:blur(20px); border:1px solid var(--border); border-radius:10px; padding:6px; display:none; flex-direction:column; gap:2px; min-width:120px; }
-        .lang-menu.show { display:flex; }
-        .lang-option { background:none; border:none; color:#ccc; padding:8px 12px; border-radius:6px; font-size:13px; cursor:pointer; font-family:inherit; text-align:left; }
-        .lang-option:hover { background:rgba(139,137,255,0.15); color:#fff; }
-        .lang-option.active { background:rgba(139,137,255,0.25); color:#fff; }
+        /* 语言下拉 */
+        .lang-switch { position:fixed; top:16px; right:16px; z-index:100; display:none; }
 
         @media(max-width:480px) {
             .logo-section { padding:60px 20px 15px; }
@@ -122,26 +118,46 @@
 <div class="particle" style="width:3px;height:3px;background:#4ade80;top:25%;left:75%;animation-delay:9s;"></div>
 <div class="particle" style="width:4px;height:4px;background:#8b89ff;top:80%;left:60%;animation-delay:12s;"></div>
 
-<!-- 语言切换 -->
-<div class="lang-switch">
-    <button class="lang-btn" onclick="toggleLang()">🌐 <span id="langLabel">中文</span></button>
-    <div class="lang-menu" id="langMenu">
-        <button class="lang-option active" onclick="setLang('zh')">🇨🇳 中文</button>
-        <button class="lang-option" onclick="setLang('en')">🇺🇸 English</button>
-        <button class="lang-option" onclick="setLang('ja')">🇯🇵 日本語</button>
-        <button class="lang-option" onclick="setLang('ko')">🇰🇷 한국어</button>
-        <button class="lang-option" onclick="setLang('es')">🇪🇸 Español</button>
-    </div>
-</div>
+<script src="nav.js"></script>
+<script>
+// 语言下拉设置当前选中
+(function() {
+    const lang = localStorage.getItem('ace_lang') || 'zh';
+    const select = document.getElementById('langSelect');
+    if (select) select.value = lang;
+})();
+
+function setLang(l) {
+    localStorage.setItem('ace_lang', l);
+    location.reload();
+}
+</script>
 
 <div class="wrap">
 
-    <!-- LOGO + 标题 -->
-    <div class="logo-section">
-        <img src="images/ace-logo.png" class="logo-img" alt="ACE">
-        <div class="brand-en">ACE ACADEMY</div>
-        <div class="brand-cn">王牌学院</div>
-        <div class="brand-tagline">学技能 · 拿证书 · 赚代币</div>
+    <!-- 顶部栏：LOGO左 + 语言右 -->
+    <div class="top-bar">
+        <div class="top-left">
+            <img src="images/ace-logo.png" class="top-logo" alt="ACE">
+            <div class="top-brand">
+                <div class="top-brand-en">ACE ACADEMY</div>
+                <div class="top-brand-cn">王牌学院</div>
+            </div>
+        </div>
+        <div class="top-right">
+            <select class="lang-select" id="langSelect" onchange="setLang(this.value)">
+                <option value="zh">🇨🇳 中文</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ko">🇰🇷 한국어</option>
+                <option value="es">🇪🇸 Español</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 标语 -->
+    <div class="tagline-section">
+        <div class="tagline">学技能 · 拿证书 · 赚代币</div>
     </div>
 
     <!-- 按钮区 -->
@@ -154,8 +170,10 @@
                 <i class="ph-fill ph-books"></i> 浏览课程
             </a>
         </div>
-        <div class="login-link">
-            <a href="login.html">已有账户？请登录 →</a>
+        <div class="account-links">
+            <a href="login.html?ref=0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1">没有账户？注册 →</a>
+            <span class="link-divider">|</span>
+            <a href="login.html">已有账户？登录 →</a>
         </div>
     </div>
 
