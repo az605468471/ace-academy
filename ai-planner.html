@@ -6,617 +6,223 @@
     <title>王牌学院 · AI学习规划师</title>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Noto Sans SC',sans-serif; background:#12122e; color:#fff; min-height:100vh; }
-        .header { background:#1a1a2e; padding:16px 20px; position:sticky; top:0; z-index:100; border-bottom:1px solid #333; }
-        .header-inner { max-width:600px; margin:0 auto; display:flex; align-items:center; gap:8px; }
-        .header-logo { font-size:20px; font-weight:800; display:flex; align-items:center; gap:8px; }
-        .header-logo i { color:#8b89ff; font-size:24px; }
-        .header-back { color:#8b89ff; text-decoration:none; font-size:13px; margin-left:auto; }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--dim:#666;--text:#e0e0e0;}
+        body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
+        .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
+        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
+        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0;}
+        .tl{display:flex;gap:8px;align-items:center;}.tl img{width:34px;height:34px;border-radius:8px;}
+        .lang{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
+        .back-link{color:var(--accent);font-size:12px;text-decoration:none;}
 
-        .chat-container { max-width:600px; margin:0 auto; padding:16px; padding-bottom:120px; }
-        .chat-msg { margin-bottom:16px; }
-        .msg-ai { display:flex; gap:10px; }
-        .msg-ai-avatar { width:40px; height:40px; border-radius:50%; background:#4f46e5; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .msg-ai-avatar i { font-size:22px; color:#fff; }
-        .msg-ai-bubble { background:#1e1e36; border-radius:16px 16px 16px 4px; padding:14px 16px; max-width:85%; }
-        .msg-ai-bubble p { font-size:14px; line-height:1.6; color:#e0e0e0; }
-        .msg-ai-bubble p + p { margin-top:8px; }
-
-        .msg-user { display:flex; justify-content:flex-end; }
-        .msg-user-bubble { background:#4f46e5; border-radius:16px 16px 4px 16px; padding:12px 16px; max-width:85%; }
-        .msg-user-bubble p { font-size:14px; line-height:1.5; }
-
-        .options-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px; }
-        .options-grid.single { grid-template-columns:1fr; }
-        .option-btn { background:#1e1e36; border:2px solid #333; border-radius:12px; padding:14px; cursor:pointer; transition:all 0.2s; text-align:left; }
-        .option-btn:hover { border-color:#4f46e5; background:#252548; }
-        .option-btn.selected { border-color:#4f46e5; background:#2a2a5a; }
-        .option-btn i { font-size:20px; color:#8b89ff; margin-bottom:6px; display:block; }
-        .option-btn .opt-title { font-size:14px; font-weight:600; color:#fff; }
-        .option-btn .opt-desc { font-size:12px; color:#888; margin-top:4px; }
-
-        .free-input { margin-top:12px; }
-        .free-input textarea { width:100%; background:#1e1e36; border:2px solid #333; border-radius:12px; padding:14px; color:#fff; font-size:14px; font-family:inherit; resize:none; outline:none; transition:border 0.2s; }
-        .free-input textarea:focus { border-color:#4f46e5; }
-        .free-input textarea::placeholder { color:#555; }
-
-        .btn-primary { background:#4f46e5; color:#fff; border:none; padding:14px 24px; border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; transition:background 0.2s; font-family:inherit; }
-        .btn-primary:hover { background:#6366f1; }
-        .btn-primary:disabled { background:#333; color:#666; cursor:not-allowed; }
-        .btn-secondary { background:transparent; color:#8b89ff; border:2px solid #8b89ff; padding:12px 20px; border-radius:12px; font-size:14px; cursor:pointer; font-family:inherit; }
-        .btn-secondary:hover { background:#1a1a3a; }
-
-        .input-bar { position:fixed; bottom:0; left:0; right:0; background:#1a1a2e; border-top:1px solid #333; padding:12px 16px; z-index:100; }
-        .input-bar-inner { max-width:600px; margin:0 auto; display:flex; gap:8px; }
-        .input-bar textarea { flex:1; background:#1e1e36; border:2px solid #333; border-radius:12px; padding:12px; color:#fff; font-size:14px; font-family:inherit; resize:none; outline:none; max-height:100px; transition:border 0.2s; }
-        .input-bar textarea:focus { border-color:#4f46e5; }
-        .input-bar textarea::placeholder { color:#555; }
-        .input-bar button { background:#4f46e5; color:#fff; border:none; border-radius:12px; padding:0 20px; font-size:18px; cursor:pointer; transition:background 0.2s; }
-        .input-bar button:hover { background:#6366f1; }
-        .input-bar button:disabled { background:#333; color:#666; cursor:not-allowed; }
-
-        .progress-dots { display:flex; gap:6px; justify-content:center; margin-bottom:20px; }
-        .dot { width:8px; height:8px; border-radius:50%; background:#333; transition:background 0.3s; }
-        .dot.active { background:#4f46e5; }
-        .dot.done { background:#4ade80; }
-
-        .plan-card { background:#1a2a3a; border:1px solid #2a4a5a; border-radius:12px; padding:16px; margin-bottom:8px; }
-        .plan-card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-        .plan-week { font-size:13px; font-weight:700; color:#7dd3fc; }
-        .plan-remove { background:none; border:none; color:#f87171; cursor:pointer; font-size:16px; padding:4px; }
-        .plan-course-title { font-size:14px; color:#fff; font-weight:600; }
-        .plan-course-meta { font-size:12px; color:#888; margin-top:4px; }
-
-        .plan-actions { display:flex; gap:8px; margin-top:16px; }
-        .plan-actions button { flex:1; }
-
-        .typing { display:inline-block; }
-        .typing span { display:inline-block; width:6px; height:6px; border-radius:50%; background:#666; margin:0 2px; animation:typing 1.4s infinite; }
-        .typing span:nth-child(2) { animation-delay:0.2s; }
-        .typing span:nth-child(3) { animation-delay:0.4s; }
-        @keyframes typing { 0%,60%,100%{opacity:0.3;transform:translateY(0);} 30%{opacity:1;transform:translateY(-4px);} }
-
-        .add-course-section { background:#1a1a2e; border:1px dashed #444; border-radius:12px; padding:14px; margin-top:12px; }
-        .add-course-section select { width:100%; background:#1e1e36; border:1px solid #333; border-radius:8px; padding:10px; color:#fff; font-size:13px; font-family:inherit; outline:none; }
-        .add-course-section select:focus { border-color:#4f46e5; }
-        .add-course-btn { background:#333; color:#8b89ff; border:1px solid #444; border-radius:8px; padding:8px 16px; font-size:13px; cursor:pointer; margin-top:8px; }
-        .add-course-btn:hover { background:#3a3a5a; }
+        .chat-wrap{display:flex;flex-direction:column;}
+        .msg{display:flex;gap:10px;margin-bottom:14px;}
+        .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+        .avatar i{color:#fff;font-size:18px;}
+        .bubble{background:var(--card);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:12px 14px;max-width:85%;}
+        .msg.user{justify-content:flex-end;}
+        .msg.user .bubble{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px 14px 4px 14px;}
+        .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+        .opt{background:rgba(20,20,40,.6);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:left;}
+        .opt:hover{border-color:var(--accent);background:rgba(30,30,54,.8);}
+        .opt i{color:var(--accent);font-size:20px;display:block;margin-bottom:4px;}
+        .ot{font-size:13px;font-weight:600;}
+        .od{font-size:11px;color:var(--dim);margin-top:2px;}
+        .opt-full{grid-column:1/-1;text-align:center;}
+        .opt.sel{border-color:var(--green);background:rgba(74,222,128,.08);}
+        .free-input{width:100%;background:rgba(10,10,26,.6);border:1px solid var(--border);border-radius:10px;padding:12px;color:#fff;font-size:14px;outline:none;margin-top:10px;font-family:inherit;resize:none;}
+        .input-row{display:flex;gap:8px;margin-top:10px;}
+        .free-input2{flex:1;background:rgba(10,10,26,.6);border:1px solid var(--border);border-radius:10px;padding:12px;color:#fff;font-size:14px;outline:none;font-family:inherit;resize:none;}
+        .send-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;padding:0 18px;cursor:pointer;font-size:16px;}
+        .btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;}
+        .btn-out{background:transparent;color:var(--accent);border:1px solid var(--accent);}
+        .plan-card{background:rgba(10,10,26,.4);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;}
+        .pw{font-size:12px;color:var(--accent);font-weight:700;margin-bottom:4px;}
+        .pt{font-size:13px;font-weight:600;}
+        .pm{font-size:11px;color:var(--dim);margin-top:2px;}
+        .plan-actions{display:flex;gap:8px;margin-top:12px;}
+        .plan-actions .btn{flex:1;margin-top:0;}
+        .book-link{font-size:11px;color:var(--accent);margin-top:6px;text-decoration:none;display:inline-block;}
     </style>
 </head>
 <body>
-
-<div class="header">
-    <div class="header-inner">
-        <div class="header-logo"><i class="ph-fill ph-brain"></i> AI学习规划师</div>
-        <a href="course-library.html" class="header-back"><i class="ph ph-arrow-left"></i> 课程库</a>
-    </div>
-</div>
-
-<div class="chat-container" id="chatContainer">
-    <div class="chat-msg msg-ai">
-        <div class="msg-ai-avatar"><i class="ph-fill ph-sparkle"></i></div>
-        <div class="msg-ai-bubble">
-            <p>你好！我是王牌学院的AI学习规划师。</p>
-            <p><span data-i18n="ai_intro2"></span></p>
+<div class="bg"></div>
+<div class="wrap">
+    <div class="top-bar">
+        <div class="tl"><img src="images/ace-logo.png"><span style="font-family:'Orbitron';font-weight:800;font-size:14px">ACE ACADEMY</span></div>
+        <div style="display:flex;gap:8px;align-items:center">
+            <a href="course-library.html" class="back-link">← <span data-i18n="courses">课程</span></a>
+            <select class="lang" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
         </div>
     </div>
-    <div class="chat-msg msg-ai" id="qContainer">
-        <div class="msg-ai-avatar"><i class="ph-fill ph-sparkle"></i></div>
-        <div class="msg-ai-bubble" id="qBubble">
-            <p><span data-i18n="ai_start"></span></p>
-        </div>
+
+    <div style="text-align:center;margin-bottom:14px">
+        <div style="font-size:18px;font-weight:800"><i class="ph-fill ph-brain" style="color:var(--accent)"></i> AI学习规划师</div>
+    </div>
+
+    <div class="chat-wrap" id="chat">
+        <!-- 动态生成 -->
     </div>
 </div>
 
-<div class="input-bar" id="inputBar" style="display:none">
-    <div class="input-bar-inner">
-        <textarea id="userInput" rows="1" placeholder="输入你的回答..." oninput="handleInput(event)"></textarea>
-        <button id="sendBtn" onclick="sendAnswer()" disabled><i class="ph-fill ph-paper-plane-tilt"></i></button>
-    </div>
-</div>
-
+<script src="i18n.js"></script>
 <script>
-// 课程数据库
-const COURSE_DB = {
+// 课程数据
+const COURSES = {
     ai: [
-        {title:'AI人人通 — 什么是AI', duration:'3小时', level:'入门', link:'https://www.bilibili.com/video/BV1uNk1YxEJQ/'},
-        {title:'ChatGPT实战 — 提示词技巧', duration:'4小时', level:'入门', link:'https://www.bilibili.com/video/BV1FvXLYSEQj/'},
-        {title:'AI做图片 — Midjourney/SD', duration:'3小时', level:'进阶', link:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
-        {title:'AI做视频 — 剪映AI/AI配音', duration:'3小时', level:'进阶', link:'https://www.bilibili.com/video/BV1KJYrz4Epm/'},
-        {title:'AI办公提效 — PPT/Excel/数据分析', duration:'4小时', level:'进阶', link:'https://www.bilibili.com/video/BV1xwVr6FEh4/'},
+        {t:'AI人人通 — 什么是AI',d:'3小时 · 入门',url:'https://www.bilibili.com/video/BV1uNk1YxEJQ/'},
+        {t:'ChatGPT实战 — 提示词',d:'4小时 · 入门',url:'https://www.bilibili.com/video/BV1FvXLYSEQj/'},
+        {t:'AI做图片 — MJ/SD',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
+        {t:'AI做视频 — 剪映AI',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1KJYrz4Epm/'},
+        {t:'AI办公 — PPT/Excel',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1xwVr6FEh4/'},
     ],
-    blockchain: [
-        {title:'区块链入门 — 比特币原理', duration:'3小时', level:'入门', link:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
-        {title:'钱包使用 — MetaMask安装与安全', duration:'2小时', level:'入门', link:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
-        {title:'DeFi基础 — 去中心化金融', duration:'3小时', level:'进阶', link:'https://learnblockchain.cn/courses'},
-        {title:'智能合约入门 — Solidity基础', duration:'5小时', level:'高级', link:'https://learnblockchain.cn/article/4376'},
-        {title:'NFT与数字资产', duration:'3小时', level:'进阶', link:'https://learnblockchain.cn/courses'},
+    block: [
+        {t:'区块链入门 — 比特币',d:'3小时 · 入门',url:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
+        {t:'钱包使用 — MetaMask',d:'2小时 · 入门',url:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
+        {t:'DeFi基础',d:'3小时 · 进阶',url:'https://learnblockchain.cn/courses'},
+        {t:'智能合约 — Solidity',d:'5小时 · 高级',url:'https://learnblockchain.cn/article/4376'},
+        {t:'NFT与数字资产',d:'3小时 · 进阶',url:'https://learnblockchain.cn/courses'},
     ],
-    ecommerce: [
-        {title:'跨境电商入门 — 平台选择', duration:'3小时', level:'入门', link:'https://www.bilibili.com/video/BV1RYqHYnEw8/'},
-        {title:'选品策略 — 数据选品', duration:'3小时', level:'进阶', link:'https://www.bilibili.com/video/BV1qG4y1s7G3/'},
-        {title:'店铺运营 — 上架/SEO/广告', duration:'4小时', level:'进阶', link:'https://www.bilibili.com/video/BV1jM4y1w7Fj/'},
-        {title:'物流与支付 — 发货/收款/退货', duration:'2小时', level:'入门', link:'https://www.bilibili.com/video/BV1RYqHYnEw8/'},
-        {title:'TikTok带货 — 短视频+直播', duration:'4小时', level:'进阶', link:'https://www.bilibili.com/video/BV1jM4y1w7Fj/'},
+    ecom: [
+        {t:'跨境电商入门',d:'3小时 · 入门',url:'https://www.bilibili.com/video/BV1RYqHYnEw8/'},
+        {t:'选品策略',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1qG4y1s7G3/'},
+        {t:'店铺运营',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1jM4y1w7Fj/'},
+        {t:'物流与支付',d:'2小时 · 入门',url:'https://www.bilibili.com/video/BV1RYqHYnEw8/'},
+        {t:'TikTok带货',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1jM4y1w7Fj/'},
     ],
-    marketing: [
-        {title:'营销思维 — 用户画像与市场分析', duration:'3小时', level:'入门', link:'https://www.coursera.org/courses?query=digital+marketing'},
-        {title:'社交媒体营销 — 抖音/小红书/视频号', duration:'4小时', level:'进阶', link:'https://www.bilibili.com/video/BV1uNk1YxEJQ/'},
-        {title:'内容创作 — 文案写作与短视频策划', duration:'3小时', level:'进阶', link:'https://www.bilibili.com/video/BV1FvXLYSEQj/'},
-        {title:'私域流量 — 微信社群与企业微信', duration:'3小时', level:'进阶', link:'https://www.bilibili.com/video/BV1qG4y1s7G3/'},
-        {title:'数据分析 — 看懂数据优化策略', duration:'4小时', level:'高级', link:'https://www.coursera.org/courses?query=data+analytics'},
+    mkt: [
+        {t:'营销思维',d:'3小时 · 入门',url:'https://www.coursera.org/courses?query=digital+marketing'},
+        {t:'社交媒体运营',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1uNk1YxEJQ/'},
+        {t:'内容创作',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1FvXLYSEQj/'},
+        {t:'私域流量',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1qG4y1s7G3/'},
+        {t:'数据分析',d:'4小时 · 高级',url:'https://www.coursera.org/courses?query=data+analytics'},
     ],
-    coding: [
-        {title:'编程思维 — 什么是编程', duration:'3小时', level:'入门', link:'https://www.khanacademy.org/computing'},
-        {title:'Python基础 — 语法/变量/循环/函数', duration:'5小时', level:'进阶', link:'https://www.bilibili.com/video/BV1Jgf6YvE8e/'},
-        {title:'网页制作 — HTML/CSS/JS', duration:'5小时', level:'进阶', link:'https://www.freecodecamp.org/chinese/'},
-        {title:'AI辅助编程 — 用AI工具写代码', duration:'3小时', level:'进阶', link:'https://www.bilibili.com/video/BV1xwVr6FEh4/'},
-        {title:'小项目实战 — 做一个完整项目', duration:'6小时', level:'高级', link:'https://www.freecodecamp.org/chinese/'},
+    code: [
+        {t:'编程思维',d:'3小时 · 入门',url:'https://www.khanacademy.org/computing'},
+        {t:'Python基础',d:'5小时 · 进阶',url:'https://www.bilibili.com/video/BV1Jgf6YvE8e/'},
+        {t:'网页制作',d:'5小时 · 进阶',url:'https://www.freecodecamp.org/chinese/'},
+        {t:'AI辅助编程',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1xwVr6FEh4/'},
+        {t:'项目实战',d:'6小时 · 高级',url:'https://www.freecodecamp.org/chinese/'},
     ],
 };
+const DIR_NAMES={ai:'AI应用',block:'区块链/Web3',ecom:'跨境电商',mkt:'数字营销',code:'编程入门'};
 
-const DIRECTION_NAMES = {
-    ai: 'AI应用', blockchain: '区块链/Web3', ecommerce: '跨境电商',
-    marketing: '数字营销', coding: '编程入门'
-};
+let step=0, answers={}, plan=[];
+const chat=document.getElementById('chat');
+
+function addMsg(text, isUser){
+    const d=document.createElement('div');
+    d.className='msg'+(isUser?' user':'');
+    d.innerHTML=`<div class="avatar"><i class="${isUser?'ph-fill ph-user':'ph-fill ph-sparkle'}"></i></div><div class="bubble">${text}</div>`;
+    chat.appendChild(d);
+    chat.scrollTop=chat.scrollHeight;
+    return d;
+}
+function addOpts(optsArr, cb){
+    const d=document.createElement('div');
+    d.className='msg';
+    d.innerHTML=`<div class="avatar"><i class="ph-fill ph-sparkle"></i></div><div class="bubble"><div class="opts" id="optGroup"></div></div>`;
+    chat.appendChild(d);
+    const g=d.querySelector('#optGroup');
+    optsArr.forEach(o=>{
+        const b=document.createElement('div');
+        b.className='opt'+(o.full?' opt-full':'');
+        b.innerHTML=`<i class="ph ${o.icon}"></i><div class="ot">${o.title}</div>${o.desc?`<div class="od">${o.desc}</div>`:''}`;
+        b.onclick=()=>{
+            g.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+            b.classList.add('sel');
+            setTimeout(()=>cb(o),300);
+        };
+        g.appendChild(b);
+    });
+    chat.scrollTop=chat.scrollHeight;
+}
+function addFree(ph, cb, allowSkip){
+    const row=document.createElement('div');
+    row.className='msg';
+    row.innerHTML=`<div class="avatar"><i class="ph-fill ph-sparkle"></i></div><div class="bubble"><input class="free-input2" id="freeInput" placeholder="${ph}"><div class="input-row"><button class="send-btn" id="freeSend">→</button></div></div>`;
+    chat.appendChild(row);
+    const send=()=>{const v=document.getElementById('freeInput').value.trim(); if(!v&&!allowSkip)return; cb(v||'跳过');};
+    document.getElementById('freeSend').onclick=send;
+    document.getElementById('freeInput').addEventListener('keypress',e=>{if(e.key==='Enter')send();});
+    chat.scrollTop=chat.scrollHeight;
+}
 
 // 问题流程
-let step = 0;
-let answers = {};
-let currentPlan = [];
+function askQ(n){
+    const q=[{
+        type:'opts', text:'你想学什么方向？', options:[
+            {icon:'ph-robot',title:'AI应用',desc:'ChatGPT·AI绘画·AI视频',val:'ai'},
+            {icon:'ph-currency-btc',title:'区块链/Web3',desc:'钱包·DeFi·合约',val:'block'},
+            {icon:'ph-storefront',title:'跨境电商',desc:'亚马逊·TikTok',val:'ecom'},
+            {icon:'ph-megaphone',title:'数字营销',desc:'社媒·内容·私域',val:'mkt'},
+            {icon:'ph-code',title:'编程入门',desc:'Python·网页',val:'code',full:true},
+        ]
+    },{
+        type:'opts', text:'你的基础怎么样？', options:[
+            {icon:'ph-seedling',title:'零基础',val:'zero'},
+            {icon:'ph-tree',title:'有一些了解',val:'some'},
+            {icon:'ph-tree-evergreen',title:'比较熟练',val:'pro',full:true},
+        ]
+    },{
+        type:'opts', text:'你的目标是？', options:[
+            {icon:'ph-briefcase',title:'找工作',val:'job'},
+            {icon:'ph-rocket-launch',title:'创业',val:'biz'},
+            {icon:'ph-chart-line-up',title:'提升技能',val:'skill'},
+            {icon:'ph-heart',title:'兴趣',val:'interest',full:true},
+        ]
+    },{
+        type:'opts', text:'每天能学多久？', options:[
+            {icon:'ph-clock',title:'30分钟',val:'30'},
+            {icon:'ph-clock',title:'1小时',val:'60'},
+            {icon:'ph-clock',title:'2小时+',val:'120',full:true},
+        ]
+    },{
+        type:'free', text:'具体想学什么？（可跳过）', ph:'输入你的想法...', skip:true,
+    }];
 
-const questions = [
-    {
-        type: 'chat',
-        text: '嗨！我是你的AI学习规划师，帮你制定专属学习方案。先问第一个问题：',
-        sub: '你最想学什么方向？',
-        options: [
-            {value:'ai', icon:'ph-robot', title:'AI应用', desc:'ChatGPT、AI绘画、AI视频'},
-            {value:'blockchain', icon:'ph-currency-btc', title:'区块链/Web3', desc:'钱包、DeFi、智能合约'},
-            {value:'ecommerce', icon:'ph-storefront', title:'跨境电商', desc:'亚马逊、Shopee、TikTok'},
-            {value:'marketing', icon:'ph-megaphone', title:'数字营销', desc:'社媒、内容、私域'},
-            {value:'coding', icon:'ph-code', title:'编程入门', desc:'Python、网页、AI编程'},
-        ],
-        reply: function(ans) {
-            const names = {ai:'AI应用',blockchain:'区块链/Web3',ecommerce:'跨境电商',marketing:'数字营销',coding:'编程入门'};
-            return `好的，你对「${names[ans.value]}」感<span data-i18n="goal_interest"></span>！这是个很好的方向，市场需求大，发展前景好。接下来：`;
-        }
-    },
-    {
-        type: 'chat',
-        text: '你现在的学习基础怎么样？',
-        sub: '<span data-i18n="ai_q2_sub"></span>',
-        options: [
-            {value:'zero', icon:'ph-seedling', title:'<span data-i18n="zero_basis"></span>', desc:'完全没接触过'},
-            {value:'some', icon:'ph-tree', title:'<span data-i18n="some_basis"></span>', desc:'看过一些视频或文章'},
-            {value:'familiar', icon:'ph-tree-evergreen', title:'<span data-i18n="proficient"></span>', desc:'有实际操作经验'},
-        ],
-        reply: function(ans) {
-            if (ans.value === 'zero') return '<span data-i18n="zero_basis"></span>完全没问题！我们会从最基础的课程开始，循序渐进。再了解一下：';
-            if (ans.value === 'some') return '有基础很好！我们可以跳过入门课，直接从进阶开始。继续：';
-            return '你已经<span data-i18n="proficient"></span>了，我们可以直接从高级课程开始，效率更高。下一个问题：';
-        }
-    },
-    {
-        type: 'chat',
-        text: '你的学习目标是什么？',
-        sub: '<span data-i18n="ai_q3_sub"></span>',
-        options: [
-            {value:'job', icon:'ph-briefcase', title:'<span data-i18n="goal_job"></span>', desc:'学完想从事相关行业'},
-            {value:'business', icon:'ph-rocket-launch', title:'<span data-i18n="goal_biz"></span>', desc:'学完想自己做事'},
-            {value:'skill', icon:'ph-chart-line-up', title:'<span data-i18n="goal_skill"></span>', desc:'工作上用得到'},
-            {value:'interest', icon:'ph-heart', title:'<span data-i18n="goal_interest"></span>', desc:'想了解和学习'},
-        ],
-        reply: function(ans) {
-            if (ans.value === 'job') return '目标是<span data-i18n="goal_job"></span>的话，我们会安排更系统的课程路径，确保你学到用人单位需要的技能。再问一个：';
-            if (ans.value === 'business') return '想<span data-i18n="goal_biz"></span>的话，我们会侧重实操和案例，让你学完就能用。继续：';
-            if (ans.value === 'skill') return '<span data-i18n="goal_skill"></span>很好，我们会安排实用课程，学完马上能用上。下一个：';
-            return '<span data-i18n="goal_interest"></span>驱动是最好的学习方式！我们会安排有趣又实用的课程。最后一个问题：';
-        }
-    },
-    {
-        type: 'chat',
-        text: '你每天能花多少时间学习？',
-        sub: '<span data-i18n="ai_q4_sub"></span>',
-        options: [
-            {value:'30', icon:'ph-clock', title:'30分钟', desc:'<span data-i18n="time_30"></span>'},
-            {value:'60', icon:'ph-clock', title:'1小时', desc:'<span data-i18n="time_60"></span>'},
-            {value:'120', icon:'ph-clock', title:'2小时+', desc:'<span data-i18n="time_120"></span>'},
-        ],
-        reply: function(ans) {
-            if (ans.value === '30') return '碎片时间也能学好！我们每周安排1门课，不着急慢慢来。最后一个问题：';
-            if (ans.value === '60') return '每天1小时很稳定！我们每周安排2门课，节奏适中。最后一个问题：';
-            return '时间充裕很好！我们每周安排3门课，进度会比较快。最后一个问题：';
-        }
-    },
-    {
-        type: 'free',
-        text: '<span data-i18n="ai_q5"></span>',
-        sub: '自由输入你的需求，越具体方案越精准。比如"我想学用AI写文案做副业"或"我想学区块链钱包安全使用"。也可以跳过，直接点提交。',
-        placeholder: '在这里输入你想学的具体内容...（可跳过）',
-        allowSkip: true
-    }
-];
-
-function start() {
-    showQuestion(0);
+    if(n>=q.length){genPlan();return;}
+    const cur=q[n];
+    step=n;
+    addMsg(cur.text);
+    if(cur.type==='opts') addOpts(cur.options, o=>{answers[n]=o.val;addMsg(o.title,true);setTimeout(()=>askQ(n+1),300);});
+    else addFree(cur.ph, v=>{answers[n]=v;addMsg(v,true);setTimeout(()=>askQ(n+1),300);}, cur.skip);
 }
 
-function showQuestion(idx) {
-    if (idx >= questions.length) {
-        generatePlan();
-        return;
+function genPlan(){
+    const dir=answers[0];
+    const courses=COURSES[dir]||[];
+    const startIdx = answers[1]==='zero'?0 : answers[1]==='some'?1:2;
+    const perWeek = answers[3]==='30'?1 : answers[3]==='60'?2:3;
+    plan=[]; let wk=1, buf=[];
+    for(let i=startIdx;i<courses.length;i++){
+        buf.push(courses[i]);
+        if(buf.length>=perWeek||i===courses.length-1){plan.push({week:wk,courses:[...buf]});buf=[];wk++;}
     }
-    step = idx;
-    const q = questions[idx];
-
-    let optionsHtml = '';
-    if (q.type === 'chat' || q.type === 'options') {
-        const optCount = q.options.length;
-        const gridClass = optCount >= 4 ? ' single' : (optCount === 3 ? ' single' : '');
-        optionsHtml = '<div class="options-grid' + gridClass + '">';
-        q.options.forEach(opt => {
-            optionsHtml += `
-                <div class="option-btn" onclick="selectOption(${idx}, '${opt.value}', this)">
-                    <i class="ph ${opt.icon}"></i>
-                    <div class="opt-title">${opt.title}</div>
-                    <div class="opt-desc">${opt.desc || ''}</div>
-                </div>`;
+    addMsg('计划生成！');
+    plan.forEach(w=>{
+        const d=document.createElement('div');d.className='msg';
+        let html=`<div class="avatar"><i class="ph-fill ph-clipboard-text"></i></div><div class="bubble">`;
+        html+=`<div class="pw">第${w.week}周</div>`;
+        w.courses.forEach(c=>{
+            html+=`<div class="plan-card"><div class="pt">${c.t}</div><div class="pm">${c.d}</div><a href="${c.url}" target="_blank" class="book-link">去学习 →</a></div>`;
         });
-        optionsHtml += '</div>';
-    } else if (q.type === 'free') {
-        optionsHtml = `
-            <div class="free-input">
-                <textarea rows="3" id="freeInput" placeholder="${q.placeholder || '输入你的回答...'}" oninput="var b=document.getElementById('freeSubmitBtn'); b.disabled=false;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();submitFreeInput(${idx});}"></textarea>
-            </div>
-            <div style="margin-top:12px">
-                <button class="btn-primary" id="freeSubmitBtn" onclick="submitFreeInput(${idx})">提交</button>
-            </div>`;
-    }
-
-    document.getElementById('qBubble').innerHTML = `<p>${q.text}</p><p style="color:#888;font-size:13px">${q.sub}</p>` + optionsHtml;
-    document.getElementById('inputBar').style.display = 'none';
-}
-
-function selectOption(idx, value, el) {
-    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-    el.classList.add('selected');
-
-    const q = questions[idx];
-    let label = '';
-    q.options.forEach(opt => {
-        if (opt.value === value) label = opt.title;
+        html+=`</div>`;
+        d.innerHTML=html;chat.appendChild(d);
     });
-    answers['q' + idx] = {value, label};
-
-    setTimeout(() => {
-        addUserMsg(label);
-        const replyText = q.reply ? q.reply({value, label}) : '';
-        if (replyText) {
-            document.getElementById('qBubble').innerHTML = '';
-            setTimeout(() => {
-                addTypingMsg();
-                setTimeout(() => {
-                    removeTypingMsg();
-                    const nextIdx = idx + 1;
-                    if (nextIdx < questions.length) {
-                        document.getElementById('qBubble').innerHTML = `<p>${replyText}</p>`;
-                        setTimeout(() => showQuestion(nextIdx), 600);
-                    } else {
-                        document.getElementById('qBubble').innerHTML = `<p>${replyText}</p>`;
-                        setTimeout(() => generatePlan(), 600);
-                    }
-                }, 800);
-            }, 300);
-        } else {
-            setTimeout(() => showQuestion(idx + 1), 500);
-        }
-    }, 300);
+    const actions=document.createElement('div');actions.className='msg';
+    actions.innerHTML=`<div class="avatar"><i class="ph-fill ph-check"></i></div><div class="bubble"><div class="plan-actions"><button class="btn" onclick="confirmPlan()">确认方案</button><button class="btn btn-out" onclick="location.reload()">重新规划</button></div></div>`;
+    chat.appendChild(actions);
+    chat.scrollTop=chat.scrollHeight;
 }
-
-function submitFreeInput(idx) {
-    const input = document.getElementById('freeInput');
-    const val = input.value.trim();
-    if (!val) {
-        // 允许跳过
-        answers['q' + idx] = {value: '', label: '跳过'};
-        addUserMsg('跳过');
-    } else {
-        answers['q' + idx] = {value: val, label: val};
-        addUserMsg(val);
-    }
-    setTimeout(() => showQuestion(idx + 1), 500);
+function confirmPlan(){
+    addMsg('方案已确认！付费5,000U（至尊）或500U（单门）后即可开始学习。');
+    addMsg('你学完了我建议的这门课了吗？',true);
 }
-
-function addUserMsg(text) {
-    const container = document.getElementById('chatContainer');
-    const div = document.createElement('div');
-    div.className = 'chat-msg msg-user';
-    div.innerHTML = `<div class="msg-user-bubble"><p>${text}</p></div>`;
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-function addAIMsg(html) {
-    const container = document.getElementById('chatContainer');
-    const div = document.createElement('div');
-    div.className = 'chat-msg msg-ai';
-    div.innerHTML = `
-        <div class="msg-ai-avatar"><i class="ph-fill ph-sparkle"></i></div>
-        <div class="msg-ai-bubble">${html}</div>`;
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-function addTypingMsg() {
-    const container = document.getElementById('chatContainer');
-    const div = document.createElement('div');
-    div.className = 'chat-msg msg-ai';
-    div.id = 'typingMsg';
-    div.innerHTML = `
-        <div class="msg-ai-avatar"><i class="ph-fill ph-sparkle"></i></div>
-        <div class="msg-ai-bubble">
-            <div class="typing"><span></span><span></span><span></span></div>
-        </div>`;
-    container.appendChild(div);
-    container.scrollTop = container.scrollHeight;
-}
-
-function removeTypingMsg() {
-    const el = document.getElementById('typingMsg');
-    if (el) el.remove();
-}
-
-function generatePlan() {
-    addTypingMsg();
-
-    setTimeout(() => {
-        removeTypingMsg();
-
-        const direction = answers.q0.value;
-        const basis = answers.q1.value;
-        const goal = answers.q2.value;
-        const time = answers.q3.value;
-        const detail = answers.q4 ? answers.q4.value : '';
-
-        const courses = COURSE_DB[direction] || [];
-        const dirName = DIRECTION_NAMES[direction];
-
-        // 根据基础决定从第几门课开始
-        let startIdx = 0;
-        if (basis === 'some') startIdx = 1;
-        if (basis === 'familiar') startIdx = 2;
-
-        // 根据时间决定每周安排几门课
-        const perWeek = time === '30' ? 1 : (time === '60' ? 2 : 3);
-
-        // 生成学习方案
-        currentPlan = [];
-        let week = 1;
-        let weekCourses = [];
-        for (let i = startIdx; i < courses.length; i++) {
-            weekCourses.push({...courses[i], week: week, dir: direction});
-            if (weekCourses.length >= perWeek) {
-                currentPlan.push({week: week, courses: [...weekCourses]});
-                weekCourses = [];
-                week++;
-            }
-        }
-        if (weekCourses.length > 0) {
-            currentPlan.push({week: week, courses: [...weekCourses]});
-        }
-
-        // 生成方案说明
-        let summary = `根据你的回答，我为你生成了专属学习方案：<br><br>`;
-        summary += `<b>方向：</b>${dirName}<br>`;
-        summary += `<b>基础：</b>${answers.q1.label}<br>`;
-        summary += `<b>目标：</b>${answers.q2.label}<br>`;
-        summary += `<b>节奏：</b>每天${time}分钟，每周${perWeek}门课<br>`;
-        if (detail) summary += `<b>你的需求：</b>${detail}<br>`;
-        summary += `<br>预计${currentPlan.length}周完成，共${courses.length - startIdx}门课程。`;
-
-        addAIMsg(`<p><span data-i18n="plan_done"></span></p>${summary}`);
-
-        // 显示方案
-        setTimeout(() => {
-            showPlan();
-        }, 800);
-    }, 1500);
-}
-
-function showPlan() {
-    const container = document.getElementById('chatContainer');
-
-    // 方案标题
-    addAIMsg(`<p><b><span data-i18n="plan_title"></span></b></p><p style="color:#888;font-size:13px;margin-top:4px"><span data-i18n="plan_edit"></span>：删除不需要的课程，或添加其他方向的课程</p>`);
-
-    // 方案卡片
-    setTimeout(() => {
-        const div = document.createElement('div');
-        div.className = 'chat-msg msg-ai';
-        div.id = 'planContainer';
-        let html = `
-            <div class="msg-ai-avatar"><i class="ph-fill ph-clipboard-text"></i></div>
-            <div class="msg-ai-bubble" style="max-width:90%">`;
-
-        currentPlan.forEach((weekData, wIdx) => {
-            html += `<div style="font-size:13px;color:#7dd3fc;font-weight:700;margin-top:${wIdx > 0 ? '12px' : '0'}">第${weekData.week}周</div>`;
-            weekData.courses.forEach((course, cIdx) => {
-                html += `
-                    <div class="plan-card" id="course-${wIdx}-${cIdx}">
-                        <div class="plan-card-header">
-                            <div>
-                                <div class="plan-course-title">${course.title}</div>
-                                <div class="plan-course-meta">${course.duration} · ${course.level} · ${DIRECTION_NAMES[course.dir]}</div>
-                            </div>
-                            <button class="plan-remove" onclick="removeCourse(${wIdx},${cIdx})"><i class="ph ph-x"></i></button>
-                        </div>
-                    </div>`;
-            });
-        });
-
-        // 添加课程区域
-        html += `
-            <div class="add-course-section">
-                <div style="font-size:13px;color:#888;margin-bottom:8px"><i class="ph ph-plus-circle"></i> 添加课程</div>
-                <select id="addDirection" onchange="updateAddCourseList()">
-                    <option value="">选择方向...</option>
-                    <option value="ai">AI应用</option>
-                    <option value="blockchain">区块链/Web3</option>
-                    <option value="ecommerce">跨境电商</option>
-                    <option value="marketing">数字营销</option>
-                    <option value="coding">编程入门</option>
-                </select>
-                <select id="addCourse" style="margin-top:8px;display:none" onchange="document.getElementById('addCourseBtn').disabled=!this.value">
-                    <option value="">选择课程...</option>
-                </select>
-                <button class="add-course-btn" id="addCourseBtn" disabled onclick="addCourseToPlan()">添加到方案</button>
-            </div>`;
-
-        // 确认按钮
-        html += `
-            <div class="plan-actions">
-                <button class="btn-secondary" onclick="restart()"><span data-i18n="replan"></span></button>
-                <button class="btn-primary" onclick="confirmPlan()"><span data-i18n="confirm_plan"></span></button>
-            </div>`;
-
-        html += `</div>`;
-        div.innerHTML = html;
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
-    }, 500);
-}
-
-function removeCourse(wIdx, cIdx) {
-    const el = document.getElementById(`course-${wIdx}-${cIdx}`);
-    if (el) el.remove();
-    // 从数据中也删除
-    if (currentPlan[wIdx] && currentPlan[wIdx].courses[cIdx]) {
-        currentPlan[wIdx].courses.splice(cIdx, 1);
-    }
-}
-
-function updateAddCourseList() {
-    const dir = document.getElementById('addDirection').value;
-    const courseSelect = document.getElementById('addCourse');
-    const addBtn = document.getElementById('addCourseBtn');
-
-    if (!dir) {
-        courseSelect.style.display = 'none';
-        addBtn.disabled = true;
-        return;
-    }
-
-    courseSelect.style.display = 'block';
-    courseSelect.innerHTML = '<option value="">选择课程...</option>';
-    COURSE_DB[dir].forEach(course => {
-        courseSelect.innerHTML += `<option value="${course.title}">${course.title} (${course.duration})</option>`;
-    });
-    addBtn.disabled = true;
-}
-
-function addCourseToPlan() {
-    const dir = document.getElementById('addDirection').value;
-    const courseTitle = document.getElementById('addCourse').value;
-    if (!dir || !courseTitle) return;
-
-    const course = COURSE_DB[dir].find(c => c.title === courseTitle);
-    if (!course) return;
-
-    // 添加到最后一周
-    let lastWeek = currentPlan.length;
-    if (lastWeek === 0 || currentPlan[lastWeek - 1].courses.length >= 3) {
-        currentPlan.push({week: lastWeek + 1, courses: []});
-    }
-    currentPlan[currentPlan.length - 1].courses.push({...course, dir: dir});
-
-    // 重新渲染方案
-    document.getElementById('planContainer').remove();
-    showPlan();
-}
-
-function confirmPlan() {
-    addAIMsg(`<p><span data-i18n="plan_confirmed"></span>你的学习方案已保存。</p>
-        <p>接下来：按方案顺序学习每门课程，全部学完参加考试，通过后获得链上证书。</p>
-        <p style="margin-top:12px;color:#8b89ff;font-weight:600"><span data-i18n="pay_to_start"></span>。</p>`);
-
-    // 显示付费按钮
-    setTimeout(() => {
-        const container = document.getElementById('chatContainer');
-        const div = document.createElement('div');
-        div.className = 'chat-msg msg-ai';
-        div.innerHTML = `
-            <div class="msg-ai-avatar"><i class="ph-fill ph-credit-card"></i></div>
-            <div class="msg-ai-bubble">
-                <p style="margin-bottom:12px">选择付费方式：</p>
-                <div style="display:flex;flex-direction:column;gap:8px">
-                    <button class="btn-primary" onclick="payNow('usdt')" style="text-align:left;padding:14px 16px">
-                        <i class="ph-fill ph-currency-btc"></i> USDT支付 (200U/门)
-                        <div style="font-size:12px;color:#ccc;font-weight:400;margin-top:2px">连接钱包，链上自动支付</div>
-                    </button>
-                    <button class="btn-secondary" onclick="payNow('cny')" style="text-align:left;padding:14px 16px">
-                        <i class="ph-fill ph-currency-cny"></i> 人民币支付 (¥1400/门)
-                        <div style="font-size:12px;color:#888;font-weight:400;margin-top:2px">微信/支付宝，人工开通</div>
-                    </button>
-                </div>
-                <p style="margin-top:12px;font-size:12px;color:#666">付费后将获得等值学院代币，学完课程后释放。</p>
-            </div>`;
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
-    }, 800);
-}
-
-function restart() {
-    step = 0;
-    answers = {};
-    currentPlan = [];
-    location.reload();
-}
-
-function payNow(method) {
-    if (method === 'usdt') {
-        addAIMsg(`<p>USDT支付通道</p>
-            <p style="margin-top:8px">请连接钱包后完成支付：</p>
-            <p style="margin-top:4px;color:#8b89ff">课程费用：200 USDT/门</p>
-            <p style="font-size:13px;color:#888;margin-top:4px">付费后自动获得等值ARK EDU代币</p>
-            <button class="btn-primary" style="margin-top:12px" onclick="alert('钱包连接功能将在下一步接入">连接钱包支付</button>
-            <p style="font-size:12px;color:#666;margin-top:8px">当前为演示版，钱包支付功能待接入</p>`);
-    } else {
-        addAIMsg(`<p>人民币支付通道</p>
-            <p style="margin-top:8px">请扫码或转账完成支付：</p>
-            <p style="margin-top:4px;color:#8b89ff">课程费用：¥1400/门</p>
-            <div style="background:#fff;border-radius:12px;padding:16px;margin-top:12px;text-align:center">
-                <div style="font-size:48px;color:#1aad19"><i class="ph-fill ph-wechat-logo"></i></div>
-                <p style="color:#333;font-size:14px;margin-top:8px">微信支付</p>
-                <p style="color:#999;font-size:12px">扫码支付¥1400</p>
-            </div>
-            <p style="font-size:12px;color:#666;margin-top:8px">支付后请联系客服开通课程，人工确认后即可开始学习</p>
-            <p style="font-size:12px;color:#666;margin-top:4px">当前为演示版，实际支付功能待接入</p>`);
-    }
-    setTimeout(() => {
-        const container = document.getElementById('chatContainer');
-        container.scrollTop = container.scrollHeight;
-    }, 100);
-}
-
-function handleInput(e) {
-    const btn = document.getElementById('sendBtn');
-    if (btn) btn.disabled = !e.target.value.trim();
-    // 自动调整高度
-    e.target.style.height = 'auto';
-    e.target.style.height = Math.min(e.target.scrollHeight, 100) + 'px';
-}
-
-// 启动
-window.addEventListener('load', () => {
-    setTimeout(() => start(), 500);
-});
+askQ(0);
 </script>
-
-<script src="nav.js"></script><script>createNav("learn")</script>
-<script src="translate.js"></script>
 </body>
 </html>
