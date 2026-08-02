@@ -6,431 +6,215 @@
     <title>王牌学院 · 课程库</title>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Noto Sans SC',sans-serif; background:#12122e; color:#fff; }
-        .header { background:#1a1a2e; padding:16px 20px; position:sticky; top:0; z-index:100; border-bottom:1px solid #333; }
-        .header-inner { max-width:900px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
-        .header-title { font-size:20px; font-weight:800; display:flex; align-items:center; gap:8px; }
-        .header-title i { color:#8b89ff; font-size:24px; }
-        .header-sub { font-size:12px; color:#999; }
-        .body { max-width:900px; margin:0 auto; padding:16px; padding-bottom:60px; }
-        .direction-tabs { display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:16px; }
-        .tab { padding:8px 16px; border-radius:20px; background:#1e1e36; color:#999; font-size:13px; white-space:nowrap; cursor:pointer; border:1px solid transparent; }
-        .tab.active { background:#4f46e5; color:#fff; border-color:#6366f1; }
-        .tab:hover { color:#fff; }
-        .course-card { background:#1e1e36; border-radius:12px; padding:16px; margin-bottom:12px; border:1px solid #2a2a4a; }
-        .course-card:hover { border-color:#4f46e5; }
-        .course-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
-        .course-title { font-size:15px; font-weight:700; color:#fff; }
-        .course-badge { padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; white-space:nowrap; margin-left:8px; }
+        :root { --bg:#080816; --card:rgba(20,20,40,0.7); --border:rgba(139,137,255,0.15); --accent:#8b89ff; --accent2:#7c3aed; --green:#4ade80; --text:#e0e0e0; --dim:#666; }
+        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+        .bg-img { position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; background:url('images/login-bg.png') center/cover; opacity:0.12; }
+        .bg-grad { position:fixed; top:0; left:0; right:0; bottom:0; z-index:1; background:linear-gradient(180deg,rgba(8,8,22,0.5),rgba(8,8,22,0.95)); }
+        .wrap { position:relative; z-index:10; max-width:500px; margin:0 auto; padding:15px; }
+
+        .top-bar { display:flex; align-items:center; justify-content:space-between; padding:10px 0 15px; }
+        .top-left { display:flex; align-items:center; gap:10px; }
+        .top-logo { width:36px; height:36px; border-radius:10px; }
+        .top-title { font-family:'Orbitron'; font-size:15px; font-weight:800; letter-spacing:1px; }
+        .lang-select { background:rgba(20,20,40,0.8); border:1px solid var(--border); color:#ccc; padding:6px 10px; border-radius:8px; font-size:12px; font-family:inherit; outline:none; cursor:pointer; }
+        .lang-select option { background:#1a1a2e; }
+
+        .stats { display:flex; gap:12px; margin-bottom:14px; }
+        .stat { flex:1; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center; }
+        .stat-num { font-family:'Orbitron'; font-size:20px; font-weight:800; color:var(--accent); }
+        .stat-label { font-size:11px; color:var(--dim); margin-top:2px; }
+
+        .method { background:rgba(139,137,255,0.08); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:14px; font-size:11px; color:var(--dim); line-height:1.6; }
+
+        .dir-tabs { display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:12px; }
+        .dir-tab { padding:7px 14px; border-radius:16px; background:rgba(20,20,40,0.6); color:var(--dim); font-size:12px; white-space:nowrap; cursor:pointer; border:1px solid transparent; }
+        .dir-tab.active { background:rgba(139,137,255,0.2); color:#fff; border-color:var(--accent); }
+
+        .course-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:10px; }
+        .course-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+        .course-title { font-size:14px; font-weight:700; }
+        .badge { padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; white-space:nowrap; }
         .badge-easy { background:#1a3a1a; color:#4ade80; }
         .badge-mid { background:#3a3a1a; color:#fbbf24; }
         .badge-hard { background:#3a1a1a; color:#f87171; }
-        .course-info { display:flex; gap:16px; font-size:12px; color:#888; margin-bottom:8px; }
-        .course-info span { display:flex; align-items:center; gap:4px; }
-        .course-desc { font-size:13px; color:#aaa; line-height:1.6; margin-bottom:10px; }
-        .course-link { display:inline-flex; align-items:center; gap:4px; color:#8b89ff; font-size:13px; text-decoration:none; padding:6px 12px; background:#1a1a3a; border-radius:8px; }
-        .course-link:hover { background:#2a2a5a; }
-        .direction-section { display:none; }
-        .direction-section.active { display:block; }
-        .stat-row { display:flex; gap:12px; margin-bottom:16px; }
-        .stat-box { flex:1; background:#1e1e36; border-radius:12px; padding:12px; text-align:center; }
-        .stat-num { font-size:22px; font-weight:800; color:#8b89ff; }
-        .stat-label { font-size:11px; color:#888; margin-top:4px; }
-        .learn-method { background:#1a2a3a; border-radius:8px; padding:10px; margin-bottom:16px; font-size:12px; color:#7dd3fc; line-height:1.6; }
+        .course-info { font-size:11px; color:var(--dim); margin-bottom:6px; display:flex; gap:10px; }
+        .course-desc { font-size:12px; color:#aaa; line-height:1.5; margin-bottom:8px; }
+        .course-link { display:inline-flex; align-items:center; gap:4px; color:var(--accent); font-size:12px; text-decoration:none; padding:5px 10px; background:rgba(139,137,255,0.1); border-radius:6px; }
+
+        .directions { display:none; }
+        .directions.active { display:block; }
+        .back-link { color:var(--accent); font-size:12px; text-decoration:none; display:flex; align-items:center; gap:4px; }
     </style>
 </head>
 <body>
+<div class="bg-img"></div>
+<div class="bg-grad"></div>
 
-<div class="header">
-    <div class="header-inner">
-        <div>
-            <div class="header-title"><i class="ph-fill ph-graduation-cap"></i> 王牌学院 · 课程库</div>
-            <div class="header-sub">5大方向 · 25门课程 · 免费优质资源聚合</div>
+<div class="wrap">
+    <div class="top-bar">
+        <div class="top-left">
+            <img src="images/ace-logo.png" class="top-logo">
+            <span class="top-title">ACE ACADEMY</span>
         </div>
-    </div>
-</div>
-
-<div class="body">
-
-    <div class="stat-row">
-        <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">课程方向</div></div>
-        <div class="stat-box"><div class="stat-num">25</div><div class="stat-label">门课程</div></div>
-        <div class="stat-box"><div class="stat-num">100+</div><div class="stat-label"><span data-i18n="hours_content"></span></div></div>
-        <div class="stat-box"><div class="stat-num">0U</div><div class="stat-label"><span data-i18n="course_cost"></span></div></div>
+        <select class="lang-select" onchange="setLang(this.value)">
+            <option value="zh">🇨🇳 中文</option><option value="en">🇺🇸 English</option>
+            <option value="ja">🇯🇵 日本語</option><option value="ko">🇰🇷 한국어</option><option value="es">🇪🇸 Español</option>
+        </select>
     </div>
 
-    <div class="learn-method">
-        <i class="ph ph-info"></i> 学习方式：观看视频60% + 实操练习25% + 写代码10% + 考试测评5%。课程来源为B站/Coursera等免费资源，平台做筛选+规划+追踪+认证。
+    <div class="stats">
+        <div class="stat"><div class="stat-num">5</div><div class="stat-label" data-i18n="stat_directions">方向</div></div>
+        <div class="stat"><div class="stat-num">25</div><div class="stat-label" data-i18n="stat_courses">课程</div></div>
+        <div class="stat"><div class="stat-num">0U</div><div class="stat-label">成本</div></div>
     </div>
 
-    <div class="direction-tabs">
-        <div class="tab active" onclick="switchDir('ai')">AI应用</div>
-        <div class="tab" onclick="switchDir('blockchain')">区块链/Web3</div>
-        <div class="tab" onclick="switchDir('ecommerce')">跨境电商</div>
-        <div class="tab" onclick="switchDir('marketing')">数字营销</div>
-        <div class="tab" onclick="switchDir('coding')">编程入门</div>
+    <div class="method">
+        <i class="ph ph-info"></i> 学习方式：视频60% + 实操25% + 代码10% + 考试5% · 来源B站等免费资源
     </div>
 
-    <!-- AI应用 -->
-    <div class="direction-section active" id="dir-ai">
+    <div class="dir-tabs">
+        <div class="dir-tab active" onclick="showDir('ai',this)">AI应用</div>
+        <div class="dir-tab" onclick="showDir('block',this)">区块链/Web3</div>
+        <div class="dir-tab" onclick="showDir('ecom',this)">跨境电商</div>
+        <div class="dir-tab" onclick="showDir('mkt',this)">数字营销</div>
+        <div class="dir-tab" onclick="showDir('code',this)">编程入门</div>
+    </div>
+
+    <div id="dir-ai" class="directions active">
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">1. AI人人通 — 什么是AI</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-video-camera"></i> 观看视频</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">从零开始理解AI：什么是人工智能、AI能做什么不能做什么、主流AI工具概览。学完对AI有全面认知。</div>
-            <a href="https://www.bilibili.com/video/BV1uNk1YxEJQ/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">1. AI人人通 — 什么是AI</div><span class="badge badge-easy">入门</span></div>
+            <div class="course-info"><span>3小时</span><span>视频</span><span>零基础</span></div>
+            <div class="course-desc">什么是AI、AI能做什么、主流工具概览</div>
+            <a href="https://www.bilibili.com/video/BV1uNk1YxEJQ/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">2. ChatGPT实战 — 提示词技巧</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 4小时</span>
-                <span><i class="ph ph-keyboard"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">掌握ChatGPT使用技巧：提示词工程（Prompt Engineering）、AI写作、AI对话优化。学完能熟练用AI处理日常工作。</div>
-            <a href="https://www.bilibili.com/video/BV1FvXLYSEQj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">2. ChatGPT实战 — 提示词</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>4小时</span><span>视频+实操</span><span>有基础</span></div>
+            <div class="course-desc">提示词工程、AI写作、对话优化</div>
+            <a href="https://www.bilibili.com/video/BV1FvXLYSEQj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">3. AI做图片 — Midjourney/SD</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-image"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">学习AI绘画：Midjourney和Stable Diffusion基础操作、提示词写法、风格控制、实用技巧。学完能用AI生成图片。</div>
-            <a href="https://www.bilibili.com/video/BV1RL4y1T7qK/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">3. AI做图片 — MJ/SD</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频+实操</span><span>有基础</span></div>
+            <div class="course-desc">Midjourney/SD基础操作、提示词、风格控制</div>
+            <a href="https://www.bilibili.com/video/BV1RL4y1T7qK/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">4. AI做视频 — 剪映AI/AI配音</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-film-strip"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">学习AI视频制作：剪映AI功能、AI配音、AI字幕、AI转场。学完能用AI快速制作短视频。</div>
-            <a href="https://www.bilibili.com/video/BV1KJYrz4Epm/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">4. AI做视频 — 剪映AI</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频+实操</span><span>有基础</span></div>
+            <div class="course-desc">剪映AI、AI配音、AI字幕、AI转场</div>
+            <a href="https://www.bilibili.com/video/BV1KJYrz4Epm/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">5. AI办公提效 — PPT/Excel/数据分析</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 4小时</span>
-                <span><i class="ph ph-monitor"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 职场人</span>
-            </div>
-            <div class="course-desc">用AI提升办公效率：AI做PPT、AI处理Excel、AI数据分析、AI写报告。学完工作效率翻倍。</div>
-            <a href="https://www.bilibili.com/video/BV1xwVr6FEh4/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">5. AI办公 — PPT/Excel</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>4小时</span><span>视频+实操</span><span>职场人</span></div>
+            <div class="course-desc">AI做PPT、处理Excel、数据分析</div>
+            <a href="https://www.bilibili.com/video/BV1xwVr6FEh4/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
     </div>
 
-    <!-- 区块链/Web3 -->
-    <div class="direction-section" id="dir-blockchain">
+    <div id="dir-block" class="directions">
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">1. 区块链入门 — 比特币原理</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-video-camera"></i> 观看视频</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">北京大学肖臻教授《区块链技术与应用》公开课。从比特币原理开始，深入浅出讲解区块链核心概念。</div>
-            <a href="https://www.bilibili.com/video/BV1RL4y1T7qK/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">1. 区块链入门 — 比特币</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频</span><span>零基础</span></div>
+            <div class="course-desc">北京大学肖臻教授公开课，比特币原理</div>
+            <a href="https://www.bilibili.com/video/BV1RL4y1T7qK/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">2. 钱包使用 — MetaMask安装与安全</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 2小时</span>
-                <span><i class="ph ph-keyboard"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">MetaMask钱包下载安装、创建账户、备份助记词、转账操作、安全防范。学完能安全使用加密钱包。</div>
-            <a href="https://www.bilibili.com/video/BV1RL4y1T7qK/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">2. 钱包使用 — MetaMask</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>2小时</span><span>视频+实操</span><span>零基础</span></div>
+            <div class="course-desc">安装、创建、备份、转账、安全</div>
+            <a href="https://www.bilibili.com/video/BV1RL4y1T7qK/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">3. DeFi基础 — 去中心化金融</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-video-camera"></i> 观看视频</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">去中心化金融概念、DEX交易原理、流动性池、PancakeSwap使用。学完理解DeFi运作方式。</div>
-            <a href="https://learnblockchain.cn/courses" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 登链社区</a>
+            <div class="course-head"><div class="course-title">3. DeFi基础</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频</span><span>有基础</span></div>
+            <div class="course-desc">去中心化金融、DEX、流动性池</div>
+            <a href="https://learnblockchain.cn/courses" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">4. 智能合约入门 — Solidity基础</div>
-                <span class="course-badge badge-hard"><span data-i18n="advanced"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 5小时</span>
-                <span><i class="ph ph-code"></i> 视频+写代码</span>
-                <span><i class="ph ph-users"></i> 有编程基础</span>
-            </div>
-            <div class="course-desc">Solidity语言基础、智能合约编写、部署到链上。配合CryptoZombies互动教程，学完能写简单合约。</div>
-            <a href="https://learnblockchain.cn/article/4376" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 登链社区</a>
+            <div class="course-head"><div class="course-title">4. 智能合约 — Solidity</div><span class="badge badge-hard">高级</span></div>
+            <div class="course-info"><span>5小时</span><span>视频+代码</span><span>有编程基础</span></div>
+            <div class="course-desc">Solidity基础、智能合约编写、部署</div>
+            <a href="https://learnblockchain.cn/article/4376" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">5. NFT与数字资产</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-video-camera"></i> 观看视频</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">NFT概念、铸造流程、交易市场、应用场景。学完理解NFT价值并能参与NFT生态。</div>
-            <a href="https://learnblockchain.cn/courses" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 登链社区</a>
+            <div class="course-head"><div class="course-title">5. NFT与数字资产</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频</span><span>有基础</span></div>
+            <div class="course-desc">NFT铸造、交易市场、应用场景</div>
+            <a href="https://learnblockchain.cn/courses" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a>
         </div>
     </div>
 
-    <!-- 跨境电商 -->
-    <div class="direction-section" id="dir-ecommerce">
+    <div id="dir-ecom" class="directions">
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">1. 跨境电商入门 — 平台选择</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-video-camera"></i> 观看视频</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">跨境电商平台对比（亚马逊/Shopee/TikTok）、市场分析、入驻条件。学完能选择适合自己的平台。</div>
-            <a href="https://www.bilibili.com/video/BV1RYqHYnEw8/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">1. 跨境电商入门</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频</span><span>零基础</span></div>
+            <div class="course-desc">平台对比、市场分析、入驻条件</div>
+            <a href="https://www.bilibili.com/video/BV1RYqHYnEw8/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">2. 选品策略 — 数据选品</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-chart-line"></i> 视频+案例</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">数据化选品方法、竞品分析工具、利润计算、爆款挖掘。学完能科学选品不踩坑。</div>
-            <a href="https://www.bilibili.com/video/BV1qG4y1s7G3/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">2. 选品策略</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频+案例</span><span>有基础</span></div>
+            <div class="course-desc">数据选品、竞品分析、利润计算</div>
+            <a href="https://www.bilibili.com/video/BV1qG4y1s7G3/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">3. 店铺运营 — 上架/SEO/广告</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 4小时</span>
-                <span><i class="ph ph-storefront"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">产品上架优化、SEO关键词、广告投放策略、评价管理。学完能独立运营店铺。</div>
-            <a href="https://www.bilibili.com/video/BV1jM4y1w7Fj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">3. 店铺运营</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>4小时</span><span>视频+实操</span><span>有基础</span></div>
+            <div class="course-desc">上架、SEO、广告投放</div>
+            <a href="https://www.bilibili.com/video/BV1jM4y1w7Fj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">4. 物流与支付 — 发货/收款/退货</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 2小时</span>
-                <span><i class="ph ph-package"></i> 观看视频</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">跨境物流方式选择、收款渠道对比、退货处理流程。学完解决发货收款难题。</div>
-            <a href="https://www.bilibili.com/video/BV1RYqHYnEw8/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">4. 物流与支付</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>2小时</span><span>视频</span><span>零基础</span></div>
+            <div class="course-desc">物流、收款、退货处理</div>
+            <a href="https://www.bilibili.com/video/BV1RYqHYnEw8/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">5. TikTok带货 — 短视频+直播</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 4小时</span>
-                <span><i class="ph ph-tiktok-logo"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">TikTok电商运营、短视频带货技巧、直播卖货流程。学完能用TikTok开拓跨境销售渠道。</div>
-            <a href="https://www.bilibili.com/video/BV1jM4y1w7Fj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
+            <div class="course-head"><div class="course-title">5. TikTok带货</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>4小时</span><span>视频+实操</span><span>有基础</span></div>
+            <div class="course-desc">短视频+直播卖货</div>
+            <a href="https://www.bilibili.com/video/BV1jM4y1w7Fj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a>
         </div>
     </div>
 
-    <!-- 数字营销 -->
-    <div class="direction-section" id="dir-marketing">
+    <div id="dir-mkt" class="directions">
         <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">1. 营销思维 — 用户画像与市场分析</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-video-camera"></i> 观看视频</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">营销核心思维、用户画像构建、市场分析方法、竞品研究。学完建立系统营销认知。</div>
-            <a href="https://www.coursera.org/courses?query=digital+marketing" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> Coursera</a>
+            <div class="course-head"><div class="course-title">1. 营销思维</div><span class="badge badge-mid">进阶</span></div>
+            <div class="course-info"><span>3小时</span><span>视频</span><span>零基础</span></div>
+            <div class="course-desc">用户画像、市场分析、竞品研究</div>
+            <a href="https://www.coursera.org/courses?query=digital+marketing" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a>
         </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">2. 社交媒体营销 — 抖音/小红书/视频号</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 4小时</span>
-                <span><i class="ph ph-share-network"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">抖音/小红书/视频号运营策略、内容规划、涨粉技巧、变现路径。学完能运营社交媒体账号。</div>
-            <a href="https://www.bilibili.com/video/BV1uNk1YxEJQ/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
-        </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">3. 内容创作 — 文案写作与短视频策划</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-pen"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">爆款文案写作技巧、短视频脚本策划、内容选题方法。学完能独立创作优质内容。</div>
-            <a href="https://www.bilibili.com/video/BV1FvXLYSEQj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
-        </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">4. 私域流量 — 微信社群与企业微信</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-chat-circle"></i> 视频+案例</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">私域流量搭建、社群运营、企业微信使用、用户分层管理。学完能搭建自己的私域体系。</div>
-            <a href="https://www.bilibili.com/video/BV1qG4y1s7G3/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
-        </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">5. 数据分析 — 看懂数据优化策略</div>
-                <span class="course-badge badge-hard"><span data-i18n="advanced"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 4小时</span>
-                <span><i class="ph ph-chart-bar"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">营销数据分析方法、关键指标解读、AB测试、优化决策。学完能用数据驱动营销。</div>
-            <a href="https://www.coursera.org/courses?query=data+analytics" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> Coursera</a>
-        </div>
+        <div class="course-card"><div class="course-head"><div class="course-title">2. 社交媒体运营</div><span class="badge badge-mid">进阶</span></div><div class="course-info"><span>4小时</span></div><div class="course-desc">抖音/小红书/视频号运营</div><a href="https://www.bilibili.com/video/BV1uNk1YxEJQ/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a></div>
+        <div class="course-card"><div class="course-head"><div class="course-title">3. 内容创作</div><span class="badge badge-mid">进阶</span></div><div class="course-info"><span>3小时</span></div><div class="course-desc">文案写作、短视频脚本</div><a href="https://www.bilibili.com/video/BV1FvXLYSEQj/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a></div>
+        <div class="course-card"><div class="course-head"><div class="course-title">4. 私域流量</div><span class="badge badge-mid">进阶</span></div><div class="course-info"><span>3小时</span></div><div class="course-desc">社群运营、企业微信</div><a href="https://www.bilibili.com/video/BV1qG4y1s7G3/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a></div>
+        <div class="course-card"><div class="course-head"><div class="course-title">5. 数据分析</div><span class="badge badge-hard">高级</span></div><div class="course-info"><span>4小时</span></div><div class="course-desc">营销数据、关键指标、AB测试</div><a href="https://www.coursera.org/courses?query=data+analytics" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a></div>
     </div>
 
-    <!-- 编程入门 -->
-    <div class="direction-section" id="dir-coding">
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">1. 编程思维 — 什么是编程</div>
-                <span class="course-badge badge-easy"><span data-i18n="beginner"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-brain"></i> 视频+互动</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">编程基本概念、逻辑思维训练、算法入门。用通俗语言讲解，学完理解编程核心思想。</div>
-            <a href="https://www.khanacademy.org/computing" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 可汗学院</a>
-        </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">2. Python基础 — 语法/变量/循环/函数</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 5小时</span>
-                <span><i class="ph ph-code"></i> 视频+写代码</span>
-                <span><i class="ph ph-users"></i> 零基础</span>
-            </div>
-            <div class="course-desc">Python语法基础、变量类型、条件循环、函数定义。动画教学方式，学完能写简单Python程序。</div>
-            <a href="https://www.bilibili.com/video/BV1Jgf6YvE8e/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
-        </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">3. 网页制作 — HTML/CSS/JS</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 5小时</span>
-                <span><i class="ph ph-monitor"></i> 视频+写代码</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">HTML页面结构、CSS样式设计、JavaScript交互。学完能制作简单网页。</div>
-            <a href="https://www.freecodecamp.org/chinese/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> freeCodeCamp</a>
-        </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">4. AI辅助编程 — 用AI工具写代码</div>
-                <span class="course-badge badge-mid"><span data-i18n="intermediate"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 3小时</span>
-                <span><i class="ph ph-robot"></i> 视频+实操</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">用ChatGPT/Cursor等AI工具辅助编程、代码生成、调试技巧。学完能用AI加速编程。</div>
-            <a href="https://www.bilibili.com/video/BV1xwVr6FEh4/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> B站观看</a>
-        </div>
-        <div class="course-card">
-            <div class="course-header">
-                <div class="course-title">5. 小项目实战 — 做一个完整项目</div>
-                <span class="course-badge badge-hard"><span data-i18n="advanced"></span></span>
-            </div>
-            <div class="course-info">
-                <span><i class="ph ph-clock"></i> 6小时</span>
-                <span><i class="ph ph-hammer"></i> 动手做</span>
-                <span><i class="ph ph-users"></i> 有基础</span>
-            </div>
-            <div class="course-desc">综合运用所学知识，完成一个完整小项目（如待办清单/简单网站）。学完有实际作品。</div>
-            <a href="https://www.freecodecamp.org/chinese/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> freeCodeCamp</a>
-        </div>
+    <div id="dir-code" class="directions">
+        <div class="course-card"><div class="course-head"><div class="course-title">1. 编程思维</div><span class="badge badge-easy">入门</span></div><div class="course-info"><span>3小时</span></div><div class="course-desc">编程概念、逻辑训练</div><a href="https://www.khanacademy.org/computing" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a></div>
+        <div class="course-card"><div class="course-head"><div class="course-title">2. Python基础</div><span class="badge badge-mid">进阶</span></div><div class="course-info"><span>5小时</span><span>视频+代码</span></div><div class="course-desc">语法、变量、循环、函数</div><a href="https://www.bilibili.com/video/BV1Jgf6YvE8e/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a></div>
+        <div class="course-card"><div class="course-head"><div class="course-title">3. 网页制作</div><span class="badge badge-mid">进阶</span></div><div class="course-info"><span>5小时</span><span>视频+代码</span></div><div class="course-desc">HTML/CSS/JS</div><a href="https://www.freecodecamp.org/chinese/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a></div>
+        <div class="course-card"><div class="course-head"><div class="course-title">4. AI辅助编程</div><span class="badge badge-mid">进阶</span></div><div class="course-info"><span>3小时</span></div><div class="course-desc">ChatGPT/Cursor写代码</div><a href="https://www.bilibili.com/video/BV1xwVr6FEh4/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 观看</a></div>
+        <div class="course-card"><div class="course-head"><div class="course-title">5. 项目实战</div><span class="badge badge-hard">高级</span></div><div class="course-info"><span>6小时</span></div><div class="course-desc">完成一个完整项目</div><a href="https://www.freecodecamp.org/chinese/" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> 学习</a></div>
     </div>
 
 </div>
 
+<script src="i18n.js"></script>
 <script>
-function switchDir(dir) {
-    document.querySelectorAll('.direction-section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('dir-' + dir).classList.add('active');
-    event.currentTarget.classList.add('active');
+// 语言下拉当前值
+(function(){ const l=getLang(); document.querySelector('.lang-select').value=l; })();
+function showDir(id, el){
+    document.querySelectorAll('.directions').forEach(d=>d.classList.remove('active'));
+    document.getElementById('dir-'+id).classList.add('active');
+    document.querySelectorAll('.dir-tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
 }
 </script>
-
-<script src="nav.js"></script><script>createNav("course")</script>
-<script src="translate.js"></script>
 </body>
 </html>
