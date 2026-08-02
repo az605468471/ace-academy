@@ -202,7 +202,16 @@ function applyI18n() {
 // 页面加载后自动应用
 document.addEventListener('DOMContentLoaded', function() {
     applyI18n();
+    syncLangSelects();
 });
 window.addEventListener('load', function() {
-    setTimeout(applyI18n, 50);
+    setTimeout(function(){applyI18n();syncLangSelects();}, 50);
 });
+
+// 同步所有语言下拉框显示当前语言
+function syncLangSelects() {
+    const lang = getLang();
+    document.querySelectorAll('.lang-select, select.lang').forEach(sel => {
+        sel.value = lang;
+    });
+}
