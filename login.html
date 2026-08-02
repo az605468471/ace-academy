@@ -3,496 +3,350 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>王牌学院</title>
+    <title>王牌学院 · 登录</title>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        :root {
-            --bg: #0a0a1a;
-            --card: rgba(20,20,40,0.85);
-            --border: rgba(139,137,255,0.2);
-            --accent: #8b89ff;
-            --accent2: #7c3aed;
-            --green: #4ade80;
-            --red: #f87171;
-            --text: #e0e0e0;
-            --dim: #666;
-        }
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        .bg-layer {
-            position: fixed; top:0; left:0; right:0; bottom:0; z-index:0;
-            background: url('images/login-bg.png') center/cover no-repeat;
-            opacity: 0.35;
-        }
-        .bg-overlay {
-            position: fixed; top:0; left:0; right:0; bottom:0; z-index:1;
-            background: linear-gradient(135deg, rgba(10,10,26,0.7), rgba(10,10,26,0.92));
-        }
-        .particle {
-            position: fixed; border-radius:50%; pointer-events:none; z-index:2;
-            animation: float 20s infinite ease-in-out;
-        }
-        @keyframes float { 0%,100%{transform:translate(0,0);opacity:0.3;} 50%{transform:translate(30px,-50px);opacity:0.6;} }
-        .container { position:relative; z-index:10; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-        .card {
-            background: var(--card); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-            border:1px solid var(--border); border-radius:24px; padding:40px 32px; max-width:420px; width:100%;
-            box-shadow: 0 0 60px rgba(139,137,255,0.15);
-            animation: cardIn 0.8s ease-out;
-        }
-        @keyframes cardIn { from{opacity:0;transform:translateY(30px) scale(0.95);} to{opacity:1;transform:translateY(0) scale(1);} }
-        .logo-area { text-align:center; margin-bottom:28px; }
-        .logo-icon {
-            width:64px; height:64px; margin:0 auto 12px; border-radius:16px;
-            background:linear-gradient(135deg,var(--accent),var(--accent2));
-            display:flex; align-items:center; justify-content:center;
-            box-shadow:0 0 30px rgba(139,137,255,0.4);
-        }
-        .logo-icon span { font-family:'Orbitron',sans-serif; font-size:24px; font-weight:900; color:#fff; }
-        .logo-title { font-family:'Orbitron',sans-serif; font-size:22px; font-weight:700; color:#fff; letter-spacing:2px; }
-        .logo-sub { font-size:12px; color:var(--dim); margin-top:4px; letter-spacing:1px; }
+        :root { --bg:#080816; --card:rgba(20,20,40,0.8); --border:rgba(139,137,255,0.15); --accent:#8b89ff; --accent2:#7c3aed; --green:#4ade80; --red:#f87171; --text:#e0e0e0; --dim:#666; }
+        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+        .bg-img { position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; background:url('images/login-bg.png') center/cover; opacity:0.18; }
+        .bg-grad { position:fixed; top:0; left:0; right:0; bottom:0; z-index:1; background:linear-gradient(180deg,rgba(8,8,22,0.5),rgba(8,8,22,0.95)); }
+        .wrap { position:relative; z-index:10; min-height:100vh; max-width:500px; margin:0 auto; display:flex; flex-direction:column; padding:20px; }
 
-        /* Tab切换 */
-        .tabs { display:flex; background:rgba(10,10,26,0.6); border-radius:12px; padding:4px; margin-bottom:24px; }
+        /* 顶部栏 */
+        .top-bar { display:flex; align-items:center; justify-content:space-between; padding:10px 0 20px; }
+        .top-left { display:flex; align-items:center; gap:10px; }
+        .top-logo { width:40px; height:40px; border-radius:10px; }
+        .back-link { color:var(--accent); font-size:13px; text-decoration:none; display:flex; align-items:center; gap:4px; }
+
+        /* 卡片 */
+        .card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:28px 24px; backdrop-filter:blur(14px); }
+
+        /* Tab */
+        .tabs { display:flex; background:rgba(10,10,26,0.6); border-radius:12px; padding:4px; margin-bottom:20px; }
         .tab { flex:1; text-align:center; padding:10px; font-size:14px; font-weight:600; color:var(--dim); cursor:pointer; border-radius:10px; transition:all 0.3s; }
         .tab.active { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; }
 
         /* 步骤 */
-        .steps { display:flex; justify-content:center; gap:8px; margin-bottom:24px; }
-        .step-dot { width:32px; height:4px; border-radius:2px; background:#333; transition:all 0.3s; }
-        .step-dot.active { background:var(--accent); box-shadow:0 0 8px var(--accent); }
-        .step-dot.done { background:var(--green); }
-        .step-label { font-size:12px; color:var(--dim); text-align:center; margin-bottom:16px; }
+        .steps { display:flex; justify-content:center; gap:6px; margin-bottom:16px; }
+        .step { width:24px; height:4px; border-radius:2px; background:#333; }
+        .step.active { background:var(--accent); }
+        .step.done { background:var(--green); }
+        .step-label { text-align:center; font-size:13px; color:var(--accent); margin-bottom:16px; font-weight:500; }
 
-        /* 输入框 */
-        .input-group { margin-bottom:16px; }
-        .input-label { font-size:12px; color:var(--dim); margin-bottom:6px; display:flex; align-items:center; gap:4px; }
-        .input-box {
-            width:100%; background:rgba(10,10,26,0.6); border:1px solid var(--border); border-radius:10px;
-            padding:12px 14px; color:#fff; font-size:13px; font-family:monospace; outline:none; transition:border 0.2s;
-        }
+        /* 表单 */
+        .input-group { margin-bottom:14px; }
+        .input-label { font-size:12px; color:var(--dim); margin-bottom:6px; }
+        .input-box { width:100%; background:rgba(10,10,26,0.6); border:1px solid var(--border); border-radius:10px; padding:14px; color:#fff; font-size:14px; font-family:monospace; outline:none; }
         .input-box:focus { border-color:var(--accent); }
-        .input-box::placeholder { color:#444; }
+        .hint { font-size:12px; color:var(--dim); line-height:1.5; margin-bottom:14px; }
 
         /* 滑动验证 */
-        .puzzle-track {
-            height:44px; background:rgba(30,30,54,0.8); border-radius:22px; position:relative; overflow:hidden;
-            border:1px solid rgba(139,137,255,0.1);
-        }
-        .puzzle-fill { position:absolute; top:0; left:0; bottom:0; width:0%; background:linear-gradient(90deg,rgba(139,137,255,0.3),rgba(124,58,237,0.3)); border-radius:22px; transition:width 0.1s; }
-        .puzzle-slider {
-            position:absolute; top:2px; left:2px; width:40px; height:40px;
-            background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:50%;
-            cursor:grab; display:flex; align-items:center; justify-content:center;
-            box-shadow:0 2px 12px rgba(139,137,255,0.4); z-index:2; user-select:none;
-        }
-        .puzzle-slider:active { cursor:grabbing; }
-        .puzzle-slider i { color:#fff; font-size:18px; }
-        .puzzle-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:13px; color:var(--dim); pointer-events:none; white-space:nowrap; }
+        .puzzle-track { height:44px; background:rgba(30,30,54,0.8); border-radius:22px; position:relative; overflow:hidden; border:1px solid var(--border); }
+        .puzzle-fill { position:absolute; top:0; left:0; bottom:0; width:0%; background:rgba(139,137,255,0.3); border-radius:22px; }
+        .puzzle-slider { position:absolute; top:2px; left:2px; width:40px; height:40px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:50%; cursor:grab; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 12px rgba(139,137,255,0.4); z-index:2; user-select:none; }
+        .puzzle-slider i { color:#fff; font-size:16px; }
+        .puzzle-text { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:13px; color:var(--dim); white-space:nowrap; }
         .puzzle-text.hidden { display:none; }
         .puzzle-success { display:none; text-align:center; color:var(--green); font-size:14px; font-weight:600; padding:8px; }
         .puzzle-success.show { display:block; }
         .puzzle-track.success { border-color:var(--green); }
-        .puzzle-track.success .puzzle-fill { background:rgba(74,222,128,0.2); }
         .puzzle-track.success .puzzle-slider { background:linear-gradient(135deg,var(--green),#22c55e); }
 
         /* 按钮 */
-        .btn-primary {
-            width:100%; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff;
-            border:none; padding:16px; border-radius:14px; font-size:15px; font-weight:600;
-            cursor:pointer; font-family:inherit; display:flex; align-items:center; justify-content:center; gap:10px;
-            transition:all 0.3s; box-shadow:0 4px 20px rgba(139,137,255,0.3);
-        }
-        .btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 30px rgba(139,137,255,0.5); }
-        .btn-primary:disabled { background:#333; color:#555; cursor:not-allowed; box-shadow:none; }
-        .btn-primary i { font-size:20px; }
+        .btn-primary { width:100%; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:15px; border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; margin-top:14px; }
+        .btn-primary:disabled { background:#333; color:#555; cursor:not-allowed; }
+        .btn-cancel { width:100%; background:transparent; color:var(--dim); border:none; padding:12px; font-size:13px; cursor:pointer; font-family:inherit; }
 
-        /* 授权弹窗 */
-        .overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); z-index:100; display:none; align-items:center; justify-content:center; padding:20px; }
-        .overlay.show { display:flex; }
-        .modal { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:32px 28px; max-width:380px; width:100%; text-align:center; }
-        .modal-icon { width:56px; height:56px; margin:0 auto 16px; border-radius:16px; background:rgba(139,137,255,0.15); display:flex; align-items:center; justify-content:center; }
-        .modal-icon i { font-size:28px; color:var(--accent); }
-        .modal-icon.loading i { animation:spin 1s linear infinite; }
-        @keyframes spin { to{transform:rotate(360deg);} }
-        .modal-icon.success { background:rgba(74,222,128,0.15); }
-        .modal-icon.success i { color:var(--green); }
-        .modal-icon.fail { background:rgba(248,113,113,0.15); }
-        .modal-icon.fail i { color:var(--red); }
-        .modal-title { font-size:16px; font-weight:700; margin-bottom:8px; }
-        .modal-desc { font-size:13px; color:var(--dim); line-height:1.6; margin-bottom:20px; }
-        .modal-status { font-size:13px; color:var(--accent); margin-bottom:16px; min-height:20px; }
-        .modal-btn { width:100%; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:14px; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
-        .modal-btn:hover { opacity:0.9; }
-        .modal-btn.cancel { background:transparent; color:var(--dim); margin-top:8px; }
-        .wallet-list { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
-        .wallet-option { background:rgba(10,10,26,0.6); border:1px solid var(--border); border-radius:12px; padding:14px 16px; cursor:pointer; display:flex; align-items:center; gap:12px; transition:all 0.2s; }
-        .wallet-option:hover { border-color:var(--accent); background:rgba(30,30,54,0.8); }
-        .wallet-option i { font-size:24px; }
-        .wallet-option .w-name { font-size:14px; font-weight:600; }
-        .wallet-option .w-desc { font-size:12px; color:var(--dim); }
-
-        /* 成功 */
-        .success-check { width:80px; height:80px; margin:0 auto 20px; border-radius:50%; background:rgba(74,222,128,0.15); display:flex; align-items:center; justify-content:center; animation:popIn 0.5s 0.2s both; }
-        @keyframes popIn { from{transform:scale(0);} to{transform:scale(1);} }
-        .success-check i { font-size:40px; color:var(--green); }
-
-        /* 价格条 */
-        .price-bar { position:fixed; top:16px; right:16px; background:rgba(20,20,40,0.8); backdrop-filter:blur(10px); border:1px solid var(--border); border-radius:12px; padding:8px 14px; display:flex; align-items:center; gap:8px; z-index:20; font-size:12px; }
-        .price-bar .price-value { color:var(--green); font-weight:700; font-family:'Orbitron',monospace; }
-
-        /* 表单区域 */
-        .form-section { display:none; }
-        .form-section.active { display:block; animation:fadeIn 0.4s; }
-        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-
-        .footer-info { text-align:center; margin-top:20px; font-size:11px; color:var(--dim); line-height:1.6; }
-        .footer-info a { color:var(--accent); text-decoration:none; }
-
-        /* 绑定确认 */
-        .bind-confirm { background:rgba(139,137,255,0.1); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:16px; }
+        /* 需求区 */
+        .phase { display:none; }
+        .phase.active { display:block; }
+        .bind-box { background:rgba(139,137,255,0.1); border:1px solid var(--border); border-radius:10px; padding:14px; margin-bottom:14px; }
         .bind-row { display:flex; justify-content:space-between; font-size:13px; padding:4px 0; }
         .bind-row span:first-child { color:var(--dim); }
-        .bind-row span:last-child { color:#fff; font-family:monospace; }
+        .bind-row span:last-child { color:#fff; font-family:monospace; font-weight:600; }
+
+        /* 弹窗 */
+        .overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); z-index:999; display:none; align-items:center; justify-content:center; padding:20px; }
+        .overlay.show { display:flex; }
+        .modal { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:28px; max-width:380px; width:100%; text-align:center; }
+        .modal-icon { font-size:44px; color:var(--accent); margin-bottom:12px; }
+        .modal-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+        .modal-desc { font-size:13px; color:var(--dim); line-height:1.6; margin-bottom:12px; }
+        .modal-btn { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:12px 24px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; margin:4px; }
+        .modal-btn.cancel { background:transparent; color:var(--dim); }
+        .modal-list { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+        .wallet-opt { background:rgba(10,10,26,0.6); border:1px solid var(--border); border-radius:10px; padding:12px 14px; cursor:pointer; display:flex; align-items:center; gap:10px; }
+        .wallet-opt:hover { border-color:var(--accent); }
+        .wallet-opt i { font-size:22px; }
+        .success-check { width:72px; height:72px; margin:0 auto 16px; border-radius:50%; background:rgba(74,222,128,0.15); display:flex; align-items:center; justify-content:center; }
+        .success-check i { font-size:36px; color:var(--green); }
+
+        /* 底部 */
+        .footer-info { text-align:center; margin-top:16px; font-size:11px; color:var(--dim); line-height:1.6; }
     </style>
 </head>
 <body>
+<div class="bg-img"></div>
+<div class="bg-grad"></div>
 
-<div class="bg-layer"></div>
-<div class="bg-overlay"></div>
+<div class="wrap">
 
-<div class="particle" style="width:4px;height:4px;background:#8b89ff;top:20%;left:10%;animation-delay:0s;"></div>
-<div class="particle" style="width:3px;height:3px;background:#7c3aed;top:60%;left:80%;animation-delay:3s;"></div>
-<div class="particle" style="width:5px;height:5px;background:#8b89ff;top:40%;left:90%;animation-delay:6s;"></div>
-<div class="particle" style="width:3px;height:3px;background:#4ade80;top:80%;left:20%;animation-delay:9s;"></div>
-
-<div class="price-bar">
-    <i class="ph-fill ph-chart-line-up" style="color:#4ade80;font-size:14px"></i>
-    <span style="color:var(--dim)">ACE</span>
-    <span class="price-value">0.0125U</span>
-    <span style="color:var(--green)">+2.3%</span>
-</div>
-
-<div class="container">
-<div class="card">
-
-    <div class="logo-area">
-        <div class="logo-icon"><img src="images/ace-logo.png" style="width:48px;height:48px;border-radius:12px" alt="ACE"></div>
-        <div class="logo-title">ACE ACADEMY</div>
-        <div class="logo-sub"><span data-i18n="hero_title"></span></div>
+    <!-- 顶部栏 -->
+    <div class="top-bar">
+        <div class="top-left">
+            <img src="images/ace-logo.png" class="top-logo">
+            <span style="font-family:'Orbitron';font-size:16px;font-weight:800;letter-spacing:1px">ACE ACADEMY</span>
+        </div>
+        <a href="index.html" class="back-link"><i class="ph ph-arrow-left"></i> <span data-i18n="back">返回</span></a>
     </div>
 
     <!-- Tab切换 -->
-    <div class="tabs">
-        <div class="tab active" id="tabRegister" onclick="switchTab('register')">注册</div>
-        <div class="tab" id="tabLogin" onclick="switchTab('login')">登录</div>
-    </div>
-
-    <!-- ============ 注册流程 ============ -->
-    <div class="form-section active" id="registerSection">
-
-        <div class="steps">
-            <div class="step-dot active" id="regStep1"></div>
-            <div class="step-dot" id="regStep2"></div>
-            <div class="step-dot" id="regStep3"></div>
-            <div class="step-dot" id="regStep4"></div>
-        </div>
-        <div class="step-label" id="regStepLabel"><span data-i18n="step1_ref"></span></div>
-
-        <!-- 步骤1：<span data-i18n="referrer"></span> -->
-        <div id="regPhase1">
-            <div class="input-group">
-                <div class="input-label"><i class="ph ph-user-circle"></i> <span data-i18n="referrer"></span><span data-i18n="wallet_addr"></span></div>
-                <input type="text" class="input-box" id="refInput" placeholder="输入推荐人地址 0x..." oninput="checkRefInput()">
-            </div>
-            <div style="font-size:12px;color:var(--dim);margin-bottom:16px;line-height:1.5">
-                <i class="ph ph-info"></i> 必须通过<span data-i18n="referrer"></span>邀请注册<br>
-                如果有推荐链接，打开链接会自动填入
-            </div>
-            <button class="btn-primary" id="refNextBtn" disabled onclick="goRegStep2()">
-                <i class="ph-fill ph-arrow-right"></i> 下一步
-            </button>
+    <div class="card">
+        <div class="tabs">
+            <div class="tab active" id="tabRegister" onclick="switchTab('register')" data-i18n="register">注册</div>
+            <div class="tab" id="tabLogin" onclick="switchTab('login')" data-i18n="login">登录</div>
         </div>
 
-        <!-- 步骤2：防机器人验证 -->
-        <div id="regPhase2" style="display:none">
-            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-shield-check"></i> <span data-i18n="step2_verify"></span></div>
-            <div class="puzzle-track" id="regPuzzleTrack">
-                <div class="puzzle-fill" id="regPuzzleFill"></div>
-                <div class="puzzle-text" id="regPuzzleText"><span data-i18n="slide_verify"></span></div>
-                <div class="puzzle-slider" id="regPuzzleSlider"><i class="ph-fill ph-arrow-right"></i></div>
+        <!-- 注册流程 -->
+        <div id="registerSection">
+            <div class="steps">
+                <div class="step active" id="reg-s1"></div><div class="step" id="reg-s2"></div><div class="step" id="reg-s3"></div><div class="step" id="reg-s4"></div>
             </div>
-            <div class="puzzle-success" id="regPuzzleSuccess"><i class="ph-fill ph-check-circle"></i> <span data-i18n="verify_passed"></span></div>
-            <button class="btn-primary" id="regVerifyBtn" disabled onclick="goRegStep3()" style="margin-top:16px">
-                <i class="ph-fill ph-arrow-right"></i> 下一步
-            </button>
+            <div class="step-label" id="regStepLabel" data-i18n="step1">输入推荐人地址</div>
+
+            <!-- 步骤1:推荐人 -->
+            <div class="phase active" id="regPhase1">
+                <div class="input-group">
+                    <div class="input-label" data-i18n="ref_address">推荐人钱包地址</div>
+                    <input type="text" class="input-box" id="refInput" data-i18n-ph="ref_placeholder" placeholder="输入推荐人地址 0x..." oninput="checkRefInput()">
+                </div>
+                <div class="hint">
+                    <i class="ph ph-info"></i> <span data-i18n="ref_required">必须通过推荐人邀请注册</span><br>
+                    <span data-i18n="ref_auto">有推荐链接会自动填入</span>
+                </div>
+                <button class="btn-primary" id="refNextBtn" disabled onclick="goPhase('register',2)"><span data-i18n="next">下一步</span></button>
+            </div>
+
+            <!-- 步骤2:验证 -->
+            <div class="phase" id="regPhase2">
+                <div class="input-label" style="margin-bottom:10px" data-i18n="step2">安全验证</div>
+                <div class="puzzle-track" id="regPuzzle">
+                    <div class="puzzle-fill" id="regFill"></div>
+                    <div class="puzzle-text" id="regText" data-i18n="slide_verify">向右滑动完成验证</div>
+                    <div class="puzzle-slider" id="regSlider"><i class="ph-fill ph-arrow-right"></i></div>
+                </div>
+                <div class="puzzle-success" id="regSuccess"><i class="ph-fill ph-check-circle"></i> <span data-i18n="verified">验证通过</span></div>
+                <button class="btn-primary" id="regVerifyBtn" disabled onclick="goPhase('register',3)"><span data-i18n="next">下一步</span></button>
+            </div>
+
+            <!-- 步骤3:钱包 -->
+            <div class="phase" id="regPhase3">
+                <div class="bind-box">
+                    <div class="bind-row"><span data-i18n="referrer">推荐人</span><span id="confirmRef">--</span></div>
+                </div>
+                <div class="input-label" style="margin-bottom:10px" data-i18n="step3">连接钱包</div>
+                <button class="btn-primary" onclick="connectWallet('register')"><i class="ph-fill ph-wallet"></i> <span data-i18n="connect_wallet">连接钱包并授权</span></button>
+            </div>
+
+            <!-- 步骤4:成功 -->
+            <div class="phase" id="regPhase4" style="text-align:center">
+                <div class="success-check" style="margin:0 auto 16px"><i class="ph-fill ph-check-circle"></i></div>
+                <div class="modal-title" style="font-size:20px" data-i18n="reg_success">注册成功</div>
+                <div class="bind-box" style="text-align:left;margin-top:12px">
+                    <div class="bind-row"><span data-i18n="wallet_addr">钱包地址</span><span id="regWallet">--</span></div>
+                    <div class="bind-row"><span data-i18n="user_id">用户ID</span><span id="regUid">--</span></div>
+                    <div class="bind-row"><span data-i18n="referrer">推荐人</span><span id="regRef">--</span></div>
+                    <div class="bind-row"><span data-i18n="bound">已绑定</span><span style="color:var(--green)">✓</span></div>
+                </div>
+                <button class="btn-primary" onclick="enterPlatform()"><span data-i18n="enter_platform">进入学习</span></button>
+            </div>
         </div>
 
-        <!-- 步骤3：连接钱包+授权 -->
-        <div id="regPhase3" style="display:none">
-            <div class="bind-confirm">
-                <div class="bind-row"><span><span data-i18n="referrer"></span></span><span id="confirmRef">--</span></div>
+        <!-- 登录流程 -->
+        <div id="loginSection" style="display:none">
+            <div class="steps">
+                <div class="step active" id="log-s1"></div><div class="step" id="log-s2"></div><div class="step" id="log-s3"></div>
             </div>
-            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-wallet"></i> 连接钱包</div>
-            <button class="btn-primary" onclick="connectWallet('register')">
-                <i class="ph-fill ph-wallet"></i> 连接钱包并授权
-            </button>
-            <div style="font-size:12px;color:var(--dim);margin-top:12px;line-height:1.5">
-                <i class="ph ph-info"></i> 连接钱包后需要签名授权<br>
-                授权后自动绑定推荐关系，完成注册
+            <div class="step-label" id="logStepLabel" data-i18n="step2">安全验证</div>
+
+            <!-- 步骤1:验证 -->
+            <div class="phase active" id="logPhase1">
+                <div class="input-label" style="margin-bottom:10px" data-i18n="step2">安全验证</div>
+                <div class="puzzle-track" id="logPuzzle">
+                    <div class="puzzle-fill" id="logFill"></div>
+                    <div class="puzzle-text" id="logText">向右滑动完成验证</div>
+                    <div class="puzzle-slider" id="logSlider"><i class="ph-fill ph-arrow-right"></i></div>
+                </div>
+                <div class="puzzle-success" id="logSuccess"><i class="ph-fill ph-check-circle"></i> <span data-i18n="verified">验证通过</span></div>
+                <button class="btn-primary" id="logVerifyBtn" disabled onclick="goPhase('login',2)"><span data-i18n="next">下一步</span></button>
+            </div>
+
+            <!-- 步骤2:钱包连接 -->
+            <div class="phase" id="logPhase2">
+                <div class="input-label" style="margin-bottom:10px" data-i18n="step3">连接钱包</div>
+                <button class="btn-primary" onclick="connectWallet('login')"><i class="ph-fill ph-wallet"></i> <span data-i18n="connect_wallet">连接钱包</span></button>
+            </div>
+
+            <!-- 步骤3:签名 -->
+            <div class="phase" id="logPhase3" style="text-align:center">
+                <div class="bind-box" style="text-align:left;margin-bottom:14px">
+                    <div class="bind-row"><span data-i18n="wallet_addr">钱包地址</span><span id="loginWallet">--</span></div>
+                </div>
+                <button class="btn-primary" id="loginSignBtn" onclick="signLogin()"><i class="ph-fill ph-fingerprint"></i> <span data-i18n="sign_to_login">签名授权登录</span></button>
             </div>
         </div>
-
-        <!-- 步骤4：<span data-i18n="reg_success"></span> -->
-        <div id="regPhase4" style="display:none;text-align:center">
-            <div class="success-check" style="margin-bottom:16px"><i class="ph-fill ph-check-circle"></i></div>
-            <div style="font-size:18px;font-weight:700;margin-bottom:8px"><span data-i18n="reg_success"></span></div>
-            <div class="bind-confirm" style="text-align:left">
-                <div class="bind-row"><span><span data-i18n="wallet_addr"></span></span><span id="regWalletAddr">--</span></div>
-                <div class="bind-row"><span><span data-i18n="user_id"></span></span><span id="regUserId">--</span></div>
-                <div class="bind-row"><span><span data-i18n="referrer"></span></span><span id="regRefAddr">--</span></div>
-                <div class="bind-row"><span>推荐关系</span><span style="color:var(--green)"><span data-i18n="ref_bound"></span></span></div>
-            </div>
-            <button class="btn-primary" onclick="enterPlatform()">
-                <i class="ph-fill ph-graduation-cap"></i> 进入学习中心
-            </button>
-        </div>
-
-    </div>
-
-    <!-- ============ 登录流程 ============ -->
-    <div class="form-section" id="loginSection">
-
-        <div class="steps">
-            <div class="step-dot active" id="loginStep1"></div>
-            <div class="step-dot" id="loginStep2"></div>
-            <div class="step-dot" id="loginStep3"></div>
-        </div>
-        <div class="step-label" id="loginStepLabel">第1步：<span data-i18n="step2_verify"></span></div>
-
-        <!-- 步骤1：防机器人 -->
-        <div id="loginPhase1">
-            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-shield-check"></i> <span data-i18n="step2_verify"></span></div>
-            <div class="puzzle-track" id="loginPuzzleTrack">
-                <div class="puzzle-fill" id="loginPuzzleFill"></div>
-                <div class="puzzle-text" id="loginPuzzleText"><span data-i18n="slide_verify"></span></div>
-                <div class="puzzle-slider" id="loginPuzzleSlider"><i class="ph-fill ph-arrow-right"></i></div>
-            </div>
-            <div class="puzzle-success" id="loginPuzzleSuccess"><i class="ph-fill ph-check-circle"></i> <span data-i18n="verify_passed"></span></div>
-            <button class="btn-primary" id="loginVerifyBtn" disabled onclick="goLoginStep2()" style="margin-top:16px">
-                <i class="ph-fill ph-arrow-right"></i> 下一步
-            </button>
-        </div>
-
-        <!-- 步骤2：连接钱包 -->
-        <div id="loginPhase2" style="display:none">
-            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-wallet"></i> 连接钱包</div>
-            <button class="btn-primary" onclick="connectWallet('login')">
-                <i class="ph-fill ph-wallet"></i> 连接钱包
-            </button>
-        </div>
-
-        <!-- 步骤3：<span data-i18n="connect_wallet"></span> -->
-        <div id="loginPhase3" style="display:none;text-align:center">
-            <div style="font-size:14px;color:var(--dim);margin-bottom:16px">
-                钱包已连接，请完成签名授权登录
-            </div>
-            <div id="loginWalletInfo" class="bind-confirm" style="text-align:left;margin-bottom:16px">
-                <div class="bind-row"><span>钱包</span><span id="loginWalletAddr">--</span></div>
-            </div>
-            <button class="btn-primary" id="loginSignBtn" onclick="signLogin()">
-                <i class="ph-fill ph-fingerprint"></i> 签名授权登录
-            </button>
-        </div>
-
     </div>
 
     <div class="footer-info">
-        <span data-i18n="wallet_addr"></span>即账户 · 无需邮箱密码<br>
-        连接钱包即同意 <a href="#">用户协议</a> 和 <a href="#">隐私政策</a>
+        钱包地址即账户 · 无需邮箱密码<br>
+        <span data-i18n="brand_name">王牌学院</span> · ACE Academy
     </div>
-
-</div>
 </div>
 
 <!-- 钱包选择弹窗 -->
 <div class="overlay" id="walletOverlay">
     <div class="modal">
         <div class="modal-icon"><i class="ph-fill ph-wallet"></i></div>
-        <div class="modal-title">选择钱包</div>
-        <div class="modal-desc">选择你要连接的钱包</div>
-        <div class="wallet-list">
-            <div class="wallet-option" onclick="selectWallet('metamask')">
+        <div class="modal-title" data-i18n="step3">连接钱包</div>
+        <div class="modal-list">
+            <div class="wallet-opt" onclick="pickWallet('metamask')">
                 <i class="ph-fill ph-fox" style="color:#f6851b"></i>
-                <div><div class="w-name">MetaMask</div><div class="w-desc">小狐狸钱包</div></div>
+                <div><div style="font-weight:600">MetaMask</div><div style="font-size:12px;color:var(--dim)">小狐狸钱包</div></div>
             </div>
-            <div class="wallet-option" onclick="selectWallet('tokencap')">
+            <div class="wallet-opt" onclick="pickWallet('tp')">
                 <i class="ph-fill ph-circle" style="color:#3478f6"></i>
-                <div><div class="w-name">TokenPocket</div><div class="w-desc">TP钱包</div></div>
+                <div><div style="font-weight:600">TokenPocket</div><div style="font-size:12px;color:var(--dim)">TP钱包</div></div>
             </div>
-            <div class="wallet-option" onclick="selectWallet('walletconnect')">
+            <div class="wallet-opt" onclick="pickWallet('wc')">
                 <i class="ph-fill ph-qr-code" style="color:#3b99fc"></i>
-                <div><div class="w-name">WalletConnect</div><div class="w-desc">扫码连接</div></div>
+                <div><div style="font-weight:600">WalletConnect</div><div style="font-size:12px;color:var(--dim)">扫码连接</div></div>
             </div>
         </div>
-        <button class="modal-btn cancel" onclick="closeOverlay('walletOverlay')"><span data-i18n="cancel"></span></button>
+        <button class="modal-btn cancel" onclick="closeOverlay('walletOverlay')"><span data-i18n="cancel">取消</span></button>
     </div>
 </div>
 
-<!-- <span data-i18n="connect_wallet"></span>弹窗 -->
+<!-- 授权弹窗 -->
 <div class="overlay" id="signOverlay">
     <div class="modal">
         <div class="modal-icon" id="signIcon"><i class="ph-fill ph-fingerprint"></i></div>
-        <div class="modal-title" id="signTitle"><span data-i18n="connect_wallet"></span></div>
-        <div class="modal-desc" id="signDesc">请在钱包中确认签名<br>此操作不消耗Gas费</div>
-        <div class="modal-status" id="signStatus">等待钱包确认...</div>
-        <button class="modal-btn cancel" onclick="closeOverlay('signOverlay')"><span data-i18n="cancel"></span></button>
+        <div class="modal-title" id="signTitle">等待钱包确认</div>
+        <div class="modal-desc" id="signDesc">请在钱包中确认</div>
+        <button class="modal-btn cancel" onclick="closeOverlay('signOverlay')"><span data-i18n="cancel">取消</span></button>
     </div>
 </div>
 
-<!-- <span data-i18n="login_success"></span> -->
-<div class="overlay" id="loginSuccessOverlay">
+<!-- 成功弹窗 -->
+<div class="overlay" id="successOverlay">
     <div class="modal">
         <div class="success-check"><i class="ph-fill ph-check-circle"></i></div>
-        <div class="modal-title" style="font-size:20px"><span data-i18n="login_success"></span></div>
-        <div class="modal-desc"><span data-i18n="welcome_back"></span></div>
-        <button class="modal-btn" onclick="enterPlatform()">进入学习</button>
+        <div class="modal-title" style="font-size:20px" data-i18n="login_success">登录成功</div>
+        <div class="modal-desc" data-i18n="welcome_back">欢迎回到王牌学院</div>
+        <button class="modal-btn" onclick="enterPlatform()"><span data-i18n="enter_platform">进入学习</span></button>
     </div>
 </div>
 
+<script src="i18n.js"></script>
 <script>
-// ========== Tab切换 ==========
-let currentMode = 'register';
-function switchTab(mode) {
-    currentMode = mode;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
-    if (mode === 'register') {
-        document.getElementById('tabRegister').classList.add('active');
-        document.getElementById('registerSection').classList.add('active');
-    } else {
-        document.getElementById('tabLogin').classList.add('active');
-        document.getElementById('loginSection').classList.add('active');
-    }
+let curTab = 'register', regVerified = false, logVerified = false, walletMode = '';
+
+function switchTab(t) {
+    curTab = t;
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.getElementById(t === 'register' ? 'tabRegister' : 'tabLogin').classList.add('active');
+    document.getElementById('registerSection').style.display = t === 'register' ? 'block' : 'none';
+    document.getElementById('loginSection').style.display = t === 'login' ? 'block' : 'none';
 }
 
-// ========== 注册流程 ==========
-let regVerified = false;
-let regRefAddr = '';
-
-// 检查推荐链接和初始化滑动验证 - 在后面的load事件中统一处理
+function goPhase(mode, phase) {
+    // 注册
+    if (mode === 'register') {
+        if (phase === 2) { regVerified = document.getElementById('regSuccess').classList.contains('show'); }
+        document.querySelectorAll('#registerSection .phase').forEach((p,i) => p.classList.toggle('active', i === phase-1));
+        document.querySelectorAll('#registerSection .step').forEach((s,i) => {
+            s.className = 'step ' + (i < phase-1 ? 'done' : i === phase-1 ? 'active' : '');
+        });
+        document.getElementById('regStepLabel').setAttribute('data-i18n', 'step'+phase);
+        document.getElementById('regStepLabel').textContent = t(['','step1','step2','step3','step4'][phase]);
+        if (phase === 3) document.getElementById('confirmRef').textContent = document.getElementById('refInput').value.slice(0,10)+'...';
+        if (phase === 4) {
+            document.getElementById('regWallet').textContent = '0x' + Math.random().toString(16).slice(2,8)+'...';
+            document.getElementById('regUid').textContent = '10'+Math.floor(Math.random()*9000+1000);
+            document.getElementById('regRef').textContent = document.getElementById('refInput').value.slice(0,10)+'...';
+        }
+    } else { // 登录
+        document.querySelectorAll('#loginSection .phase').forEach((p,i) => p.classList.toggle('active', i === phase-1));
+        document.querySelectorAll('#loginSection .step').forEach((s,i) => {
+            s.className = 'step ' + (i < phase-1 ? 'done' : i === phase-1 ? 'active' : '');
+        });
+        document.getElementById('logStepLabel').textContent = t(['','step2','step3','sign_to_login'][phase]);
+        if (phase === 3) document.getElementById('loginWallet').textContent = '0x' + Math.random().toString(16).slice(2,8)+'...';
+    }
+}
 
 function checkRefInput() {
-    const val = document.getElementById('refInput').value.trim();
-    const btn = document.getElementById('refNextBtn');
-    btn.disabled = !(val.startsWith('0x') && val.length >= 42);
+    const v = document.getElementById('refInput').value.trim();
+    document.getElementById('refNextBtn').disabled = !(v.startsWith('0x') && v.length >= 42);
 }
 
-function goRegStep2() {
-    regRefAddr = document.getElementById('refInput').value.trim();
-    document.getElementById('regPhase1').style.display = 'none';
-    document.getElementById('regPhase2').style.display = 'block';
-    document.getElementById('regStep1').classList.add('done');
-    document.getElementById('regStep1').classList.remove('active');
-    document.getElementById('regStep2').classList.add('active');
-    document.getElementById('regStepLabel').textContent = '第2步：<span data-i18n="step2_verify"></span>';
-    initPuzzle('reg');
+function connectWallet(mode) {
+    walletMode = mode;
+    document.getElementById('walletOverlay').classList.add('show');
 }
 
-function goRegStep3() {
-    document.getElementById('regPhase2').style.display = 'none';
-    document.getElementById('regPhase3').style.display = 'block';
-    document.getElementById('regStep2').classList.add('done');
-    document.getElementById('regStep2').classList.remove('active');
-    document.getElementById('regStep3').classList.add('active');
-    document.getElementById('regStepLabel').textContent = '第3步：连接钱包授权';
-    document.getElementById('confirmRef').textContent = regRefAddr.slice(0,10) + '...' + regRefAddr.slice(-6);
-}
-
-// ========== 登录流程 ==========
-let loginVerified = false;
-
-function goLoginStep2() {
-    document.getElementById('loginPhase1').style.display = 'none';
-    document.getElementById('loginPhase2').style.display = 'block';
-    document.getElementById('loginStep1').classList.add('done');
-    document.getElementById('loginStep1').classList.remove('active');
-    document.getElementById('loginStep2').classList.add('active');
-    document.getElementById('loginStepLabel').textContent = '第2步：连接钱包';
-}
-
-// 登录页滑动验证初始化
-window.addEventListener('load', () => {
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get('ref');
-    if (ref && ref.startsWith('0x')) {
-        document.getElementById('refInput').value = ref;
-        checkRefInput();
-    }
-    // 初始化登录页的滑动验证
+function pickWallet() {
+    closeOverlay('walletOverlay');
+    document.getElementById('signOverlay').classList.add('show');
+    // 模拟：自动通过（演示版）
     setTimeout(() => {
-        initPuzzle('login');
-    }, 100);
-});
+        document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-check-circle"></i>';
+        document.getElementById('signIcon').style.color = 'var(--green)';
+        document.getElementById('signTitle').textContent = '授权成功';
+        document.getElementById('signDesc').textContent = '验证通过';
+        setTimeout(() => {
+            closeOverlay('signOverlay');
+            if (walletMode === 'register') goPhase('register', 4);
+            else goPhase('login', 3);
+        }, 1000);
+    }, 800);
+}
 
-// ========== 滑动验证 ==========
-function initPuzzle(prefix) {
-    const slider = document.getElementById(prefix + 'PuzzleSlider');
-    const track = document.getElementById(prefix + 'PuzzleTrack');
-    const fill = document.getElementById(prefix + 'PuzzleFill');
-    const text = document.getElementById(prefix + 'PuzzleText');
-    const success = document.getElementById(prefix + 'PuzzleSuccess');
-    const btn = document.getElementById(prefix + 'VerifyBtn') || document.getElementById(prefix === 'reg' ? 'regVerifyBtn' : 'loginVerifyBtn');
+function signLogin() {
+    document.getElementById('successOverlay').classList.add('show');
+}
 
-    let dragging = false, startX = 0, currentX = 0, verified = false;
+function enterPlatform() { location.href = 'learning.html'; }
+function closeOverlay(id) { document.getElementById(id).classList.remove('show'); }
 
-    function start(e) {
-        if (verified) return;
+// 滑动验证
+function initPuzzle(p, type) {
+    const track = document.getElementById(p+'Puzzle');
+    const fill = document.getElementById(p=='reg'?'regFill':'logFill');
+    const slider = document.getElementById(p+'Slider');
+    const text = document.getElementById(p=='reg'?'regText':'logText');
+    const btn = document.getElementById(p+'VerifyBtn');
+    let dragging = false, startX = 0;
+    function start(e){ e.preventDefault(); dragging = true; startX = e.touches?e.touches[0].clientX:e.clientX; }
+    function move(e){
+        if(!dragging) return;
         e.preventDefault();
-        dragging = true;
-        startX = e.touches ? e.touches[0].clientX : e.clientX;
-    }
-    function move(e) {
-        if (!dragging || verified) return;
-        e.preventDefault();
-        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        const x = e.touches?e.touches[0].clientX:e.clientX;
         const max = track.offsetWidth - 44;
-        currentX = Math.max(0, Math.min(x - startX, max));
-        slider.style.left = (currentX + 2) + 'px';
-        fill.style.width = (currentX + 44) + 'px';
-        if (currentX >= max - 5) doVerify();
-    }
-    function end() {
-        if (!dragging) return;
-        dragging = false;
-        if (!verified) {
-            slider.style.transition = 'left 0.3s';
-            fill.style.transition = 'width 0.3s';
-            slider.style.left = '2px';
-            fill.style.width = '0%';
-            setTimeout(() => { slider.style.transition=''; fill.style.transition=''; }, 300);
+        let dx = Math.max(0, Math.min(x-startX, max));
+        slider.style.left = (dx+2)+'px';
+        fill.style.width = (dx+44)+'px';
+        if(dx >= max-5){
+            track.classList.add('success'); text.classList.add('hidden');
+            slider.innerHTML = '<i class="ph-fill ph-check"></i>';
+            document.getElementById(p+'Success').classList.add('show');
+            btn.disabled = false; dragging = false;
+            if(type==='reg') regVerified=true;
         }
     }
-    function doVerify() {
-        verified = true;
-        dragging = false;
-        track.classList.add('success');
-        text.classList.add('hidden');
-        success.classList.add('show');
-        slider.innerHTML = '<i class="ph-fill ph-check"></i>';
-        if (btn) btn.disabled = false;
-        if (prefix === 'reg') regVerified = true;
-        if (prefix === 'login') loginVerified = true;
-    }
-
+    function end(){ dragging = false; if(!track.classList.contains('success')) { slider.style.left='2px'; fill.style.width='0%'; } }
     slider.addEventListener('mousedown', start);
     slider.addEventListener('touchstart', start, {passive:false});
     document.addEventListener('mousemove', move);
@@ -500,149 +354,14 @@ function initPuzzle(prefix) {
     document.addEventListener('mouseup', end);
     document.addEventListener('touchend', end);
 }
+initPuzzle('reg');
+initPuzzle('log');
 
-// ========== 钱包连接 ==========
-let walletMode = '';
-let connectedWallet = '';
-
-function connectWallet(mode) {
-    walletMode = mode;
-    document.getElementById('walletOverlay').classList.add('show');
-}
-
-function selectWallet(wallet) {
-    closeOverlay('walletOverlay');
-    connectedWallet = wallet;
-
-    // 显示签名弹窗 - 等待用户手动确认
-    document.getElementById('signOverlay').classList.add('show');
-    document.getElementById('signIcon').className = 'modal-icon';
-    document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-fingerprint"></i>';
-    document.getElementById('signTitle').textContent = '连接钱包';
-    document.getElementById('signDesc').innerHTML = '请在' + (wallet === 'metamask' ? 'MetaMask' : wallet === 'tokencap' ? 'TokenPocket' : 'WalletConnect') + '中确认连接请求<br>需要输入密码或指纹确认';
-    document.getElementById('signStatus').textContent = '请在钱包中确认...';
-
-    // 添加确认按钮
-    const oldBtn = document.getElementById('signConfirmBtn');
-    if (oldBtn) oldBtn.remove();
-    const cancelBtn = document.querySelector('#signOverlay .modal-btn.cancel');
-    const confirmBtn = document.createElement('button');
-    confirmBtn.id = 'signConfirmBtn';
-    confirmBtn.className = 'modal-btn';
-    confirmBtn.style.marginBottom = '8px';
-    confirmBtn.innerHTML = '<i class="ph-fill ph-fingerprint"></i> 我已在钱包中确认';
-    confirmBtn.onclick = function() { startWalletProcess(wallet); };
-    cancelBtn.parentNode.insertBefore(confirmBtn, cancelBtn);
-}
-
-function startWalletProcess(wallet) {
-    // 用户点了确认，开始模拟连接+签名过程
-    const confirmBtn = document.getElementById('signConfirmBtn');
-    if (confirmBtn) confirmBtn.style.display = 'none';
-
-    document.getElementById('signIcon').className = 'modal-icon loading';
-    document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-spinner"></i>';
-    document.getElementById('signTitle').textContent = '正在连接钱包...';
-    document.getElementById('signDesc').innerHTML = '请勿关闭页面';
-    document.getElementById('signStatus').textContent = '连接中...';
-
-    // 第一步：连接钱包
-    setTimeout(() => {
-        document.getElementById('signStatus').textContent = '钱包已连接';
-        document.getElementById('signIcon').className = 'modal-icon';
-        document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-fingerprint"></i>';
-        document.getElementById('signTitle').textContent = '<span data-i18n="connect_wallet"></span>';
-        document.getElementById('signDesc').innerHTML = '请在钱包中确认签名授权<br>需要输入密码或指纹确认<br>此操作不消耗Gas费';
-        document.getElementById('signStatus').textContent = '请在钱包中签名...';
-
-        // 等待用户签名确认
-        const signConfirmBtn = document.createElement('button');
-        signConfirmBtn.id = 'signSignBtn';
-        signConfirmBtn.className = 'modal-btn';
-        signConfirmBtn.style.marginBottom = '8px';
-        signConfirmBtn.innerHTML = '<i class="ph-fill ph-fingerprint"></i> 我已签名';
-        signConfirmBtn.onclick = function() { verifySignature(); };
-        const cancelBtn = document.querySelector('#signOverlay .modal-btn.cancel');
-        cancelBtn.parentNode.insertBefore(signConfirmBtn, cancelBtn);
-    }, 1500);
-}
-
-function verifySignature() {
-    const signBtn = document.getElementById('signSignBtn');
-    if (signBtn) signBtn.style.display = 'none';
-
-    document.getElementById('signIcon').className = 'modal-icon loading';
-    document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-spinner"></i>';
-    document.getElementById('signStatus').textContent = '正在验证签名...';
-
-    setTimeout(() => {
-        document.getElementById('signIcon').className = 'modal-icon success';
-        document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-check-circle"></i>';
-        document.getElementById('signStatus').textContent = '签名验证成功';
-        document.getElementById('signTitle').textContent = '<span data-i18n="login_success"></span>';
-        document.getElementById('signDesc').innerHTML = walletMode === 'register' ? '推荐关系<span data-i18n="ref_bound"></span>，注册完成' : '身份<span data-i18n="verify_passed"></span>';
-
-        setTimeout(() => {
-            closeOverlay('signOverlay');
-            if (walletMode === 'register') {
-                completeRegister();
-            } else {
-                completeLogin();
-            }
-        }, 1200);
-    }, 1000);
-}
-
-function completeRegister() {
-    // 模拟<span data-i18n="wallet_addr"></span>
-    const fakeAddr = '0x' + Math.random().toString(16).substring(2, 10) + '...' + Math.random().toString(16).substring(2, 6);
-    const fakeId = '10' + Math.floor(Math.random() * 9000 + 1000);
-
-    document.getElementById('regPhase3').style.display = 'none';
-    document.getElementById('regPhase4').style.display = 'block';
-    document.getElementById('regStep3').classList.add('done');
-    document.getElementById('regStep3').classList.remove('active');
-    document.getElementById('regStep4').classList.add('active');
-    document.getElementById('regStepLabel').textContent = '第4步：注册完成';
-
-    document.getElementById('regWalletAddr').textContent = fakeAddr;
-    document.getElementById('regUserId').textContent = fakeId;
-    document.getElementById('regRefAddr').textContent = regRefAddr.slice(0,10) + '...' + regRefAddr.slice(-6);
-}
-
-function completeLogin() {
-    // 登录步骤3完成
-    document.getElementById('loginPhase2').style.display = 'none';
-    document.getElementById('loginPhase3').style.display = 'block';
-    document.getElementById('loginStep2').classList.add('done');
-    document.getElementById('loginStep2').classList.remove('active');
-    document.getElementById('loginStep3').classList.add('active');
-    document.getElementById('loginStepLabel').textContent = '第3步：签名授权';
-
-    const fakeAddr = '0x' + Math.random().toString(16).substring(2, 10) + '...';
-    document.getElementById('loginWalletAddr').textContent = fakeAddr;
-}
-
-function signLogin() {
-    // 登录签名
-    document.getElementById('loginSignBtn').disabled = true;
-    document.getElementById('loginSignBtn').innerHTML = '<i class="ph-fill ph-spinner"></i> 正在签名...';
-
-    setTimeout(() => {
-        document.getElementById('loginSuccessOverlay').classList.add('show');
-    }, 1500);
-}
-
-function enterPlatform() {
-    window.location.href = 'learning.html';
-}
-
-function closeOverlay(id) {
-    document.getElementById(id).classList.remove('show');
-}
+// 自动填充推荐链接
+(function(){
+    const p = new URLSearchParams(location.search).get('ref');
+    if(p && p.startsWith('0x')) document.getElementById('refInput').value = p;
+})();
 </script>
-
-<script src="nav.js"></script><script>createNav("login")</script>
-<script src="translate.js"></script>
 </body>
 </html>
