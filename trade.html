@@ -80,13 +80,13 @@
 <div class="body">
     <!-- 价格 -->
     <div class="price-card">
-        <div class="price-label">ACE 当前价格</div>
+        <div class="price-label"><span data-i18n="ace_price"></span></div>
         <div class="price-value">0.0125 <span style="font-size:16px">U</span></div>
         <div class="price-change">+2.3% (24h)</div>
         <div class="price-stats">
-            <div class="price-stat"><div class="v">8,500 U</div><div class="l">底池</div></div>
-            <div class="price-stat"><div class="v">15,000</div><div class="l">已销毁</div></div>
-            <div class="price-stat"><div class="v">9,985,000</div><div class="l">当前总量</div></div>
+            <div class="price-stat"><div class="v">8,500 U</div><div class="l"><span data-i18n="pool"></span></div></div>
+            <div class="price-stat"><div class="v">15,000</div><div class="l"><span data-i18n="burned"></span></div></div>
+            <div class="price-stat"><div class="v">9,985,000</div><div class="l"><span data-i18n="current_supply"></span></div></div>
         </div>
     </div>
 
@@ -106,15 +106,15 @@
     <div class="trade-card">
         <div class="trade-title buy"><i class="ph-fill ph-arrow-down-left"></i> 买入 ACE</div>
         <div class="input-group">
-            <div class="input-label">支付金额</div>
+            <div class="input-label"><span data-i18n="pay_amount"></span></div>
             <div class="input-suffix">
                 <input type="number" class="input-box" id="buyAmount" placeholder="0.00" oninput="calcBuy()">
                 <span class="suffix">USDT</span>
             </div>
         </div>
         <div class="trade-info">
-            <div class="trade-info-row"><span class="l">预计获得</span><span class="v green" id="buyExpected">-- ACE</span></div>
-            <div class="trade-info-row"><span class="l">手续费</span><span class="v" id="buyFee">--</span></div>
+            <div class="trade-info-row"><span class="l"><span data-i18n="expected"></span></span><span class="v green" id="buyExpected">-- ACE</span></div>
+            <div class="trade-info-row"><span class="l"><span data-i18n="fee"></span></span><span class="v" id="buyFee">--</span></div>
             <div class="trade-info-row"><span class="l">价格</span><span class="v">1 ACE = 0.0125 USDT</span></div>
         </div>
         <button class="btn-trade btn-buy" onclick="buyACE()"><i class="ph-fill ph-shopping-cart"></i> 买入 ACE</button>
@@ -124,18 +124,18 @@
     <div class="trade-card">
         <div class="trade-title sell"><i class="ph-fill ph-arrow-up-right"></i> 卖出 ACE</div>
         <div class="input-group">
-            <div class="input-label">卖出数量</div>
+            <div class="input-label"><span data-i18n="sell_amount"></span></div>
             <div class="input-suffix">
                 <input type="number" class="input-box" id="sellAmount" placeholder="0" oninput="calcSell()">
                 <span class="suffix">ACE</span>
             </div>
         </div>
         <div class="trade-info">
-            <div class="trade-info-row"><span class="l">预计获得</span><span class="v" id="sellExpected">-- USDT</span></div>
+            <div class="trade-info-row"><span class="l"><span data-i18n="expected"></span></span><span class="v" id="sellExpected">-- USDT</span></div>
             <div class="trade-info-row"><span class="l">手续费(2%)</span><span class="v red" id="sellFee">-- ACE</span></div>
             <div class="trade-info-row"><span class="l">├ 销毁(1.5%)</span><span class="v" style="color:#888" id="sellBurn">-- ACE</span></div>
             <div class="trade-info-row"><span class="l">└ 公益(0.5%)</span><span class="v" style="color:#888" id="sellCharity">-- ACE</span></div>
-            <div class="trade-info-row"><span class="l">实际到账</span><span class="v green" id="sellActual">-- USDT</span></div>
+            <div class="trade-info-row"><span class="l"><span data-i18n="actual_received"></span></span><span class="v green" id="sellActual">-- USDT</span></div>
         </div>
         <button class="btn-trade btn-sell" onclick="sellACE()"><i class="ph-fill ph-currency-btc"></i> 卖出 ACE</button>
     </div>

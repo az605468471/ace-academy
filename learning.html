@@ -99,7 +99,7 @@
 
     <!-- 进度概览 -->
     <div class="progress-overview">
-        <div class="progress-overview-title">学习进度</div>
+        <div class="progress-overview-title"><span data-i18n="learning_progress"></span></div>
         <div class="progress-overview-num"><span id="doneCount">0</span><span> / <span id="totalCount">0</span> 门课程</span></div>
         <div class="progress-bar-big">
             <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
@@ -110,15 +110,15 @@
     <div class="stat-row">
         <div class="stat-box">
             <div class="stat-num" id="totalHours">0h</div>
-            <div class="stat-label">总学习时长</div>
+            <div class="stat-label"><span data-i18n="total_hours"></span></div>
         </div>
         <div class="stat-box">
             <div class="stat-num" id="learnedHours">0h</div>
-            <div class="stat-label">已学时长</div>
+            <div class="stat-label"><span data-i18n="learned_hours"></span></div>
         </div>
         <div class="stat-box">
             <div class="stat-num" id="tokenReleased">0</div>
-            <div class="stat-label">已释放代币</div>
+            <div class="stat-label"><span data-i18n="token_released_2"></span></div>
         </div>
     </div>
 
@@ -129,9 +129,9 @@
     <!-- 考试 -->
     <div class="exam-card locked" id="examCard">
         <div class="exam-icon"><i class="ph-fill ph-exam"></i></div>
-        <div class="exam-title">综合考试</div>
+        <div class="exam-title"><span data-i18n="comprehensive_exam"></span></div>
         <div class="exam-desc">学完所有课程后解锁考试，通过后获得链上证书</div>
-        <button class="btn-exam" id="examBtn" disabled onclick="startExam()">参加考试</button>
+        <button class="btn-exam" id="examBtn" disabled onclick="startExam()"><span data-i18n="take_exam"></span></button>
     </div>
 
     <!-- 证书 -->

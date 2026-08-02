@@ -187,7 +187,7 @@
     <div class="logo-area">
         <div class="logo-icon"><img src="images/ace-logo.png" style="width:48px;height:48px;border-radius:12px" alt="ACE"></div>
         <div class="logo-title">ACE ACADEMY</div>
-        <div class="logo-sub">学技能 · 拿证书 · 赚代币</div>
+        <div class="logo-sub"><span data-i18n="hero_title"></span></div>
     </div>
 
     <!-- Tab切换 -->
@@ -205,16 +205,16 @@
             <div class="step-dot" id="regStep3"></div>
             <div class="step-dot" id="regStep4"></div>
         </div>
-        <div class="step-label" id="regStepLabel">第1步：输入推荐人地址</div>
+        <div class="step-label" id="regStepLabel">第1步：输入<span data-i18n="referrer"></span>地址</div>
 
-        <!-- 步骤1：推荐人 -->
+        <!-- 步骤1：<span data-i18n="referrer"></span> -->
         <div id="regPhase1">
             <div class="input-group">
-                <div class="input-label"><i class="ph ph-user-circle"></i> 推荐人钱包地址</div>
-                <input type="text" class="input-box" id="refInput" placeholder="输入推荐人地址 0x..." oninput="checkRefInput()">
+                <div class="input-label"><i class="ph ph-user-circle"></i> <span data-i18n="referrer"></span><span data-i18n="wallet_addr"></span></div>
+                <input type="text" class="input-box" id="refInput" placeholder="输入<span data-i18n="referrer"></span>地址 0x..." oninput="checkRefInput()">
             </div>
             <div style="font-size:12px;color:var(--dim);margin-bottom:16px;line-height:1.5">
-                <i class="ph ph-info"></i> 必须通过推荐人邀请注册<br>
+                <i class="ph ph-info"></i> 必须通过<span data-i18n="referrer"></span>邀请注册<br>
                 如果有推荐链接，打开链接会自动填入
             </div>
             <button class="btn-primary" id="refNextBtn" disabled onclick="goRegStep2()">
@@ -224,13 +224,13 @@
 
         <!-- 步骤2：防机器人验证 -->
         <div id="regPhase2" style="display:none">
-            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-shield-check"></i> 安全验证</div>
+            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-shield-check"></i> <span data-i18n="step2_verify"></span></div>
             <div class="puzzle-track" id="regPuzzleTrack">
                 <div class="puzzle-fill" id="regPuzzleFill"></div>
-                <div class="puzzle-text" id="regPuzzleText">向右滑动完成验证</div>
+                <div class="puzzle-text" id="regPuzzleText"><span data-i18n="slide_verify"></span></div>
                 <div class="puzzle-slider" id="regPuzzleSlider"><i class="ph-fill ph-arrow-right"></i></div>
             </div>
-            <div class="puzzle-success" id="regPuzzleSuccess"><i class="ph-fill ph-check-circle"></i> 验证通过</div>
+            <div class="puzzle-success" id="regPuzzleSuccess"><i class="ph-fill ph-check-circle"></i> <span data-i18n="verify_passed"></span></div>
             <button class="btn-primary" id="regVerifyBtn" disabled onclick="goRegStep3()" style="margin-top:16px">
                 <i class="ph-fill ph-arrow-right"></i> 下一步
             </button>
@@ -239,7 +239,7 @@
         <!-- 步骤3：连接钱包+授权 -->
         <div id="regPhase3" style="display:none">
             <div class="bind-confirm">
-                <div class="bind-row"><span>推荐人</span><span id="confirmRef">--</span></div>
+                <div class="bind-row"><span><span data-i18n="referrer"></span></span><span id="confirmRef">--</span></div>
             </div>
             <div class="input-label" style="margin-bottom:12px"><i class="ph ph-wallet"></i> 连接钱包</div>
             <button class="btn-primary" onclick="connectWallet('register')">
@@ -251,15 +251,15 @@
             </div>
         </div>
 
-        <!-- 步骤4：注册成功 -->
+        <!-- 步骤4：<span data-i18n="reg_success"></span> -->
         <div id="regPhase4" style="display:none;text-align:center">
             <div class="success-check" style="margin-bottom:16px"><i class="ph-fill ph-check-circle"></i></div>
-            <div style="font-size:18px;font-weight:700;margin-bottom:8px">注册成功</div>
+            <div style="font-size:18px;font-weight:700;margin-bottom:8px"><span data-i18n="reg_success"></span></div>
             <div class="bind-confirm" style="text-align:left">
-                <div class="bind-row"><span>钱包地址</span><span id="regWalletAddr">--</span></div>
-                <div class="bind-row"><span>用户ID</span><span id="regUserId">--</span></div>
-                <div class="bind-row"><span>推荐人</span><span id="regRefAddr">--</span></div>
-                <div class="bind-row"><span>推荐关系</span><span style="color:var(--green)">已绑定</span></div>
+                <div class="bind-row"><span><span data-i18n="wallet_addr"></span></span><span id="regWalletAddr">--</span></div>
+                <div class="bind-row"><span><span data-i18n="user_id"></span></span><span id="regUserId">--</span></div>
+                <div class="bind-row"><span><span data-i18n="referrer"></span></span><span id="regRefAddr">--</span></div>
+                <div class="bind-row"><span>推荐关系</span><span style="color:var(--green)"><span data-i18n="ref_bound"></span></span></div>
             </div>
             <button class="btn-primary" onclick="enterPlatform()">
                 <i class="ph-fill ph-graduation-cap"></i> 进入学习中心
@@ -276,17 +276,17 @@
             <div class="step-dot" id="loginStep2"></div>
             <div class="step-dot" id="loginStep3"></div>
         </div>
-        <div class="step-label" id="loginStepLabel">第1步：安全验证</div>
+        <div class="step-label" id="loginStepLabel">第1步：<span data-i18n="step2_verify"></span></div>
 
         <!-- 步骤1：防机器人 -->
         <div id="loginPhase1">
-            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-shield-check"></i> 安全验证</div>
+            <div class="input-label" style="margin-bottom:12px"><i class="ph ph-shield-check"></i> <span data-i18n="step2_verify"></span></div>
             <div class="puzzle-track" id="loginPuzzleTrack">
                 <div class="puzzle-fill" id="loginPuzzleFill"></div>
-                <div class="puzzle-text" id="loginPuzzleText">向右滑动完成验证</div>
+                <div class="puzzle-text" id="loginPuzzleText"><span data-i18n="slide_verify"></span></div>
                 <div class="puzzle-slider" id="loginPuzzleSlider"><i class="ph-fill ph-arrow-right"></i></div>
             </div>
-            <div class="puzzle-success" id="loginPuzzleSuccess"><i class="ph-fill ph-check-circle"></i> 验证通过</div>
+            <div class="puzzle-success" id="loginPuzzleSuccess"><i class="ph-fill ph-check-circle"></i> <span data-i18n="verify_passed"></span></div>
             <button class="btn-primary" id="loginVerifyBtn" disabled onclick="goLoginStep2()" style="margin-top:16px">
                 <i class="ph-fill ph-arrow-right"></i> 下一步
             </button>
@@ -300,7 +300,7 @@
             </button>
         </div>
 
-        <!-- 步骤3：授权签名 -->
+        <!-- 步骤3：<span data-i18n="connect_wallet"></span> -->
         <div id="loginPhase3" style="display:none;text-align:center">
             <div style="font-size:14px;color:var(--dim);margin-bottom:16px">
                 钱包已连接，请完成签名授权登录
@@ -316,7 +316,7 @@
     </div>
 
     <div class="footer-info">
-        钱包地址即账户 · 无需邮箱密码<br>
+        <span data-i18n="wallet_addr"></span>即账户 · 无需邮箱密码<br>
         连接钱包即同意 <a href="#">用户协议</a> 和 <a href="#">隐私政策</a>
     </div>
 
@@ -343,27 +343,27 @@
                 <div><div class="w-name">WalletConnect</div><div class="w-desc">扫码连接</div></div>
             </div>
         </div>
-        <button class="modal-btn cancel" onclick="closeOverlay('walletOverlay')">取消</button>
+        <button class="modal-btn cancel" onclick="closeOverlay('walletOverlay')"><span data-i18n="cancel"></span></button>
     </div>
 </div>
 
-<!-- 授权签名弹窗 -->
+<!-- <span data-i18n="connect_wallet"></span>弹窗 -->
 <div class="overlay" id="signOverlay">
     <div class="modal">
         <div class="modal-icon" id="signIcon"><i class="ph-fill ph-fingerprint"></i></div>
-        <div class="modal-title" id="signTitle">授权签名</div>
+        <div class="modal-title" id="signTitle"><span data-i18n="connect_wallet"></span></div>
         <div class="modal-desc" id="signDesc">请在钱包中确认签名<br>此操作不消耗Gas费</div>
         <div class="modal-status" id="signStatus">等待钱包确认...</div>
-        <button class="modal-btn cancel" onclick="closeOverlay('signOverlay')">取消</button>
+        <button class="modal-btn cancel" onclick="closeOverlay('signOverlay')"><span data-i18n="cancel"></span></button>
     </div>
 </div>
 
-<!-- 登录成功 -->
+<!-- <span data-i18n="login_success"></span> -->
 <div class="overlay" id="loginSuccessOverlay">
     <div class="modal">
         <div class="success-check"><i class="ph-fill ph-check-circle"></i></div>
-        <div class="modal-title" style="font-size:20px">登录成功</div>
-        <div class="modal-desc">欢迎回到王牌学院</div>
+        <div class="modal-title" style="font-size:20px"><span data-i18n="login_success"></span></div>
+        <div class="modal-desc"><span data-i18n="welcome_back"></span></div>
         <button class="modal-btn" onclick="enterPlatform()">进入学习</button>
     </div>
 </div>
@@ -403,7 +403,7 @@ function goRegStep2() {
     document.getElementById('regStep1').classList.add('done');
     document.getElementById('regStep1').classList.remove('active');
     document.getElementById('regStep2').classList.add('active');
-    document.getElementById('regStepLabel').textContent = '第2步：安全验证';
+    document.getElementById('regStepLabel').textContent = '第2步：<span data-i18n="step2_verify"></span>';
     initPuzzle('reg');
 }
 
@@ -551,7 +551,7 @@ function startWalletProcess(wallet) {
         document.getElementById('signStatus').textContent = '钱包已连接';
         document.getElementById('signIcon').className = 'modal-icon';
         document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-fingerprint"></i>';
-        document.getElementById('signTitle').textContent = '授权签名';
+        document.getElementById('signTitle').textContent = '<span data-i18n="connect_wallet"></span>';
         document.getElementById('signDesc').innerHTML = '请在钱包中确认签名授权<br>需要输入密码或指纹确认<br>此操作不消耗Gas费';
         document.getElementById('signStatus').textContent = '请在钱包中签名...';
 
@@ -579,8 +579,8 @@ function verifySignature() {
         document.getElementById('signIcon').className = 'modal-icon success';
         document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-check-circle"></i>';
         document.getElementById('signStatus').textContent = '签名验证成功';
-        document.getElementById('signTitle').textContent = '授权成功';
-        document.getElementById('signDesc').innerHTML = walletMode === 'register' ? '推荐关系已绑定，注册完成' : '身份验证通过';
+        document.getElementById('signTitle').textContent = '<span data-i18n="login_success"></span>';
+        document.getElementById('signDesc').innerHTML = walletMode === 'register' ? '推荐关系<span data-i18n="ref_bound"></span>，注册完成' : '身份<span data-i18n="verify_passed"></span>';
 
         setTimeout(() => {
             closeOverlay('signOverlay');
@@ -594,7 +594,7 @@ function verifySignature() {
 }
 
 function completeRegister() {
-    // 模拟钱包地址
+    // 模拟<span data-i18n="wallet_addr"></span>
     const fakeAddr = '0x' + Math.random().toString(16).substring(2, 10) + '...' + Math.random().toString(16).substring(2, 6);
     const fakeId = '10' + Math.floor(Math.random() * 9000 + 1000);
 

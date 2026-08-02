@@ -77,10 +77,10 @@
     <div class="card">
         <div class="card-title"><i class="ph-fill ph-wallet"></i> 账户信息</div>
         <div class="addr-box">
-            <div class="addr-row"><span class="l">钱包地址</span><span class="v">0xABC1...23DEF</span></div>
-            <div class="addr-row"><span class="l">用户ID</span><span class="v">100235</span></div>
-            <div class="addr-row"><span class="l">推荐人</span><span class="v">0x90F8...c9C1</span></div>
-            <div class="addr-row"><span class="l">身份</span><span class="v" style="color:var(--accent)">学员</span></div>
+            <div class="addr-row"><span class="l"><span data-i18n="wallet_addr"></span></span><span class="v">0xABC1...23DEF</span></div>
+            <div class="addr-row"><span class="l"><span data-i18n="user_id"></span></span><span class="v">100235</span></div>
+            <div class="addr-row"><span class="l"><span data-i18n="referrer"></span></span><span class="v">0x90F8...c9C1</span></div>
+            <div class="addr-row"><span class="l"><span data-i18n="account_info"></span></span><span class="v" style="color:var(--accent)">学员</span></div>
         </div>
     </div>
 
@@ -90,11 +90,11 @@
         <div class="bal-grid">
             <div class="bal-box">
                 <div class="bal-num purple">720</div>
-                <div class="bal-label">可用ACE</div>
+                <div class="bal-label"><span data-i18n="available_ace"></span></div>
             </div>
             <div class="bal-box">
                 <div class="bal-num" style="color:var(--dim)">480</div>
-                <div class="bal-label">锁定ACE</div>
+                <div class="bal-label"><span data-i18n="locked_ace"></span></div>
             </div>
             <div class="bal-box">
                 <div class="bal-num green">500U</div>
@@ -111,7 +111,7 @@
         <div class="release-bar">
             <div class="release-row"><span class="l">报名释放 (30%)</span><span class="v done">✓ 已释放</span></div>
             <div class="release-row"><span class="l">学完第一门 (30%)</span><span class="v done">✓ 已释放</span></div>
-            <div class="release-row"><span class="l">考试通过 (40%)</span><span class="v locked">未解锁</span></div>
+            <div class="release-row"><span class="l">考试通过 (40%)</span><span class="v locked"><span data-i18n="locked"></span></span></div>
         </div>
     </div>
 
@@ -132,11 +132,11 @@
     <div class="card">
         <div class="card-title"><i class="ph-fill ph-vault"></i> 质押生息</div>
         <div class="stake-box">
-            <div class="stake-row"><span class="l">质押数量</span><span class="v">1,000 ACE</span></div>
-            <div class="stake-row"><span class="l">质押期</span><span class="v">90天</span></div>
-            <div class="stake-row"><span class="l">年化收益</span><span class="v">10%</span></div>
-            <div class="stake-row"><span class="l">预期收益</span><span class="v green">24.66 ACE</span></div>
-            <div class="stake-row"><span class="l">到期时间</span><span class="v">2026-11-01</span></div>
+            <div class="stake-row"><span class="l"><span data-i18n="stake_amount"></span></span><span class="v">1,000 ACE</span></div>
+            <div class="stake-row"><span class="l"><span data-i18n="stake_period"></span></span><span class="v">90天</span></div>
+            <div class="stake-row"><span class="l"><span data-i18n="apr"></span></span><span class="v">10%</span></div>
+            <div class="stake-row"><span class="l"><span data-i18n="expected_reward"></span></span><span class="v green">24.66 ACE</span></div>
+            <div class="stake-row"><span class="l"><span data-i18n="maturity"></span></span><span class="v">2026-11-01</span></div>
         </div>
         <button class="btn-stake" onclick="showToast('质押功能待接入钱包')"><i class="ph-fill ph-plus"></i> 新增质押</button>
     </div>
@@ -155,7 +155,7 @@
         <div style="font-size:12px; color:var(--dim); margin-bottom:12px; line-height:1.5">
             退课后课程作废，剩余代币全部一次性释放。不退USDT，不影响推荐人。
         </div>
-        <button class="btn-refund" onclick="showToast('退课功能待接入钱包')">申请退课</button>
+        <button class="btn-refund" onclick="showToast('退课功能待接入钱包')"><span data-i18n="apply_refund"></span></button>
     </div>
 </div>
 

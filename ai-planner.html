@@ -100,13 +100,13 @@
         <div class="msg-ai-avatar"><i class="ph-fill ph-sparkle"></i></div>
         <div class="msg-ai-bubble">
             <p>你好！我是王牌学院的AI学习规划师。</p>
-            <p>我会问你5个问题，然后为你定制一份专属学习方案。准备好了吗？</p>
+            <p><span data-i18n="ai_intro2"></span></p>
         </div>
     </div>
     <div class="chat-msg msg-ai" id="qContainer">
         <div class="msg-ai-avatar"><i class="ph-fill ph-sparkle"></i></div>
         <div class="msg-ai-bubble" id="qBubble">
-            <p>让我们开始吧！</p>
+            <p><span data-i18n="ai_start"></span></p>
         </div>
     </div>
 </div>
@@ -182,49 +182,49 @@ const questions = [
         ],
         reply: function(ans) {
             const names = {ai:'AI应用',blockchain:'区块链/Web3',ecommerce:'跨境电商',marketing:'数字营销',coding:'编程入门'};
-            return `好的，你对「${names[ans.value]}」感兴趣！这是个很好的方向，市场需求大，发展前景好。接下来：`;
+            return `好的，你对「${names[ans.value]}」感<span data-i18n="goal_interest"></span>！这是个很好的方向，市场需求大，发展前景好。接下来：`;
         }
     },
     {
         type: 'chat',
         text: '你现在的学习基础怎么样？',
-        sub: '这决定你的学习起点',
+        sub: '<span data-i18n="ai_q2_sub"></span>',
         options: [
-            {value:'zero', icon:'ph-seedling', title:'零基础', desc:'完全没接触过'},
-            {value:'some', icon:'ph-tree', title:'有一些了解', desc:'看过一些视频或文章'},
-            {value:'familiar', icon:'ph-tree-evergreen', title:'比较熟悉', desc:'有实际操作经验'},
+            {value:'zero', icon:'ph-seedling', title:'<span data-i18n="zero_basis"></span>', desc:'完全没接触过'},
+            {value:'some', icon:'ph-tree', title:'<span data-i18n="some_basis"></span>', desc:'看过一些视频或文章'},
+            {value:'familiar', icon:'ph-tree-evergreen', title:'<span data-i18n="proficient"></span>', desc:'有实际操作经验'},
         ],
         reply: function(ans) {
-            if (ans.value === 'zero') return '零基础完全没问题！我们会从最基础的课程开始，循序渐进。再了解一下：';
+            if (ans.value === 'zero') return '<span data-i18n="zero_basis"></span>完全没问题！我们会从最基础的课程开始，循序渐进。再了解一下：';
             if (ans.value === 'some') return '有基础很好！我们可以跳过入门课，直接从进阶开始。继续：';
-            return '你已经比较熟悉了，我们可以直接从高级课程开始，效率更高。下一个问题：';
+            return '你已经<span data-i18n="proficient"></span>了，我们可以直接从高级课程开始，效率更高。下一个问题：';
         }
     },
     {
         type: 'chat',
         text: '你的学习目标是什么？',
-        sub: '这决定学习方案的侧重点',
+        sub: '<span data-i18n="ai_q3_sub"></span>',
         options: [
-            {value:'job', icon:'ph-briefcase', title:'找工作', desc:'学完想从事相关行业'},
-            {value:'business', icon:'ph-rocket-launch', title:'创业', desc:'学完想自己做事'},
-            {value:'skill', icon:'ph-chart-line-up', title:'提升技能', desc:'工作上用得到'},
-            {value:'interest', icon:'ph-heart', title:'兴趣', desc:'想了解和学习'},
+            {value:'job', icon:'ph-briefcase', title:'<span data-i18n="goal_job"></span>', desc:'学完想从事相关行业'},
+            {value:'business', icon:'ph-rocket-launch', title:'<span data-i18n="goal_biz"></span>', desc:'学完想自己做事'},
+            {value:'skill', icon:'ph-chart-line-up', title:'<span data-i18n="goal_skill"></span>', desc:'工作上用得到'},
+            {value:'interest', icon:'ph-heart', title:'<span data-i18n="goal_interest"></span>', desc:'想了解和学习'},
         ],
         reply: function(ans) {
-            if (ans.value === 'job') return '目标是找工作的话，我们会安排更系统的课程路径，确保你学到用人单位需要的技能。再问一个：';
-            if (ans.value === 'business') return '想创业的话，我们会侧重实操和案例，让你学完就能用。继续：';
-            if (ans.value === 'skill') return '提升技能很好，我们会安排实用课程，学完马上能用上。下一个：';
-            return '兴趣驱动是最好的学习方式！我们会安排有趣又实用的课程。最后一个问题：';
+            if (ans.value === 'job') return '目标是<span data-i18n="goal_job"></span>的话，我们会安排更系统的课程路径，确保你学到用人单位需要的技能。再问一个：';
+            if (ans.value === 'business') return '想<span data-i18n="goal_biz"></span>的话，我们会侧重实操和案例，让你学完就能用。继续：';
+            if (ans.value === 'skill') return '<span data-i18n="goal_skill"></span>很好，我们会安排实用课程，学完马上能用上。下一个：';
+            return '<span data-i18n="goal_interest"></span>驱动是最好的学习方式！我们会安排有趣又实用的课程。最后一个问题：';
         }
     },
     {
         type: 'chat',
         text: '你每天能花多少时间学习？',
-        sub: '这决定学习节奏和课程安排',
+        sub: '<span data-i18n="ai_q4_sub"></span>',
         options: [
-            {value:'30', icon:'ph-clock', title:'30分钟', desc:'碎片时间学习'},
-            {value:'60', icon:'ph-clock', title:'1小时', desc:'每天固定时间'},
-            {value:'120', icon:'ph-clock', title:'2小时+', desc:'投入较多时间'},
+            {value:'30', icon:'ph-clock', title:'30分钟', desc:'<span data-i18n="time_30"></span>'},
+            {value:'60', icon:'ph-clock', title:'1小时', desc:'<span data-i18n="time_60"></span>'},
+            {value:'120', icon:'ph-clock', title:'2小时+', desc:'<span data-i18n="time_120"></span>'},
         ],
         reply: function(ans) {
             if (ans.value === '30') return '碎片时间也能学好！我们每周安排1门课，不着急慢慢来。最后一个问题：';
@@ -234,9 +234,9 @@ const questions = [
     },
     {
         type: 'free',
-        text: '最后想了解一下：你具体想学什么？',
+        text: '<span data-i18n="ai_q5"></span>',
         sub: '自由输入你的需求，越具体方案越精准。比如"我想学用AI写文案做副业"或"我想学区块链钱包安全使用"。也可以跳过，直接点提交。',
-        placeholder: '在这里输入你想学的具体内容...（可跳过）',
+        placeholder: '<span data-i18n="ai_q5_ph"></span>',
         allowSkip: true
     }
 ];
@@ -418,7 +418,7 @@ function generatePlan() {
         if (detail) summary += `<b>你的需求：</b>${detail}<br>`;
         summary += `<br>预计${currentPlan.length}周完成，共${courses.length - startIdx}门课程。`;
 
-        addAIMsg(`<p>方案生成完毕！</p>${summary}`);
+        addAIMsg(`<p><span data-i18n="plan_done"></span></p>${summary}`);
 
         // 显示方案
         setTimeout(() => {
@@ -431,7 +431,7 @@ function showPlan() {
     const container = document.getElementById('chatContainer');
 
     // 方案标题
-    addAIMsg(`<p><b>你的专属学习方案</b></p><p style="color:#888;font-size:13px;margin-top:4px">你可以修改方案：删除不需要的课程，或添加其他方向的课程</p>`);
+    addAIMsg(`<p><b><span data-i18n="plan_title"></span></b></p><p style="color:#888;font-size:13px;margin-top:4px"><span data-i18n="plan_edit"></span>：删除不需要的课程，或添加其他方向的课程</p>`);
 
     // 方案卡片
     setTimeout(() => {
@@ -479,8 +479,8 @@ function showPlan() {
         // 确认按钮
         html += `
             <div class="plan-actions">
-                <button class="btn-secondary" onclick="restart()">重新规划</button>
-                <button class="btn-primary" onclick="confirmPlan()">确认方案</button>
+                <button class="btn-secondary" onclick="restart()"><span data-i18n="replan"></span></button>
+                <button class="btn-primary" onclick="confirmPlan()"><span data-i18n="confirm_plan"></span></button>
             </div>`;
 
         html += `</div>`;
@@ -539,9 +539,9 @@ function addCourseToPlan() {
 }
 
 function confirmPlan() {
-    addAIMsg(`<p>方案已确认！你的学习方案已保存。</p>
+    addAIMsg(`<p><span data-i18n="plan_confirmed"></span>你的学习方案已保存。</p>
         <p>接下来：按方案顺序学习每门课程，全部学完参加考试，通过后获得链上证书。</p>
-        <p style="margin-top:12px;color:#8b89ff;font-weight:600">付费后即可开始学习。</p>`);
+        <p style="margin-top:12px;color:#8b89ff;font-weight:600"><span data-i18n="pay_to_start"></span>。</p>`);
 
     // 显示付费按钮
     setTimeout(() => {

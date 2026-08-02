@@ -60,13 +60,13 @@
 
     <!-- 全网统计 -->
     <div class="card">
-        <div class="card-title"><i class="ph-fill ph-chart-bar"></i> 全网统计 <button class="refresh" onclick="showToast('数据已刷新')">刷新</button></div>
+        <div class="card-title"><i class="ph-fill ph-chart-bar"></i> 全网统计 <button class="refresh" onclick="showToast('数据已刷新')"><span data-i18n="refresh"></span></button></div>
         <div class="stat-grid">
             <div class="stat-card"><div class="stat-label">ACE价格</div><div class="stat-value green">0.0125U</div><div class="stat-sub">+2.3% (24h)</div></div>
-            <div class="stat-card"><div class="stat-label">总用户数</div><div class="stat-value purple">128</div><div class="stat-sub">学员105 / 推广者23</div></div>
+            <div class="stat-card"><div class="stat-label"><span data-i18n="total_users"></span></div><div class="stat-value purple">128</div><div class="stat-sub">学员105 / 推广者23</div></div>
             <div class="stat-card"><div class="stat-label">底池规模</div><div class="stat-value blue">8,500U</div><div class="stat-sub">持续注入中</div></div>
             <div class="stat-card"><div class="stat-label">已销毁ACE</div><div class="stat-value red">15,000</div><div class="stat-sub">1.5%手续费+回购</div></div>
-            <div class="stat-card"><div class="stat-label">总学费收入</div><div class="stat-value green">26,000U</div><div class="stat-sub">学员+推广者</div></div>
+            <div class="stat-card"><div class="stat-label"><span data-i18n="total_revenue"></span></div><div class="stat-value green">26,000U</div><div class="stat-sub">学员+推广者</div></div>
             <div class="stat-card"><div class="stat-label">ACE总量</div><div class="stat-value">9,985,000</div><div class="stat-sub">初始10,000,000</div></div>
         </div>
     </div>
@@ -74,8 +74,8 @@
     <!-- 资金钱包 -->
     <div class="card">
         <div class="card-title"><i class="ph-fill ph-wallet"></i> 资金钱包</div>
-        <div class="data-row"><span class="l">平台运营USDT</span><span class="v green">12,000U</span></div>
-        <div class="data-row"><span class="l">护盘基金</span><span class="v">4,800U / 5,000U</span></div>
+        <div class="data-row"><span class="l"><span data-i18n="platform_fund"></span></span><span class="v green">12,000U</span></div>
+        <div class="data-row"><span class="l"><span data-i18n="protection_fund"></span></span><span class="v">4,800U / 5,000U</span></div>
         <div class="data-row"><span class="l">公益基金USDT</span><span class="v green">1,240U</span></div>
         <div class="data-row"><span class="l">公益基金ACE</span><span class="v">2,500 ACE</span></div>
         <div class="data-row"><span class="l">底池USDT</span><span class="v">8,500U</span></div>
@@ -96,7 +96,7 @@
     <div class="card">
         <div class="card-title"><i class="ph-fill ph-users-three"></i> 推广统计</div>
         <div class="stat-grid">
-            <div class="stat-card"><div class="stat-label">推广者人数</div><div class="stat-value purple">23</div><div class="stat-sub">第1批(1000U): 23/100</div></div>
+            <div class="stat-card"><div class="stat-label"><span data-i18n="promoter_count"></span></div><div class="stat-value purple">23</div><div class="stat-sub">第1批(1000U): 23/100</div></div>
             <div class="stat-card"><div class="stat-label">合伙人</div><div class="stat-value">0</div><div class="stat-sub">上限50人</div></div>
         </div>
         <div class="data-row"><span class="l">当前推广者价格</span><span class="v">1,000U</span></div>
@@ -118,20 +118,20 @@
     <!-- 权限状态 -->
     <div class="card">
         <div class="card-title"><i class="ph-fill ph-shield-check"></i> 权限状态</div>
-        <div class="data-row"><span class="l">ACEToken权限</span><span class="v"><span class="badge green">已丢弃</span></span></div>
-        <div class="data-row"><span class="l">Course权限</span><span class="v"><span class="badge green">已丢弃</span></span></div>
-        <div class="data-row"><span class="l">Referral权限</span><span class="v"><span class="badge red">未丢弃</span></span></div>
-        <div class="data-row"><span class="l">Lock权限</span><span class="v"><span class="badge red">未丢弃</span></span></div>
-        <div class="data-row"><span class="l">Market权限</span><span class="v"><span class="badge red">未丢弃</span></span></div>
+        <div class="data-row"><span class="l">ACEToken权限</span><span class="v"><span class="badge green"><span data-i18n="renounced"></span></span></span></div>
+        <div class="data-row"><span class="l">Course权限</span><span class="v"><span class="badge green"><span data-i18n="renounced"></span></span></span></div>
+        <div class="data-row"><span class="l">Referral权限</span><span class="v"><span class="badge red"><span data-i18n="not_renounced"></span></span></span></div>
+        <div class="data-row"><span class="l">Lock权限</span><span class="v"><span class="badge red"><span data-i18n="not_renounced"></span></span></span></div>
+        <div class="data-row"><span class="l">Market权限</span><span class="v"><span class="badge red"><span data-i18n="not_renounced"></span></span></span></div>
     </div>
 
     <!-- 管理操作 -->
     <div class="card">
         <div class="card-title"><i class="ph-fill ph-gear"></i> 管理操作</div>
-        <div class="data-row"><span class="l">补充护盘基金</span><button class="btn-action" onclick="showToast('待接入钱包')">补充</button></div>
+        <div class="data-row"><span class="l"><span data-i18n="topup_protection"></span></span><button class="btn-action" onclick="showToast('待接入钱包')">补充</button></div>
         <div class="data-row"><span class="l">提取护盘超出部分</span><button class="btn-action" onclick="showToast('待接入钱包')">提取</button></div>
-        <div class="data-row"><span class="l">月度回购销毁</span><button class="btn-action" onclick="showToast('待接入钱包')">执行</button></div>
-        <div class="data-row"><span class="l">紧急暂停</span><button class="btn-warn" onclick="showToast('待接入钱包')">暂停</button></div>
+        <div class="data-row"><span class="l"><span data-i18n="monthly_buyback"></span></span><button class="btn-action" onclick="showToast('待接入钱包')">执行</button></div>
+        <div class="data-row"><span class="l"><span data-i18n="emergency_pause"></span></span><button class="btn-warn" onclick="showToast('待接入钱包')">暂停</button></div>
     </div>
 </div>
 

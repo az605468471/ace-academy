@@ -127,6 +127,38 @@ const I18N = {
     // 页脚
     footer_tagline: {zh:'学技能 · 拿证书 · 赚代币', en:'Learn · Certify · Earn', ja:'スキル · 証明 · 獲得', ko:'스킬 · 자격 · 획득', es:'Aprende · Certifica · Gana'},
     
+
+    // AI规划师
+    ai_intro: {zh:'你好！我是你的AI学习规划师。', en:'Hello! I am your AI Learning Planner.', ja:'こんにちは！AI学習プランナーです。', ko:'안녕하세요! AI 학습 플래너입니다.', es:'Hola! Soy tu Planificador de Aprendizaje IA.'},
+    ai_intro2: {zh:'我会问你5个问题，然后为你定制一份专属学习方案。准备好了吗？', en:'I will ask 5 questions to create your personalized learning plan. Ready?', ja:'5つの質問で専用学習プランを作成します。準備はいいですか？', ko:'5개 질문으로 맞춤 학습계획을 만들어 드립니다. 준비되셨나요?', es:'Haré 5 preguntas para crear tu plan personalizado. ¿Listo?'},
+    ai_start: {zh:'让我们开始吧！', en:'Let us begin!', ja:'始めましょう！', ko:'시작합시다!', es:'¡Empecemos!'},
+    ai_q1: {zh:'第一个问题：你想学什么方向？', en:'Q1: What direction do you want to learn?', ja:'質問1：どの方向を学びたいですか？', ko:'질문1: 어떤 분야를 배우고 싶나요?', es:'P1: ¿Qué dirección quieres aprender?'},
+    ai_q1_sub: {zh:'选择一个最感兴趣的方向，后续可以调整', en:'Choose a direction, you can adjust later', ja:'興味のある方向を選んでください（後で変更可）', ko:'관심 분야를 선택하세요 (나중에 변경 가능)', es:'Elige una dirección, ajustable después'},
+    ai_q2: {zh:'第二个问题：你现在的学习基础怎么样？', en:'Q2: What is your current level?', ja:'質問2：現在の学習レベルは？', ko:'질문2: 현재 학습 수준은?', es:'P2: ¿Cuál es tu nivel actual?'},
+    ai_q2_sub: {zh:'这决定你的学习起点', en:'This determines your starting point', ja:'学習のスタート地点が決まります', ko:'학습 시작점이 결정됩니다', es:'Determina tu punto de partida'},
+    ai_q3: {zh:'第三个问题：你的学习目标是什么？', en:'Q3: What is your learning goal?', ja:'質問3：学習目標は？', ko:'질문3: 학습 목표는?', es:'P3: ¿Cuál es tu meta?'},
+    ai_q3_sub: {zh:'这决定学习方案的侧重点', en:'This determines the focus', ja:'学習プランの重点が決まります', ko:'학습 계획의 중점이 결정됩니다', es:'Determina el enfoque'},
+    ai_q4: {zh:'第四个问题：你每天能花多少时间学习？', en:'Q4: How much time per day?', ja:'質問4：1日の学習時間は？', ko:'질문4: 하루 학습 시간은?', es:'P4: ¿Cuánto tiempo al día?'},
+    ai_q4_sub: {zh:'这决定学习节奏和课程安排', en:'This determines your pace', ja:'学習ペースとスケジュールが決まります', ko:'학습 속도와 일정이 결정됩니다', es:'Determina tu ritmo'},
+    ai_q5: {zh:'最后想了解一下：你具体想学什么？', en:'Finally: What specifically do you want to learn?', ja:'最後に：具体的に何を学びたいですか？', ko:'마지막으로: 구체적으로 무엇을 배우고 싶나요?', es:'Por último: ¿Qué quieres aprender específicamente?'},
+    ai_q5_ph: {zh:'在这里输入你想学的具体内容...（可跳过）', en:'Type what you want to learn... (optional)', ja:'学びたい内容を入力...（スキップ可）', ko:'배우고 싶은 내용 입력... (건너뛰기 가능)', es:'Escribe qué quieres aprender... (opcional)'},
+    plan_done: {zh:'方案生成完毕！', en:'Plan generated!', ja:'プラン生成完了！', ko:'계획 생성 완료!', es:'¡Plan generado!'},
+    plan_title: {zh:'你的专属学习方案', en:'Your Personalized Learning Plan', ja:'あなたの専用学習プラン', ko:'나만의 맞춤 학습 계획', es:'Tu Plan Personalizado'},
+    plan_edit: {zh:'你可以修改方案：删除不需要的课程，或添加其他方向的课程', en:'You can modify: remove or add courses', ja:'プランを編集できます：コースの追加・削除', ko:'계획을 수정할 수 있습니다: 강의 추가/삭제', es:'Puedes modificar: añadir o eliminar cursos'},
+    plan_confirmed: {zh:'方案已确认！', en:'Plan confirmed!', ja:'プラン確認完了！', ko:'계획 확인 완료!', es:'¡Plan confirmado!'},
+    pay_to_start: {zh:'付费后即可开始学习', en:'Pay to start learning', ja:'支払い後すぐに学習開始', ko:'결제 후 학습 시작', es:'Paga para empezar'},
+    replan: {zh:'重新规划', en:'Replan', ja:'再計画', ko:'다시 계획', es:'Replanificar'},
+    confirm_plan: {zh:'确认方案', en:'Confirm Plan', ja:'プラン確認', ko:'계획 확인', es:'Confirmar Plan'},
+    time_30: {zh:'碎片时间学习', en:'Spare time learning', ja:'スキマ時間学習', ko:'자투리 시간 학습', es:'Tiempo libre'},
+    time_60: {zh:'每天固定时间', en:'Fixed time daily', ja:'毎日固定時間', ko:'매일 고정 시간', es:'Tiempo fijo diario'},
+    time_120: {zh:'投入较多时间', en:'More time investment', ja:'より多くの時間', ko:'많은 시간 투자', es:'Más tiempo'},
+    goal_job: {zh:'找工作', en:'Find a job', ja:'仕事探し', ko:'취업', es:'Buscar trabajo'},
+    goal_biz: {zh:'创业', en:'Start a business', ja:'起業', ko:'창업', es:'Emprender'},
+    goal_skill: {zh:'提升技能', en:'Improve skills', ja:'スキルアップ', ko:'스킬 향상', es:'Mejorar habilidades'},
+    goal_interest: {zh:'兴趣', en:'Interest', ja:'興味', ko:'흥미', es:'Interés'},
+    wallet_metamask: {zh:'小狐狸钱包', en:'MetaMask', ja:'MetaMask', ko:'MetaMask', es:'MetaMask'},
+    wallet_wc: {zh:'扫码连接', en:'Scan to connect', ja:'スキャン接続', ko:'스캔 연결', es:'Escanear'},
+
     // 通用
     back: {zh:'返回', en:'Back', ja:'戻る', ko:'뒤로', es:'Volver'},
     refresh: {zh:'刷新', en:'Refresh', ja:'更新', ko:'새로고침', es:'Actualizar'},
