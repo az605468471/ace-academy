@@ -6,200 +6,80 @@
     <title>王牌学院 · 推广中心</title>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        :root { --bg:#0a0a1a; --card:rgba(20,20,40,0.85); --border:rgba(139,137,255,0.2); --accent:#8b89ff; --accent2:#7c3aed; --green:#4ade80; --red:#f87171; --text:#e0e0e0; --dim:#666; }
-        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); }
-        .nav { position:sticky; top:0; z-index:100; background:rgba(10,10,26,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; }
-        .nav-logo { display:flex; align-items:center; gap:8px; }
-        .nav-logo-icon { width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; }
-        .nav-logo-icon span { font-family:'Orbitron'; font-size:14px; font-weight:900; color:#fff; }
-        .nav-back { color:var(--accent); font-size:13px; text-decoration:none; }
-        .body { max-width:600px; margin:0 auto; padding:16px; padding-bottom:80px; }
-        .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
-        .card-title { font-size:15px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:6px; }
-        .card-title i { color:var(--accent); font-size:20px; }
-        .role-badge { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; padding:6px 16px; border-radius:20px; font-size:13px; font-weight:600; margin-bottom:16px; }
-        .ref-link-box { background:rgba(10,10,26,0.6); border:1px solid var(--border); border-radius:10px; padding:14px; display:flex; align-items:center; gap:10px; }
-        .ref-link { flex:1; font-size:12px; color:var(--accent); font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .btn-copy { background:var(--accent); color:#fff; border:none; padding:8px 14px; border-radius:8px; font-size:13px; cursor:pointer; font-family:inherit; white-space:nowrap; }
-        .income-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:16px; }
-        .income-box { background:rgba(10,10,26,0.4); border-radius:10px; padding:14px; text-align:center; }
-        .income-num { font-family:'Orbitron'; font-size:18px; font-weight:700; }
-        .income-num.green { color:var(--green); }
-        .income-num.purple { color:var(--accent); }
-        .income-label { font-size:11px; color:var(--dim); margin-top:4px; }
-        .team-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-        .team-box { background:rgba(10,10,26,0.4); border-radius:10px; padding:14px; }
-        .team-row { display:flex; justify-content:space-between; font-size:13px; padding:4px 0; }
-        .team-row .l { color:var(--dim); }
-        .team-row .v { color:#fff; font-weight:600; }
-        .level-bar { background:rgba(10,10,26,0.4); border-radius:10px; padding:14px; margin-top:12px; }
-        .level-current { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-        .level-name { font-size:14px; font-weight:700; color:var(--accent); }
-        .level-progress { height:6px; background:#333; border-radius:3px; overflow:hidden; }
-        .level-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:3px; }
-        .level-next { font-size:12px; color:var(--dim); margin-top:6px; }
-        .detail-list { }
-        .detail-item { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(139,137,255,0.1); font-size:13px; }
-        .detail-item:last-child { border:none; }
-        .detail-addr { color:var(--dim); font-family:monospace; }
-        .detail-action { font-size:12px; padding:4px 10px; border-radius:6px; }
-        .detail-action.buy { color:var(--green); background:rgba(74,222,128,0.1); }
-        .detail-action.promo { color:var(--accent); background:rgba(139,137,255,0.1); }
-        .btn-upgrade { width:100%; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:14px; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
-        .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
-        .toast.show { opacity:1; }
-        .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(10,10,26,0.95); border-top:1px solid var(--border); display:flex; padding:8px; z-index:100; }
-        .nav-item { flex:1; text-align:center; padding:8px; color:var(--dim); font-size:11px; cursor:pointer; text-decoration:none; }
-        .nav-item.active { color:var(--accent); }
-        .nav-item i { font-size:20px; display:block; margin-bottom:2px; }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--dim:#666;--text:#e0e0e0;}
+        body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
+        .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
+        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
+        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0;}
+        .tl{display:flex;gap:8px;align-items:center;}.tl img{width:34px;height:34px;border-radius:8px;}
+        .lang{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
+        .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+        .role{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:12px;}
+        .ref-box{background:rgba(10,10,26,.5);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:8px;align-items:center;}
+        .ref{flex:1;font-size:11px;color:var(--accent);font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .copy-btn{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer;}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+        .inc{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;text-align:center;}
+        .inc .n{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--green);}
+        .inc.w .n{color:var(--accent);}.inc .l{font-size:11px;color:var(--dim);}
+        .team{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;}
+        .tr{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;}
+        .tr .l{color:var(--dim);}.tr .v{font-weight:600;}
+        .level-bar{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;margin-top:10px;}
+        .lvl{height:6px;background:#333;border-radius:3px;overflow:hidden;margin-top:8px;}
+        .lvl-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;}
+        .btn-up{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;}
+        .back-link{color:var(--accent);font-size:12px;text-decoration:none;}
     </style>
 </head>
 <body>
-
-<div class="nav">
-    <div class="nav-logo">
-        <div class="nav-logo-icon"><span>A</span></div>
-        <span style="font-family:'Orbitron';font-size:14px;font-weight:700">ACE</span>
+<div class="bg"></div>
+<div class="wrap">
+    <div class="top-bar">
+        <div class="tl"><img src="images/ace-logo.png"><span style="font-family:'Orbitron';font-weight:800;font-size:14px">ACE ACADEMY</span></div>
+        <select class="lang" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
     </div>
-    <a href="learning.html" class="nav-back"><i class="ph ph-arrow-left"></i> 返回</a>
-</div>
 
-<div class="body">
-    <!-- 身份 -->
     <div class="card" style="text-align:center">
-        <div class="role-badge"><i class="ph-fill ph-star"></i> 推广者 · 学长</div>
-        <div style="font-size:13px; color:var(--dim)">直推比例：20% | 团队人数：12人</div>
+        <div class="role"><i class="ph-fill ph-star"></i> <span data-i18n="ambassador">大使</span> · Learner</div>
+        <div style="font-size:12px;color:var(--dim)">直推20% · 团队12人</div>
     </div>
 
-    <!-- 推荐链接 -->
     <div class="card">
-        <div class="card-title"><i class="ph-fill ph-link"></i> 我的推荐链接</div>
-        <div class="ref-link-box">
-            <div class="ref-link" id="refLink">https://ark-academy.com/?ref=0xABC123...</div>
-            <button class="btn-copy" onclick="copyLink()"><i class="ph-fill ph-copy"></i> 复制</button>
-        </div>
-        <div style="font-size:12px; color:var(--dim); margin-top:8px">分享给朋友，他们注册学习你就能赚取奖励</div>
-    </div>
-
-    <!-- 今日收入 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-currency-btc"></i> 收入概览</div>
-        <div class="income-grid">
-            <div class="income-box">
-                <div class="income-num green">48 U</div>
-                <div class="income-label">直推USDT（今日）</div>
-            </div>
-            <div class="income-box">
-                <div class="income-num purple">500 ACE</div>
-                <div class="income-label">团队代币（本月）</div>
-            </div>
-            <div class="income-box">
-                <div class="income-num green">320 U</div>
-                <div class="income-label">直推USDT（累计）</div>
-            </div>
-            <div class="income-box">
-                <div class="income-num purple">2,000 ACE</div>
-                <div class="income-label">代币释放（累计）</div>
-            </div>
+        <div class="sec-t" style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-link"></i> <span data-i18n="my_ref_link">我的推荐链接</span></div>
+        <div class="ref-box">
+            <div class="ref">https://ace-academy.com/?ref=0xABC123...</div>
+            <button class="copy-btn" onclick="copyLink()"><i class="ph-fill ph-copy"></i></button>
         </div>
     </div>
 
-    <!-- 团队数据 -->
+    <div class="grid2" style="margin-bottom:12px">
+        <div class="inc"><div class="n">48U</div><div class="l" data-i18n="income">收入</div></div>
+        <div class="inc w"><div class="n" style="color:var(--accent)">500 ACE</div><div class="l">团队</div></div>
+    </div>
+
     <div class="card">
-        <div class="card-title"><i class="ph-fill ph-users-three"></i> 团队数据</div>
-        <div class="team-grid">
-            <div class="team-box">
-                <div class="team-row"><span class="l"><span data-i18n="direct_count"></span></span><span class="v">12人</span></div>
-                <div class="team-row"><span class="l"><span data-i18n="team_total"></span></span><span class="v">45人</span></div>
-            </div>
-            <div class="team-box">
-                <div class="team-row"><span class="l"><span data-i18n="team_revenue"></span></span><span class="v">8,000U</span></div>
-                <div class="team-row"><span class="l"><span data-i18n="personal_revenue"></span></span><span class="v">1,200U</span></div>
-            </div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-users-three"></i> <span data-i18n="team">团队数据</span></div>
+        <div class="team">
+            <div class="tr"><span class="l">直推人数</span><span class="v">12人</span></div>
+            <div class="tr"><span class="l">团队总人数</span><span class="v">45人</span></div>
+            <div class="tr"><span class="l">团队业绩</span><span class="v">8,000U</span></div>
+            <div class="tr"><span class="l">当前级别</span><span class="v">Learner</span></div>
         </div>
         <div class="level-bar">
-            <div class="level-current">
-                <span class="level-name"<span data-i18n="current_level"></span>学长</span>
-                <span style="font-size:12px;color:var(--dim)">下一级：辅导员</span>
-            </div>
-            <div class="level-progress"><div class="level-fill" style="width:60%"></div></div>
-            <div class="level-next">距升级还差：8人 + 2,000U业绩</div>
+            <div style="font-size:12px;color:var(--dim)">下一级：Mentor</div>
+            <div class="lvl"><div class="lvl-fill" style="width:60%"></div></div>
         </div>
-    </div>
-
-    <!-- 直推明细 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-list-checks"></i> 直推明细</div>
-        <div class="detail-list">
-            <div class="detail-item">
-                <span class="detail-addr">0x1234...5678</span>
-                <span class="detail-action buy">买课 200U</span>
-                <span style="color:var(--green)">+40U</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-addr">0x9abc...def0</span>
-                <span class="detail-action buy">买课 200U</span>
-                <span style="color:var(--green)">+40U</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-addr">0x5678...9abc</span>
-                <span class="detail-action promo">升级推广者</span>
-                <span style="color:var(--green)">+200U</span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-addr">0xdef0...1234</span>
-                <span class="detail-action buy">复购 200U</span>
-                <span style="color:var(--green)">+40U</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- 升级 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-crown"></i> 升级合伙人</div>
-        <div style="font-size:13px; color:var(--dim); margin-bottom:16px; line-height:1.6">
-            合伙人享有区域运营权，拿平台运营费80%分成。<br>
-            门槛：2万U | 永久上限50人
-        </div>
-        <button class="btn-upgrade" onclick="upgrade()">升级为合伙人（2万U）</button>
+        <button class="btn-up" onclick="alert('待接入')">升级为 Mentor</button>
     </div>
 </div>
-
-<div class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="ph ph-house"></i>首页</a>
-    <a href="learning.html" class="nav-item"><i class="ph-fill ph-graduation-cap"></i>学习</a>
-    <a href="promote.html" class="nav-item active"><i class="ph-fill ph-megaphone"></i>推广</a>
-    <a href="profile.html" class="nav-item"><i class="ph ph-user"></i>我的</a>
-</div>
-
-<div class="toast" id="toast"></div>
-
+<script src="i18n.js"></script>
 <script>
-function copyLink() {
-    const link = document.getElementById('refLink').textContent;
-    navigator.clipboard.writeText(link).then(() => {
-        showToast('链接已复制');
-    }).catch(() => {
-        showToast('请手动复制: ' + link);
-    });
-}
-
-function upgrade() {
-    showToast('合伙人功能第二阶段启用');
-}
-
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show';
-    setTimeout(() => t.className = 'toast', 2500);
-}
+document.querySelector('.lang').value=getLang();
+function copyLink(){navigator.clipboard.writeText('https://ace-academy.com/?ref=0xABC123').then(()=>alert('已复制'));}
 </script>
-
-<script src="nav.js"></script><script>createNav("promote")</script>
-<script src="translate.js"></script>
 </body>
 </html>

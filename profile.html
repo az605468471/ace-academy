@@ -3,179 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>王牌学院 · 个人中心</title>
+    <title>王牌学院 · 我的</title>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        :root { --bg:#0a0a1a; --card:rgba(20,20,40,0.85); --border:rgba(139,137,255,0.2); --accent:#8b89ff; --accent2:#7c3aed; --green:#4ade80; --red:#f87171; --text:#e0e0e0; --dim:#666; }
-        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); }
-        .nav { position:sticky; top:0; z-index:100; background:rgba(10,10,26,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:12px 20px; display:flex; align-items:center; justify-content:space-between; }
-        .nav-logo { display:flex; align-items:center; gap:8px; }
-        .nav-logo-icon { width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; }
-        .nav-logo-icon span { font-family:'Orbitron'; font-size:14px; font-weight:900; color:#fff; }
-        .body { max-width:600px; margin:0 auto; padding:16px; padding-bottom:80px; }
-        .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; }
-        .card-title { font-size:15px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:6px; }
-        .card-title i { color:var(--accent); font-size:20px; }
-        .addr-box { background:rgba(10,10,26,0.4); border-radius:10px; padding:14px; }
-        .addr-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; }
-        .addr-row .l { color:var(--dim); }
-        .addr-row .v { color:#fff; font-family:monospace; }
-        .bal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-        .bal-box { background:rgba(10,10,26,0.4); border-radius:10px; padding:14px; text-align:center; }
-        .bal-num { font-family:'Orbitron'; font-size:16px; font-weight:700; }
-        .bal-num.purple { color:var(--accent); }
-        .bal-num.green { color:var(--green); }
-        .bal-num.blue { color:#60a5fa; }
-        .bal-label { font-size:11px; color:var(--dim); margin-top:4px; }
-        .release-bar { background:rgba(10,10,26,0.4); border-radius:10px; padding:14px; margin-top:12px; }
-        .release-row { display:flex; justify-content:space-between; font-size:13px; padding:4px 0; }
-        .release-row .l { color:var(--dim); }
-        .release-row .v.done { color:var(--green); }
-        .release-row .v.locked { color:var(--dim); }
-        .progress-bar { height:6px; background:#333; border-radius:3px; overflow:hidden; margin:8px 0; }
-        .progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); border-radius:3px; }
-        .cert-box { background:linear-gradient(135deg,rgba(26,58,26,0.6),rgba(42,90,42,0.3)); border:1px solid rgba(74,222,128,0.2); border-radius:12px; padding:16px; display:flex; align-items:center; gap:14px; }
-        .cert-icon { width:48px; height:48px; border-radius:12px; background:rgba(74,222,128,0.15); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .cert-icon i { font-size:24px; color:var(--green); }
-        .cert-info h4 { font-size:14px; font-weight:600; color:var(--green); }
-        .cert-info p { font-size:12px; color:var(--dim); margin-top:2px; }
-        .stake-box { background:rgba(10,10,26,0.4); border-radius:10px; padding:14px; }
-        .stake-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(139,137,255,0.05); }
-        .stake-row:last-child { border:none; }
-        .stake-row .l { color:var(--dim); }
-        .stake-row .v { color:#fff; font-weight:600; }
-        .stake-row .v.green { color:var(--green); }
-        .btn-stake { background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none; padding:10px 20px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; margin-top:12px; width:100%; }
-        .benefit-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; font-size:13px; border-bottom:1px solid rgba(139,137,255,0.05); }
-        .benefit-row:last-child { border:none; }
-        .benefit-row .l { color:var(--dim); }
-        .benefit-row .v { color:var(--green); }
-        .btn-refund { width:100%; background:transparent; color:var(--red); border:1px solid var(--red); padding:12px; border-radius:10px; font-size:13px; cursor:pointer; font-family:inherit; }
-        .btn-refund:hover { background:rgba(248,113,113,0.1); }
-        .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:rgba(10,10,26,0.95); border-top:1px solid var(--border); display:flex; padding:8px; z-index:100; }
-        .nav-item { flex:1; text-align:center; padding:8px; color:var(--dim); font-size:11px; cursor:pointer; text-decoration:none; }
-        .nav-item.active { color:var(--accent); }
-        .nav-item i { font-size:20px; display:block; margin-bottom:2px; }
-        .toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; padding:12px 24px; border-radius:12px; font-size:14px; z-index:200; opacity:0; transition:opacity 0.3s; pointer-events:none; }
-        .toast.show { opacity:1; }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--dim:#666;--text:#e0e0e0;}
+        body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
+        .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
+        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
+        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0;}
+        .tl{display:flex;gap:8px;align-items:center;}.tl img{width:34px;height:34px;border-radius:8px;}
+        .lang{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
+        .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+        .row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(139,137,255,.05);}
+        .row:last-child{border:none;}.row .l{color:var(--dim);}.row .v{font-weight:600;font-family:monospace;}
+        .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+        .b{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;text-align:center;}
+        .b .n{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--accent);}
+        .b .l{font-size:11px;color:var(--dim);}
+        .cert{background:linear-gradient(135deg,rgba(26,58,26,.6),rgba(42,90,42,.3));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px;display:flex;gap:12px;}
+        .cert i{font-size:32px;color:var(--green);}
+        .btn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;}
+        .btn-out{background:transparent;color:var(--red);border:1px solid var(--red);}
+        .back-link{color:var(--accent);font-size:12px;text-decoration:none;}
     </style>
 </head>
 <body>
-
-<div class="nav">
-    <div class="nav-logo">
-        <div class="nav-logo-icon"><span>A</span></div>
-        <span style="font-family:'Orbitron';font-size:14px;font-weight:700">ACE</span>
+<div class="bg"></div>
+<div class="wrap">
+    <div class="top-bar">
+        <div class="tl"><img src="images/ace-logo.png"><span style="font-family:'Orbitron';font-weight:800;font-size:14px">ACE ACADEMY</span></div>
+        <select class="lang" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
     </div>
+
+    <div class="card">
+        <div class="row"><span class="l">钱包地址</span><span class="v">0xABC1...23DEF</span></div>
+        <div class="row"><span class="l">用户ID</span><span class="v">100235</span></div>
+        <div class="row"><span class="l">身份</span><span class="v">学员</span></div>
+        <div class="row"><span class="l">推荐人</span><span class="v">0x90F8...c9C1</span></div>
+    </div>
+
+    <div class="card">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-coins"></i> 我的资产</div>
+        <div class="grid3">
+            <div class="b"><div class="n">720</div><div class="l">可用ACE</div></div>
+            <div class="b"><div class="n" style="color:var(--dim)">480</div><div class="l">锁定ACE</div></div>
+            <div class="b"><div class="n" style="color:var(--green)">500U</div><div class="l">USDT</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--dim);margin-top:10px;text-align:center">已释放 60%</div>
+        <div style="height:6px;background:#333;border-radius:3px;margin-top:6px;overflow:hidden"><div style="height:100%;width:60%;background:linear-gradient(90deg,var(--accent),var(--green))"></div></div>
+    </div>
+
+    <div class="card">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-certificate"></i> 我的证书</div>
+        <div class="cert">
+            <i class="ph-fill ph-seal-check"></i>
+            <div><div style="font-weight:700;color:var(--green)">AI应用认证</div><div style="font-size:11px;color:var(--dim)">ACE-20697-1 · 5门课 · 95分</div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-vault"></i> 质押生息</div>
+        <div class="row"><span class="l">质押</span><span class="v">1,000 ACE · 90天</span></div>
+        <div class="row"><span class="l">年化</span><span class="v" style="color:var(--green)">10%</span></div>
+        <button class="btn">新增质押</button>
+    </div>
+
+    <div class="card">
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-medal"></i> 持有权益</div>
+        <div class="row"><span class="l">持有1,200 ACE</span><span class="v" style="color:var(--green)">课程9.5折</span></div>
+        <div class="row"><span class="l">持有5,000 ACE解锁</span><span class="v">课程9折+社群</span></div>
+    </div>
+
+    <button class="btn btn-out">申请退课</button>
 </div>
-
-<div class="body">
-    <!-- 钱包信息 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-wallet"></i> 账户信息</div>
-        <div class="addr-box">
-            <div class="addr-row"><span class="l"><span data-i18n="wallet_addr"></span></span><span class="v">0xABC1...23DEF</span></div>
-            <div class="addr-row"><span class="l"><span data-i18n="user_id"></span></span><span class="v">100235</span></div>
-            <div class="addr-row"><span class="l"><span data-i18n="referrer"></span></span><span class="v">0x90F8...c9C1</span></div>
-            <div class="addr-row"><span class="l"><span data-i18n="account_info"></span></span><span class="v" style="color:var(--accent)">学员</span></div>
-        </div>
-    </div>
-
-    <!-- 资产 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-coins"></i> 我的资产</div>
-        <div class="bal-grid">
-            <div class="bal-box">
-                <div class="bal-num purple">720</div>
-                <div class="bal-label"><span data-i18n="available_ace"></span></div>
-            </div>
-            <div class="bal-box">
-                <div class="bal-num" style="color:var(--dim)">480</div>
-                <div class="bal-label"><span data-i18n="locked_ace"></span></div>
-            </div>
-            <div class="bal-box">
-                <div class="bal-num green">500U</div>
-                <div class="bal-label">USDT</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 代币释放 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-lock-open"></i> 代币释放进度</div>
-        <div style="font-size:14px; font-weight:600; margin-bottom:8px">已释放：60% (720/1,200 ACE)</div>
-        <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
-        <div class="release-bar">
-            <div class="release-row"><span class="l">报名释放 (30%)</span><span class="v done">✓ 已释放</span></div>
-            <div class="release-row"><span class="l">学完第一门 (30%)</span><span class="v done">✓ 已释放</span></div>
-            <div class="release-row"><span class="l">考试通过 (40%)</span><span class="v locked"><span data-i18n="locked"></span></span></div>
-        </div>
-    </div>
-
-    <!-- 证书 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-certificate"></i> 我的证书</div>
-        <div class="cert-box">
-            <div class="cert-icon"><i class="ph-fill ph-seal-check"></i></div>
-            <div class="cert-info">
-                <h4>AI应用认证</h4>
-                <p>证书ID: ACE-20697-1 · 5门课 · 95分</p>
-                <p style="color:var(--green);margin-top:4px">已上链 ✓ 永久有效</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 质押 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-vault"></i> 质押生息</div>
-        <div class="stake-box">
-            <div class="stake-row"><span class="l"><span data-i18n="stake_amount"></span></span><span class="v">1,000 ACE</span></div>
-            <div class="stake-row"><span class="l"><span data-i18n="stake_period"></span></span><span class="v">90天</span></div>
-            <div class="stake-row"><span class="l"><span data-i18n="apr"></span></span><span class="v">10%</span></div>
-            <div class="stake-row"><span class="l"><span data-i18n="expected_reward"></span></span><span class="v green">24.66 ACE</span></div>
-            <div class="stake-row"><span class="l"><span data-i18n="maturity"></span></span><span class="v">2026-11-01</span></div>
-        </div>
-        <button class="btn-stake" onclick="showToast('质押功能待接入钱包')"><i class="ph-fill ph-plus"></i> 新增质押</button>
-    </div>
-
-    <!-- 持有权益 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-medal"></i> 持有权益</div>
-        <div class="benefit-row"><span class="l">持有1,200 ACE</span><span class="v">课程9.5折</span></div>
-        <div class="benefit-row"><span class="l">持有1,200 ACE</span><span class="v">优先客服</span></div>
-        <div class="benefit-row"><span class="l">持有5,000 ACE解锁</span><span style="color:var(--dim)">课程9折 + 专属社群</span></div>
-    </div>
-
-    <!-- 退课 -->
-    <div class="card">
-        <div class="card-title"><i class="ph-fill ph-arrow-u-up-left"></i> 退课</div>
-        <div style="font-size:12px; color:var(--dim); margin-bottom:12px; line-height:1.5">
-            退课后课程作废，剩余代币全部一次性释放。不退USDT，不影响推荐人。
-        </div>
-        <button class="btn-refund" onclick="showToast('退课功能待接入钱包')"><span data-i18n="apply_refund"></span></button>
-    </div>
-</div>
-
-<div class="bottom-nav">
-    <a href="index.html" class="nav-item"><i class="ph ph-house"></i>首页</a>
-    <a href="learning.html" class="nav-item"><i class="ph-fill ph-graduation-cap"></i>学习</a>
-    <a href="trade.html" class="nav-item"><i class="ph-fill ph-currency-btc"></i>交易</a>
-    <a href="profile.html" class="nav-item active"><i class="ph-fill ph-user"></i>我的</a>
-</div>
-
-<div class="toast" id="toast"></div>
-<script>
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast show';
-    setTimeout(() => t.className = 'toast', 2500);
-}
-</script>
-<script src="nav.js"></script><script>createNav("profile")</script>
-<script src="translate.js"></script>
+<script src="i18n.js"></script>
 </body>
 </html>
