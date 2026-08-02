@@ -28,7 +28,7 @@ function createNav(active) {
     <div class="nav-bar">
         <div class="nav-inner">
             <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon"><span>A</span></div>
+                <div class="nav-logo-icon"><img src="images/ace-logo.png" style="width:24px;height:24px;border-radius:5px" alt="ACE"></div>
                 <span class="nav-logo-text">ACE</span>
             </a>
             <div class="nav-lang-wrap">
