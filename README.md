@@ -1,2 +1,2 @@
-# ACE Academy · 阿奇学院
+# ACE Academy · 王牌学院
 Blockchain + AI Education Platform

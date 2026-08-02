@@ -1,4 +1,4 @@
-// 阿奇学院统一导航栏 + 完整多语言系统
+// 王牌学院统一导航栏 + 完整多语言系统
 // 支持语言：中文(zh) 英文(en) 日文(ja) 韩文(ko) 西班牙文(es)
 
 const LANGS = [
@@ -155,7 +155,7 @@ const I18N = {
     ref_bound: {zh:'已绑定', en:'Bound', ja:'バインド済み', ko:'연결됨', es:'Vinculado'},
     sign_auth: {zh:'签名授权登录', en:'Sign to Login', ja:'署名してログイン', ko:'서명하여 로그인', es:'Firmar para Acceder'},
     login_success: {zh:'登录成功', en:'Login Success', ja:'ログイン成功', ko:'로그인성공', es:'Acceso Exitoso'},
-    welcome_back: {zh:'欢迎回到阿奇学院', en:'Welcome back to ACE Academy', ja:'ACE Academyへお帰りなさい', ko:'ACE Academy에 오신 것을 환영합니다', es:'Bienvenido de vuelta'},
+    welcome_back: {zh:'欢迎回到王牌学院', en:'Welcome back to ACE Academy', ja:'ACE Academyへお帰りなさい', ko:'ACE Academy에 오신 것을 환영합니다', es:'Bienvenido de vuelta'},
     
     // 交易
     ace_price: {zh:'ACE 当前价格', en:'ACE Current Price', ja:'ACE現在価格', ko:'ACE 현재 가격', es:'Precio ACE'},
