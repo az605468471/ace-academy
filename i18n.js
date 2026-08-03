@@ -154,6 +154,11 @@ const I18N = {
     income: {zh:'收入', en:'Income', ja:'収入', ko:'수입', es:'Ingresos'},
     team: {zh:'团队', en:'Team', ja:'チーム', ko:'팀', es:'Equipo'},
     upgrade_partner: {zh:'升级合伙人', en:'Be Partner', ja:'パートナー', ko:'파트너', es:'Ser Socio'},
+    level_learner: {zh:'学者', en:'Learner'},
+    level_mentor: {zh:'导师', en:'Mentor'},
+    level_scholar: {zh:'学士', en:'Scholar'},
+    level_master: {zh:'硕士', en:'Master'},
+    level_chancellor: {zh:'院长', en:'Chancellor'},
     ambassador: {zh:'大使', en:'Ambassador', ja:'アンバサダー', ko:'앰버서더', es:'Embajador'},
 
     // ===== 我的 =====
