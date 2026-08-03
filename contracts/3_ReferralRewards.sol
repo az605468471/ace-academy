@@ -77,10 +77,10 @@ contract ACEReferral {
         _;
     }
 
-    constructor(address _aceToken) {
+    constructor(address _aceToken, address _owner) {
         require(_aceToken != address(0), "Referral: zero address");
         aceToken = IERC20(_aceToken);
-        owner = msg.sender;
+        owner = _owner;
 
         // 级别条件
         // 0=学长: 推荐3人

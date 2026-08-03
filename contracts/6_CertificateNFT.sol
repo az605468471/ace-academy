@@ -72,10 +72,10 @@ contract ACECertificate {
         _;
     }
 
-    constructor(address _aceToken) {
+    constructor(address _aceToken, address _owner) {
         require(_aceToken != address(0), "Cert: zero address");
         aceToken = IERC20(_aceToken);
-        owner = msg.sender;
+        owner = _owner;
     }
 
     // ============ 铸造证书 ============

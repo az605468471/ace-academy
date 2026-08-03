@@ -148,7 +148,8 @@ contract ACECourse {
         address _usdt,
         address _platformWallet,
         address _charityWallet,
-        address _poolWallet
+        address _poolWallet,
+        address _owner
     ) {
         require(_aceToken != address(0) && _usdt != address(0), "Course: zero address");
         aceToken = IACEToken(_aceToken);
@@ -156,7 +157,7 @@ contract ACECourse {
         platformWallet = _platformWallet;
         charityWallet = _charityWallet;
         poolWallet = _poolWallet;
-        owner = msg.sender;
+        owner = _owner;
         acePrice = 1 * 10**16; // 0.01 USDT per ACE (精度1e18)
         lastPriceUpdate = block.timestamp;
 

@@ -99,14 +99,15 @@ contract ACEMarketManager {
         address _aceToken,
         address _usdt,
         address _platformWallet,
-        address _charityWallet
+        address _charityWallet,
+        address _owner
     ) {
         require(_aceToken != address(0) && _usdt != address(0), "Market: zero address");
         aceToken = IACEToken(_aceToken);
         usdtToken = IERC20(_usdt);
         platformWallet = _platformWallet;
         charityWallet = _charityWallet;
-        owner = msg.sender;
+        owner = _owner;
     }
 
     // ============ 自动做市检查 ============

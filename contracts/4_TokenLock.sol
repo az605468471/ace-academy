@@ -79,10 +79,10 @@ contract ACELock {
         _;
     }
 
-    constructor(address _aceToken) {
+    constructor(address _aceToken, address _owner) {
         require(_aceToken != address(0), "Lock: zero address");
         aceToken = IERC20(_aceToken);
-        owner = msg.sender;
+        owner = _owner;
     }
 
     // ============ 学员存入 ============

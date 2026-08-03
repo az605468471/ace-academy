@@ -74,20 +74,21 @@ contract ACEToken is IERC20 {
         _;
     }
 
-    constructor(address _charityWallet) {
+    constructor(address _charityWallet, address _owner) {
         require(_charityWallet != address(0), "ACE: charity zero address");
+        require(_owner != address(0), "ACE: owner zero address");
         
-        owner = msg.sender;
+        owner = _owner;
         charityWallet = _charityWallet;
         _totalSupply = TOTAL_SUPPLY;
-        _balances[msg.sender] = TOTAL_SUPPLY;
+        _balances[_owner] = TOTAL_SUPPLY;
         
         // 白名单：owner和公益基金免手续费
-        isExemptFromFee[msg.sender] = true;
+        isExemptFromFee[_owner] = true;
         isExemptFromFee[_charityWallet] = true;
         isExemptFromFee[BURN_ADDRESS] = true;
 
-        emit Transfer(address(0), msg.sender, TOTAL_SUPPLY);
+        emit Transfer(address(0), _owner, TOTAL_SUPPLY);
     }
 
     function totalSupply() external view override returns (uint256) {
