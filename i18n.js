@@ -317,6 +317,16 @@ const I18N = {
     price: {zh:'价格',en:'Price',ja:'価格',ko:'가격',es:'Precio'},
     holder: {zh:'持有人', en:'Holder'},
     benefit_tip: {zh:'持币越多，权益越高。ACE可在交易市场购买。', en:'Hold more ACE for higher benefits.'},
+    refund_tip2: {zh:'退课后课程作废，不可继续学习', en:'Refund cancels course enrollment'},
+    refund_denied: {zh:'已学完（考试通过），不可退课', en:'Course completed, no refund'},
+    refund_allowed: {zh:'未考试，可申请退课', en:'Can apply for refund'},
+    released: {zh:'已释放', en:'Released'},
+    unreleased: {zh:'未释放', en:'Unreleased'},
+    refund_amount: {zh:'本退币', en:'Refund'},
+    refund_policy1: {zh:'只退ACE币，不支持退U', en:'Refund in ACE only'},
+    refund_policy2: {zh:'已释放的币不追回', en:'Released ACE kept'},
+    refund_policy3: {zh:'不影响推荐人奖励与底池', en:'Keeps referral & pool'},
+    refund_all: {zh:'确认退课', en:'Confirm Refund'},
 
     // ==== 管理补充 ====
     market_mgmt: {zh:'做市管理',en:'Market Mgmt',ja:'市場管理',ko:'시장관리',es:'Mercado'},

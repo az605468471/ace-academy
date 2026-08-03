@@ -13,8 +13,8 @@ let profile = {
 
 // 质押状态
 let staking = { days: 90, rate: 0.10, amount: 0 };
-// 退课状态
-let refund = { reason: 0, plan: 0 };
+// 退课状态（按合约 refundCourse 逻辑）
+let refund = { reason: 0, examPassed: false, aceAllocated: 1000, aceReleased: 600, refunded: false };
 
 // 质押档位
 const STAKE_PLANS = {
@@ -133,8 +133,34 @@ function openBenefits() {
 // 4. 申请退课
 // ============================================
 function openRefund() {
-    refund = { reason: 0, plan: 0 };
+    refund = { reason: 0, examPassed: false, aceAllocated: 1000, aceReleased: 600, refunded: false };
     document.querySelectorAll('#refundOverlay .opt').forEach(o => o.classList.remove('on'));
+    // 构建状态区
+    const status = document.getElementById('refundStatus');
+    const body = document.getElementById('refundBody');
+    const denied = document.getElementById('refundDenied');
+
+    const unreleased = refund.aceAllocated - refund.aceReleased;
+    const pct = Math.round(refund.aceReleased / refund.aceAllocated * 100);
+
+    let html = '<div class="dr" style="display:flex;justify-content:space-between;padding:4px 0"><span class="l">方向</span><b>AI应用</b></div>';
+    html += '<div class="dr" style="display:flex;justify-content:space-between;padding:4px 0"><span class="l">' + getI18n('released') + '</span><b>' + pct + '%</b></div>';
+
+    if (refund.examPassed && !refund.refunded) {
+        // 已考试通过 → 不可退
+        status.innerHTML = html + '<div class="dr" style="display:flex;justify-content:space-between;padding:4px 0"><span class="l">考试</span><b style="color:var(--green)">已通过</b></div>';
+        body.style.display = 'none';
+        denied.style.display = 'block';
+    } else {
+        // 未考试 → 可退
+        status.innerHTML = html +
+            '<div class="dr" style="display:flex;justify-content:space-between;padding:4px 0"><span class="l">' + getI18n('released') + '</span><b>' + refund.aceReleased + ' ACE</b></div>' +
+            '<div class="dr" style="display:flex;justify-content:space-between;padding:4px 0"><span class="l">' + getI18n('unreleased') + '</span><b style="color:var(--green)">' + unreleased + ' ACE</b></div>' +
+            '<div class="dr" style="display:flex;justify-content:space-between;padding:4px 0"><span class="l">' + getI18n('refund_amount') + '</span><b style="color:var(--green)">' + unreleased + ' ACE</b></div>' +
+            '<div style="color:var(--green);margin-top:6px;font-size:11px"><i class="ph-fill ph-check-circle"></i> ' + getI18n('refund_allowed') + '</div>';
+        body.style.display = 'block';
+        denied.style.display = 'none';
+    }
     document.getElementById('refundOverlay').classList.add('show');
 }
 
@@ -144,30 +170,29 @@ function pickReason(id, el) {
     refund.reason = id;
 }
 
-function pickRefund(id, el) {
-    el.parentElement.querySelectorAll('.opt').forEach(o => o.classList.remove('on'));
-    el.classList.add('on');
-    refund.plan = id;
-    // 附加说明：退USDT扣10%
-    if (id === 2) {
-        // 更新提示
-    }
-}
-
 function submitRefund() {
     if (!refund.reason) { showToast(getI18n('select_reason')); return; }
-    if (!refund.plan) { showToast(getI18n('select_reason')); return; }
+    if (refund.examPassed) return; // 已学完不可退
 
-    // ★ 预留：以后改为链上退课合约
-    // await requestRefundOnChain(refund.reason, refund.plan);
+    // ★ 预留：以后改为链上 refundCourse
+    // const tx = await courseContract.refundCourse(wallet);
+    // await tx.wait();
+
+    const unreleased = refund.aceAllocated - refund.aceReleased;
+    refund.refunded = true;
+    refund.aceReleased = refund.aceAllocated;
+    profile.availableAce += unreleased;
+    updateProfileView();
 
     closeOverlay('refundOverlay');
-    const planText = refund.plan === 1 ? '退ACE' : '退USDT(扣10%)';
     showOk(
         {},
         getI18n('refund_success'),
-        planText,
-        getI18n('refund_tip')
+        getI18n('refund_policy1'),
+        '<b>' + getI18n('refund_amount') + '</b> ' + unreleased + ' ACE<br>' +
+        getI18n('refund_policy2') + '<br>' +
+        getI18n('refund_tip2') + '<br>' +
+        getI18n('refund_policy3')
     );
 }
 
