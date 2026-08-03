@@ -250,7 +250,10 @@ function finish(choice){
     if(choice.includes('500U')){finalDone('单门课 500U');}
     else if(choice.includes('1500U')){finalDone('方向套餐 1500U');}
     else if(choice.includes('5000U')){finalDone('至尊套餐 5000U');}
-    else{addMsg('没关系，你可以逛逛课程库，想清楚了随时来。');addChips(['去看课程','重新规划','问问题'],t=>{addMsg(t,true);setTimeout(()=>{if(t.includes('重新'))restart();else addMsg('好的，需要我帮什么随时说！');},300);});}
+    else{addMsg('没关系，你可以逛逛课程库，想清楚了随时来。');addChips(['去看课程','重新规划','问问题'],t=>{addMsg(t,true);setTimeout(()=>{
+        if(t.includes('重新'))restart();
+        else if(t.includes('课程'))location.href='course-library.html';
+        else{ addMsg('当然可以！你还有什么想了解的？关于方向、课程、报价、学分都可以问我。'); addChips(['课程怎么安排','具体报价','学分怎么算','有其他问题'],t2=>{addMsg(t2,true);setTimeout(()=>{if(t2.includes('课程'))addMsg(`课程按方向分5门，每门20学分，学完拿方向证书。想了解直接点底部「课程」标签。`);else if(t2.includes('报价'))showPrice();else if(t2.includes('学分'))addMsg(`每个方向100学分，学完修满80分即可拿证，学分跟着课程累计，升级套餐不清零。`);else addMsg('没问题，还有什么尽管问！');addChips(['去看课程','重新规划'],t3=>{addMsg(t3,true);setTimeout(()=>{t3.includes('课程')?location.href='course-library.html':restart();},300);});},300);}); }},300);});}
 }
 function finalDone(pkg){
     addMsg(`<div class="done-box">
