@@ -459,6 +459,11 @@ contract ACECourse {
         ownershipRenounced = true;
     }
 
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "owner zero");
+        owner = newOwner;
+    }
+
     function rescueToken(address token, uint256 amount) external onlyOwner {
         require(token != address(aceToken), "Course: cannot rescue ACE");
         require(IERC20(token).transfer(msg.sender, amount),"Course: rescue failed");

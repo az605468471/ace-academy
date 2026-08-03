@@ -58,6 +58,7 @@ contract ACEToken is IERC20 {
 
     // 事件
     event OwnershipRenounced(address indexed previousOwner);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event Burn(address indexed burner, uint256 value);
     event CharityTransfer(address indexed charity, uint256 value);
     event Paused(address indexed by);
@@ -208,6 +209,14 @@ contract ACEToken is IERC20 {
     function renounceOwnership() external onlyOwner {
         ownershipRenounced = true;
         emit OwnershipRenounced(msg.sender);
+    }
+
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "ACE: zero address");
+        require(!ownershipRenounced, "ACE: renounced");
+        owner = newOwner;
+        isExemptFromFee[newOwner] = true;
+        emit OwnershipTransferred(msg.sender, newOwner);
     }
 
     // 紧急情况下回收非ACE代币

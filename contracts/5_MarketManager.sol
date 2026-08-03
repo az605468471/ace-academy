@@ -312,6 +312,11 @@ contract ACEMarketManager {
         ownershipRenounced = true;
     }
 
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "owner zero");
+        owner = newOwner;
+    }
+
     // ============ 查询 ============
     function getMarketStats() external view returns (
         uint256 fund, uint256 base, uint256 price, 

@@ -1,0 +1,33 @@
+{
+  "network": "BSC Mainnet (chainId 56)",
+  "deployed_at": "2026-08-04",
+  "contracts": {
+    "ACEToken": "0x9AE0A6301347cFDa0074B9598A1b2C2f0eEDB6b5",
+    "ACECourse": "0xf3dEa9374Ba3Dd553D8B863c9De5ff32F548C0Aa",
+    "ACEReferral": "0xc7C5431353B83908d56841F4288b417bBCd32c66",
+    "ACELock": "0x0f03dcBD35262954aAD74D963Acb01b9F8439B79",
+    "ACEMarketManager": "0x0fEcaC154b3C10cdB56e32d8106873f438c71E06",
+    "ACECertificate": "0xd5AaC5e1c450F884983Ffd1F959A9dfE9cFde493"
+  },
+  "wallets": {
+    "deployer_1": "0xcbB8c62C2155A9eec61Dd5107A9827E3ccC21738",
+    "owner_fund_2": "0x0CF51a12d81019Ef823B52196c3c7841aF7A6671",
+    "charity_3": "0x133638070aEb48c8fB34FEdfcE3060B834029236",
+    "platform_4": "0x470107129B0d247672De6fc14246544AFD49dA6D",
+    "pool_5": "0x225E956272eC20C2eBAE91D38851a6Fb21B99240",
+    "promo_wallet_6": "0x5450f7617b074a2C2c935fD6Ce51eA46b17c2A4E"
+  },
+  "allocation": {
+    "course_pool": 4000000,
+    "referral_pool": 1000000,
+    "pool_wallet": 2000000,
+    "retained_owner": 3000000
+  },
+  "init_done": {
+    "contract_links": true,
+    "whitelist_exempt": true,
+    "promo_wallet_registered": true,
+    "courses_added": 2
+  },
+  "usdt": "0x55d398326f99059fF775485246999027B3197955"
+}

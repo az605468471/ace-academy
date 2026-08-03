@@ -220,4 +220,9 @@ contract ACECertificate {
     function renounceOwnership() external onlyOwner {
         ownershipRenounced = true;
     }
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "owner zero");
+        owner = newOwner;
+    }
+
 }
