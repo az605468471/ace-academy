@@ -72,30 +72,38 @@ function addChips(chips,cb){
     d.innerHTML=html;
     chat.appendChild(d);
     d._cb=cb;
+    d.dataset.input='1';
     scrollBottom();
     return d;
 }
 function pickChip(el,idx){
     const d=el.closest('.msg');
     const cb=d._cb;
+    removeOldInputs();
     cb(el.textContent);
 }
 function addInput(cb){
+    removeOldInputs();
     const d=document.createElement('div');
-    d.className='msg';
-    d.innerHTML=`<div class="avatar"><i class="ph-fill ph-sparkle"></i></div><div class="bubble" style="width:100%"><div class="input-row"><input class="free-input" id="freeIn"><button class="send-btn" onclick="submitIn()">→</button></div></div>`;
+    d.className='msg';d.dataset.input='1';
+    const uid='freeIn'+Math.random().toString(36).slice(2,7);
+    d.innerHTML=`<div class="avatar"><i class="ph-fill ph-sparkle"></i></div><div class="bubble" style="width:100%"><div class="input-row"><input class="free-input" id="${uid}" onkeydown="if(event.key==='Enter')submitIn('${uid}')"><button class="send-btn" onclick="submitIn('${uid}')">→</button></div></div>`;
+    d._cb=cb;d._uid=uid;
     chat.appendChild(d);
-    d._cb=cb;
     scrollBottom();
-    document.getElementById('freeIn').focus();
-    document.getElementById('freeIn').addEventListener('keypress',e=>{if(e.key==='Enter')submitIn();});
+    setTimeout(()=>{const el=document.getElementById(uid);if(el)el.focus();},100);
 }
-function submitIn(){
-    const el=document.getElementById('freeIn');
+function removeOldInputs(){
+    document.querySelectorAll('.msg[data-input]').forEach(n=>n.remove());
+}
+function submitIn(uid){
+    const el=document.getElementById(uid);
+    if(!el) return;
     const val=el.value.trim();
     if(!val) return;
     const msg=el.closest('.msg');
     const cb=msg._cb;
+    removeOldInputs();
     addMsg(val,true);
     setTimeout(()=>cb(val),300);
     scrollBottom();
