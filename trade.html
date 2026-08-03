@@ -8,26 +8,19 @@
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0;padding:0;box-sizing:border-box; }
+        *{margin:0;padding:0;box-sizing:border-box;}
         :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--red:#f87171;--dim:#666;--text:#e0e0e0;}
         body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
-        .bg-grad{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
+        .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
         .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
-        .top-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 0;}
-        .top-left{display:flex;align-items:center;gap:8px;}
-        .top-logo{width:34px;height:34px;border-radius:8px;}
-        .top-title{font-family:'Orbitron';font-size:14px;font-weight:800;}
-        .lang-select{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
         .price-card{background:linear-gradient(135deg,rgba(30,30,54,.9),rgba(42,42,90,.6));border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;margin-bottom:14px;}
         .price-label{font-size:12px;color:var(--dim);}
         .price-val{font-family:'Orbitron';font-size:36px;font-weight:800;color:var(--green);}
         .price-stats{display:flex;justify-content:space-around;margin-top:14px;border-top:1px solid var(--border);padding-top:12px;}
-        .ps .v{font-size:13px;font-weight:700;}
-        .ps .l{font-size:11px;color:var(--dim);}
+        .ps .v{font-size:13px;font-weight:700;}.ps .l{font-size:11px;color:var(--dim);}
         .bal-row{display:flex;gap:10px;margin-bottom:14px;}
         .bal{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
-        .bal-num{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--accent);}
-        .bal-label{font-size:11px;color:var(--dim);}
+        .bal-num{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--accent);}.bal-label{font-size:11px;color:var(--dim);}
         .trade-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
         .trade-title{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
         .input-box{width:100%;background:rgba(10,10,26,.6);border:1px solid var(--border);border-radius:10px;padding:13px;color:#fff;font-size:14px;outline:none;margin-bottom:10px;}
@@ -39,12 +32,8 @@
     </style>
 </head>
 <body>
-<div class="bg-grad"></div>
+<div class="bg"></div>
 <div class="wrap">
-    <div class="top-bar">
-        <div class="top-left"><img src="images/ace-logo.png" class="top-logo"><span class="top-title">ACE ACADEMY</span></div>
-        <select class="lang-select" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
-    </div>
 
     <div class="price-card">
         <div class="price-label" data-i18n="ace_price">ACE价格</div>
@@ -53,7 +42,7 @@
         <div class="price-stats">
             <div class="ps"><div class="v">8,500U</div><div class="l" data-i18n="pool">底池</div></div>
             <div class="ps"><div class="v">15,000</div><div class="l" data-i18n="burned">已销毁</div></div>
-            <div class="ps"><div class="v">9,985,000</div><div class="l"><span data-i18n="total_supply"></span></div></div>
+            <div class="ps"><div class="v">9,985,000</div><div class="l" data-i18n="total_supply">总量</div></div>
         </div>
     </div>
 
@@ -64,34 +53,29 @@
 
     <div class="trade-card">
         <div class="trade-title" style="color:var(--green)"><i class="ph-fill ph-arrow-down-left"></i> <span data-i18n="buy_ace">买入ACE</span></div>
-        <input type="number" class="input-box" placeholder="USDT 金额" id="buyAmt">
+        <input type="number" class="input-box" data-i18n-ph="pay_amount" placeholder="USDT 金额">
         <div class="info">
-            <div class="info-row"><span class="l"><span data-i18n="expected_gain"></span></span><span class="v" style="color:var(--green)" id="buyOut">-- ACE</span></div>
-            <div class="info-row"><span class="l">价格</span><span class="v">1 ACE = 0.1 U</span></div>
+            <div class="info-row"><span class="l" data-i18n="expected_gain">预计获得</span><span class="v" style="color:var(--green)">-- ACE</span></div>
+            <div class="info-row"><span class="l">1 ACE =</span><span class="v">0.1 U</span></div>
         </div>
-        <button class="btn-buy" onclick="buy()"><span data-i18n="buy_ace">买入ACE</span></button>
+        <button class="btn-buy" data-i18n="buy_ace">买入ACE</button>
     </div>
 
     <div class="trade-card">
         <div class="trade-title" style="color:var(--red)"><i class="ph-fill ph-arrow-up-right"></i> <span data-i18n="sell_ace">卖出ACE</span></div>
-        <input type="number" class="input-box" placeholder="ACE 数量" id="sellAmt">
+        <input type="number" class="input-box" data-i18n-ph="sell_ace" placeholder="ACE 数量">
         <div class="info">
-            <div class="info-row"><span class="l"><span data-i18n="expected_gain"></span></span><span class="v" style="color:var(--green)" id="sellOut">-- USDT</span></div>
-            <div class="info-row"><span class="l"><span data-i18n="fee"></span></span><span class="v">0.1 U</span></div>
-            <div class="info-row"><span class="l"><span data-i18n="burn_share"></span>+<span data-i18n="charity_share"></span></span><span class="v">0.08+0.02 U</span></div>
+            <div class="info-row"><span class="l" data-i18n="expected_gain">预计获得</span><span class="v" style="color:var(--green)">-- USDT</span></div>
+            <div class="info-row"><span class="l" data-i18n="fee">手续费(2%)</span><span class="v">0.1 U</span></div>
+            <div class="info-row"><span class="l" data-i18n="burn_share">销毁1.5%</span><span class="v">0.08 U</span></div>
+            <div class="info-row"><span class="l" data-i18n="charity_share">公益0.5%</span><span class="v">0.02 U</span></div>
         </div>
-        <button class="btn-sell" onclick="sell()"><span data-i18n="sell_ace">卖出ACE</span></button>
+        <button class="btn-sell" data-i18n="sell_ace">卖出ACE</button>
     </div>
 </div>
+
 <script src="i18n.js"></script>
-<script src="navbar.js"></script>
-<script>createBottomNav("trade");</script>
-<script>
-document.querySelector('.lang-select').value=getLang();
-function buy(){alert('待接入钱包');}
-function sell(){alert('待接入钱包');}
-document.getElementById('buyAmt').addEventListener('input',e=>document.getElementById('buyOut').textContent=(e.target.value/0.1).toFixed(0)+' ACE');
-document.getElementById('sellAmt').addEventListener('input',e=>document.getElementById('sellOut').textContent=(e.target.value*0.1).toFixed(2)+' U');
-</script>
+<script src="frame.js"></script>
+<script>initFrame('trade','trade');</script>
 </body>
 </html>

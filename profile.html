@@ -9,78 +9,69 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--dim:#666;--text:#e0e0e0;}
+        :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--red:#f87171;--dim:#666;--text:#e0e0e0;}
         body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
         .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
-        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0;}
-        .tl{display:flex;gap:8px;align-items:center;}.tl img{width:34px;height:34px;border-radius:8px;}
-        .lang{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
         .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
         .row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(139,137,255,.05);}
         .row:last-child{border:none;}.row .l{color:var(--dim);}.row .v{font-weight:600;font-family:monospace;}
-        .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+        .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
         .b{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;text-align:center;}
-        .b .n{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--accent);}
-        .b .l{font-size:11px;color:var(--dim);}
-        .cert{background:linear-gradient(135deg,rgba(26,58,26,.6),rgba(42,90,42,.3));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px;display:flex;gap:12px;}
+        .b .n{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--accent);}.b .l{font-size:11px;color:var(--dim);}
+        .sec-t{font-size:14px;font-weight:700;margin-bottom:10px;}
+        .cert{background:linear-gradient(135deg,rgba(26,58,26,.6),rgba(42,90,42,.3));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;}
         .cert i{font-size:32px;color:var(--green);}
         .btn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;}
         .btn-out{background:transparent;color:var(--red);border:1px solid var(--red);}
-        .back-link{color:var(--accent);font-size:12px;text-decoration:none;}
     </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="wrap">
-    <div class="top-bar">
-        <div class="tl"><img src="images/ace-logo.png"><span style="font-family:'Orbitron';font-weight:800;font-size:14px">ACE ACADEMY</span></div>
-        <select class="lang" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
+    <div class="card">
+        <div class="row"><span class="l" data-i18n="wallet_addr">钱包地址</span><span class="v">0xABC1...23DEF</span></div>
+        <div class="row"><span class="l" data-i18n="user_id">用户ID</span><span class="v">100235</span></div>
+        <div class="row"><span class="l" data-i18n="role">身份</span><span class="v">学员</span></div>
+        <div class="row"><span class="l" data-i18n="referrer">推荐人</span><span class="v">0x90F8...c9C1</span></div>
     </div>
 
     <div class="card">
-        <div class="row"><span class="l">钱包地址</span><span class="v">0xABC1...23DEF</span></div>
-        <div class="row"><span class="l">用户ID</span><span class="v">100235</span></div>
-        <div class="row"><span class="l"><span data-i18n="role"></span></span><span class="v">学员</span></div>
-        <div class="row"><span class="l">推荐人</span><span class="v">0x90F8...c9C1</span></div>
-    </div>
-
-    <div class="card">
-        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-coins"></i> 我的资产</div>
+        <div class="sec-t"><i class="ph-fill ph-coins"></i> <span data-i18n="my_assets">我的资产</span></div>
         <div class="grid3">
             <div class="b"><div class="n">720</div><div class="l">可用ACE</div></div>
             <div class="b"><div class="n" style="color:var(--dim)">480</div><div class="l">锁定ACE</div></div>
             <div class="b"><div class="n" style="color:var(--green)">500U</div><div class="l">USDT</div></div>
         </div>
-        <div style="font-size:12px;color:var(--dim);margin-top:10px;text-align:center">已释放 60%</div>
+        <div style="font-size:12px;color:var(--dim);text-align:center">已释放 60%</div>
         <div style="height:6px;background:#333;border-radius:3px;margin-top:6px;overflow:hidden"><div style="height:100%;width:60%;background:linear-gradient(90deg,var(--accent),var(--green))"></div></div>
     </div>
 
     <div class="card">
-        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-certificate"></i> 我的证书</div>
+        <div class="sec-t"><i class="ph-fill ph-certificate"></i> <span data-i18n="my_cert">我的证书</span></div>
         <div class="cert">
             <i class="ph-fill ph-seal-check"></i>
-            <div><div style="font-weight:700;color:var(--green)"><span data-i18n="cert_title"></span></div><div style="font-size:11px;color:var(--dim)">ACE-20697-1 · 5门课 · 95分</div></div>
+            <div><div style="font-weight:700;color:var(--green)" data-i18n="cert_title">AI应用认证</div><div style="font-size:11px;color:var(--dim)">ACE-20697-1 · 5门课 · 95分</div></div>
         </div>
     </div>
 
     <div class="card">
-        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-vault"></i> 质押生息</div>
-        <div class="row"><span class="l"><span data-i18n="stake_amount"></span></span><span class="v">1,000 ACE · 90天</span></div>
-        <div class="row"><span class="l"><span data-i18n="annual_rate"></span></span><span class="v" style="color:var(--green)">10%</span></div>
-        <button class="btn"><span data-i18n="stake_amount"></span></button>
+        <div class="sec-t"><i class="ph-fill ph-vault"></i> <span data-i18n="staking">质押生息</span></div>
+        <div class="row"><span class="l" data-i18n="stake_amount">质押</span><span class="v">1,000 ACE · 90天</span></div>
+        <div class="row"><span class="l" data-i18n="annual_rate">年化</span><span class="v" style="color:var(--green)">10%</span></div>
+        <button class="btn" data-i18n="staking">质押生息</button>
     </div>
 
     <div class="card">
-        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-medal"></i> 持有权益</div>
-        <div class="row"><span class="l"<span data-i18n="coupon95"></span></span></div>
-        <div class="row"><span class="l"><span data-i18n="unlock5000"></span></span><span class="v">课程9折+社群</span></div>
+        <div class="sec-t"><i class="ph-fill ph-medal"></i> <span data-i18n="holding_benefits">持有权益</span></div>
+        <div class="row"><span class="l">1,200 ACE</span><span class="v" style="color:var(--green)" data-i18n="coupon95">课程9.5折</span></div>
+        <div class="row"><span class="l" data-i18n="unlock5000">持有5,000 ACE解锁</span><span class="v">课程9折+社群</span></div>
     </div>
 
-    <button class="btn btn-out"><span data-i18n="apply_refund"></span></button>
+    <button class="btn btn-out" data-i18n="apply_refund">申请退课</button>
 </div>
 <script src="i18n.js"></script>
-<script src="navbar.js"></script>
-<script>createBottomNav("profile");</script>
+<script src="frame.js"></script>
+<script>initFrame('profile','profile');</script>
 </body>
 </html>

@@ -8,16 +8,11 @@
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        :root { --bg:#080816; --card:rgba(20,20,40,0.7); --border:rgba(139,137,255,0.15); --accent:#8b89ff; --accent2:#7c3aed; --green:#4ade80; --dim:#666; --text:#e0e0e0; }
-        body { font-family:'Noto Sans SC',sans-serif; background:var(--bg); color:var(--text); }
-        .bg-grad { position:fixed; top:0;left:0;right:0;bottom:0; background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1)); z-index:0; }
-        .wrap { position:relative; z-index:10; max-width:500px; margin:0 auto; padding:15px; }
-        .top-bar { display:flex; align-items:center; justify-content:space-between; padding:10px 0; }
-        .top-left { display:flex; align-items:center; gap:8px; }
-        .top-logo {width:34px;height:34px;border-radius:8px;}
-        .top-title{font-family:'Orbitron';font-size:14px;font-weight:800;}
-        .lang-select{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--dim:#666;--text:#e0e0e0;}
+        body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
+        .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
+        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
         .progress-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
         .progress-num{font-family:'Orbitron';font-size:26px;font-weight:800;color:var(--accent);}
         .progress-num span{font-size:14px;color:var(--dim);}
@@ -34,22 +29,14 @@
         .course-info .t{font-size:13px;font-weight:600;}
         .course-info .d{font-size:11px;color:var(--dim);margin-top:2px;}
         .status{font-size:11px;font-weight:600;}
-        .status.done{color:var(--green);}
-        .status.cur{color:var(--accent);}
-        .status.lock{color:var(--dim);}
+        .status.done{color:var(--green);}.status.lock{color:var(--dim);}
         .btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:8px 14px;border-radius:8px;font-size:12px;cursor:pointer;}
-        .btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent);padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;}
         .exam-btn{display:block;width:100%;background:linear-gradient(135deg,var(--accent2),#7c3aed);color:#fff;border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;}
-        .back-link{color:var(--accent);font-size:12px;text-decoration:none;}
     </style>
 </head>
 <body>
-<div class="bg-grad"></div>
+<div class="bg"></div>
 <div class="wrap">
-    <div class="top-bar">
-        <div class="top-left"><img src="images/ace-logo.png" class="top-logo"><span class="top-title">ACE ACADEMY</span></div>
-        <select class="lang-select" onchange="setLang(this.value)"><option value="zh">中文</option><option value="en">EN</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="es">Español</option></select>
-    </div>
 
     <div class="progress-card">
         <div class="progress-num"><span data-i18n="learning_progress">学习进度</span> 2/5</div>
@@ -63,31 +50,17 @@
     </div>
 
     <div class="sec-title" data-i18n="course_list">课程列表</div>
-    <div class="course-item done">
-        <div class="course-info"><div class="t">AI人人通 — 什么是AI</div><div class="d">3小时 · 完成</div></div>
-        <span class="status done">✓ 完成</span>
-    </div>
-    <div class="course-item done">
-        <div class="course-info"><div class="t">ChatGPT实战 — 提示词</div><div class="d">4小时 · 完成</div></div>
-        <span class="status done">✓ 完成</span>
-    </div>
-    <div class="course-item current">
-        <div class="course-info"><div class="t">AI做图片 — MJ/SD</div><div class="d">3小时 · 进行中</div></div>
-        <button class="btn">开始学习</button>
-    </div>
-    <div class="course-item">
-        <div class="course-info"><div class="t">AI做视频 — 剪映AI</div><div class="d">3小时</div></div>
-        <span class="status lock">未解锁</span>
-    </div>
-    <div class="course-item">
-        <div class="course-info"><div class="t">AI办公 — PPT/Excel</div><div class="d">4小时</div></div>
-        <span class="status lock">未解锁</span>
-    </div>
+    <div class="course-item done"><div class="course-info"><div class="t">AI人人通 — 什么是AI</div><div class="d">3小时 · <span data-i18n="complete_2">已完成</span></div></div><span class="status done">✓</span></div>
+    <div class="course-item done"><div class="course-info"><div class="t">ChatGPT实战 — 提示词</div><div class="d">4小时 · <span data-i18n="complete_2">已完成</span></div></div><span class="status done">✓</span></div>
+    <div class="course-item current"><div class="course-info"><div class="t">AI做图片 — MJ/SD</div><div class="d">3小时 · <span data-i18n="in_progress">进行中</span></div></div><button class="btn"><span data-i18n="learn_now">开始学习</span></button></div>
+    <div class="course-item"><div class="course-info"><div class="t">AI做视频 — 剪映AI</div><div class="d">3小时</div></div><span class="status lock"><span data-i18n="locked">未解锁</span></span></div>
+    <div class="course-item"><div class="course-info"><div class="t">AI办公 — PPT/Excel</div><div class="d">4小时</div></div><span class="status lock"><span data-i18n="locked">未解锁</span></span></div>
 
-    <button class="exam-btn"><i class="ph-fill ph-exam"></i> <span data-i18n="take_exam">参加考试</span></button>
+    <button class="exam-btn" onclick="location.href='exam.html'"><i class="ph-fill ph-exam"></i> <span data-i18n="take_exam">参加考试</span></button>
 </div>
+
 <script src="i18n.js"></script>
-<script src="navbar.js"></script>
-<script>createBottomNav("learn");</script>
+<script src="frame.js"></script>
+<script>initFrame('learning','learn');</script>
 </body>
 </html>

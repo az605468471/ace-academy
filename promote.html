@@ -13,75 +13,62 @@
         body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
         .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
-        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0;}
-        .tl{display:flex;gap:8px;align-items:center;}.tl img{width:34px;height:34px;border-radius:8px;}
-        .lang{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
         .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
         .role{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:12px;}
         .ref-box{background:rgba(10,10,26,.5);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;gap:8px;align-items:center;}
         .ref{flex:1;font-size:11px;color:var(--accent);font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
         .copy-btn{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:8px;font-size:12px;cursor:pointer;}
-        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-        .inc{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;text-align:center;}
-        .inc .n{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--green);}
-        .inc.w .n{color:var(--accent);}.inc .l{font-size:11px;color:var(--dim);}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+        .inc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
+        .inc .n{font-family:'Orbitron';font-size:20px;font-weight:800;color:var(--green);}
+        .inc.w .n{color:var(--accent);}.inc .l{font-size:11px;color:var(--dim);margin-top:2px;}
         .team{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;}
-        .tr{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;}
-        .tr .l{color:var(--dim);}.tr .v{font-weight:600;}
+        .tr{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;}
+        .tr .l{color:var(--dim);}.tr .v{font-weight:600;color:#fff;}
         .level-bar{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;margin-top:10px;}
         .lvl{height:6px;background:#333;border-radius:3px;overflow:hidden;margin-top:8px;}
         .lvl-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;}
         .btn-up{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:14px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:10px;}
-        .back-link{color:var(--accent);font-size:12px;text-decoration:none;}
     </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="wrap">
-    <div class="top-bar">
-        <div class="tl"><img src="images/ace-logo.png"><span style="font-family:'Orbitron';font-weight:800;font-size:14px">ACE ACADEMY</span></div>
-        <select class="lang" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
-    </div>
-
     <div class="card" style="text-align:center">
         <div class="role"><i class="ph-fill ph-star"></i> <span data-i18n="ambassador">大使</span> · Learner</div>
-        <div style="font-size:12px;color:var(--dim)">直推20% · 团队12人</div>
+        <div style="font-size:12px;color:var(--dim)">直推20% · <span data-i18n="team">团队</span>12人</div>
     </div>
 
     <div class="card">
-        <div class="sec-t" style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-link"></i> <span data-i18n="my_ref_link">我的推荐链接</span></div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-link"></i> <span data-i18n="my_ref_link">我的推荐链接</span></div>
         <div class="ref-box">
             <div class="ref">https://ace-academy.com/?ref=0xABC123...</div>
-            <button class="copy-btn" onclick="copyLink()"><i class="ph-fill ph-copy"></i></button>
+            <button class="copy-btn" onclick="copyLink()"><i class="ph-fill ph-copy"></i> <span data-i18n="copy">复制</span></button>
         </div>
     </div>
 
-    <div class="grid2" style="margin-bottom:12px">
+    <div class="grid2">
         <div class="inc"><div class="n">48U</div><div class="l" data-i18n="income">收入</div></div>
-        <div class="inc w"><div class="n" style="color:var(--accent)">500 ACE</div><div class="l">团队</div></div>
+        <div class="inc w"><div class="n" style="color:var(--accent)">500 ACE</div><div class="l"><span data-i18n="team">团队</span></div></div>
     </div>
 
     <div class="card">
         <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-users-three"></i> <span data-i18n="team">团队数据</span></div>
         <div class="team">
-            <div class="tr"><span class="l"<span data-i18n="direct_referrals"></span></span><span class="v">12人</span></div>
-            <div class="tr"><span class="l"><span data-i18n="team_members"></span></span><span class="v">45人</span></div>
-            <div class="tr"><span class="l"><span data-i18n="team_rev"></span></span><span class="v">8,000U</span></div>
-            <div class="tr"><span class="l"><span data-i18n="current_level"></span></span><span class="v">Learner</span></div>
+            <div class="tr"><span class="l" data-i18n="direct_referrals">直推人数</span><span class="v">12人</span></div>
+            <div class="tr"><span class="l" data-i18n="team_members">团队总人数</span><span class="v">45人</span></div>
+            <div class="tr"><span class="l" data-i18n="team_rev">团队业绩</span><span class="v">8,000U</span></div>
+            <div class="tr"><span class="l" data-i18n="current_level">当前级别</span><span class="v">Learner</span></div>
         </div>
         <div class="level-bar">
-            <div style="font-size:12px;color:var(--dim)"><span data-i18n="next_level"></span>：Mentor</div>
+            <div style="font-size:12px;color:var(--dim)"><span data-i18n="next_level">下一级</span>：Mentor</div>
             <div class="lvl"><div class="lvl-fill" style="width:60%"></div></div>
         </div>
-        <button class="btn-up" onclick="alert('待接入')"><span data-i18n="upgrade_to"></span> Mentor</button>
+        <button class="btn-up" onclick="alert('待接入')"><span data-i18n="upgrade_to">升级为</span> Mentor</button>
     </div>
 </div>
 <script src="i18n.js"></script>
-<script src="navbar.js"></script>
-<script>createBottomNav("promote");</script>
-<script>
-document.querySelector('.lang').value=getLang();
-function copyLink(){navigator.clipboard.writeText('https://ace-academy.com/?ref=0xABC123').then(()=>alert('已复制'));}
-</script>
+<script src="frame.js"></script>
+<script>initFrame('promote','promote');</script>
 </body>
 </html>

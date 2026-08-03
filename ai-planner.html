@@ -51,12 +51,7 @@
 <body>
 <div class="bg"></div>
 <div class="wrap">
-    <div class="top-bar">
-        <div class="tl"><img src="images/ace-logo.png"><span style="font-family:'Orbitron';font-weight:800;font-size:14px">ACE ACADEMY</span></div>
-        <div style="display:flex;gap:8px;align-items:center">
-            <a href="course-library.html" class="back-link">← <span data-i18n="courses">课程</span></a>
-            <select class="lang" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
-        </div>
+    
     </div>
 
     <div style="text-align:center;margin-bottom:14px">
@@ -69,8 +64,10 @@
 </div>
 
 <script src="i18n.js"></script>
-<script src="navbar.js"></script>
-<script>createBottomNav("learn");</script>
+<script src="frame.js"></script>
+<script>initFrame("learning","learn");</script>
+
+
 <script>
 // 课程数据
 const COURSES = {

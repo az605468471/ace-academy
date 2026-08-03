@@ -54,16 +54,7 @@
 <div class="bg-grad"></div>
 
 <div class="wrap">
-    <div class="top-bar">
-        <div class="top-left">
-            <img src="images/ace-logo.png" class="top-logo">
-            <span class="top-title">ACE ACADEMY</span>
-        </div>
-        <select class="lang-select" onchange="setLang(this.value)">
-            <option value="zh">🇨🇳 中文</option><option value="en">🇺🇸 English</option>
-            <option value="ja">🇯🇵 日本語</option><option value="ko">🇰🇷 한국어</option><option value="es">🇪🇸 Español</option>
-        </select>
-    </div>
+    
 
     <div class="stats">
         <div class="stat"><div class="stat-num">5</div><div class="stat-label" data-i18n="stat_directions">方向</div></div>
@@ -206,8 +197,10 @@
 </div>
 
 <script src="i18n.js"></script>
-<script src="navbar.js"></script>
-<script>createBottomNav("course");</script>
+<script src="frame.js"></script>
+<script>initFrame("courses","course");</script>
+
+
 <script>
 // 语言下拉当前值
 (function(){ const l=getLang(); document.querySelector('.lang-select').value=l; })();

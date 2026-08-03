@@ -37,11 +37,6 @@
 <body>
 <div class="bg"></div>
 <div class="wrap">
-    <div class="top-bar">
-        <div class="tl"><img src="images/ace-logo.png"><span style="font-family:'Orbitron';font-weight:800;font-size:14px">ACE ADMIN</span></div>
-        <select class="lang" onchange="setLang(this.value)"><option>中文</option><option>EN</option><option>日本語</option><option>한국어</option><option>Español</option></select>
-    </div>
-
     <div class="note"><i class="ph ph-info"></i> 管理后台只读取链上数据 · 连接: 0x90F8...c9C1（管理员）</div>
 
     <div class="grid2">
@@ -54,7 +49,7 @@
     </div>
 
     <div class="sec">
-        <div class="st"><i class="ph-fill ph-wallet"></i> 资金钱包</div>
+        <div class="st"><i class="ph-fill ph-wallet"></i> <span data-i18n="fund_wallets">资金钱包</span></div>
         <div class="row"><span class="l">平台运营USDT</span><span class="v g">12,000U</span></div>
         <div class="row"><span class="l">护盘基金</span><span class="v">4,800U / 5,000U</span></div>
         <div class="row"><span class="l">公益基金</span><span class="v g">1,240U + 2,500 ACE</span></div>
@@ -96,7 +91,7 @@
     </div>
 </div>
 <script src="i18n.js"></script>
-<script src="navbar.js"></script>
+<script src="frame.js"></script><script>initFrame("admin","home")</script>
 <script>createBottomNav("home");</script>
 </body>
 </html>
