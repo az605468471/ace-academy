@@ -122,11 +122,11 @@ contract ACELock {
         uint256 sendAmount = releaseAmount - burnAmount;
 
         if (burnAmount > 0) {
-            aceToken.transfer(BURN_ADDRESS, burnAmount);
+            require(aceToken.transfer(BURN_ADDRESS, burnAmount), "Lock: burn failed");
             emit Burned(student, burnAmount);
         }
         if (sendAmount > 0) {
-            aceToken.transfer(student, sendAmount);
+            require(aceToken.transfer(student, sendAmount), "Lock: send failed");
         }
 
         emit StudentReleased(student, stage, sendAmount, burnAmount);
@@ -165,11 +165,11 @@ contract ACELock {
         uint256 sendAmount = releaseAmount - burnAmount;
 
         if (burnAmount > 0) {
-            aceToken.transfer(BURN_ADDRESS, burnAmount);
+            require(aceToken.transfer(BURN_ADDRESS, burnAmount), "Lock: burn failed");
             emit Burned(promoter, burnAmount);
         }
         if (sendAmount > 0) {
-            aceToken.transfer(promoter, sendAmount);
+            require(aceToken.transfer(promoter, sendAmount), "Lock: send failed");
         }
 
         emit PromoterMonthlyReleased(promoter, sendAmount, burnAmount);
@@ -193,7 +193,7 @@ contract ACELock {
 
         // 加速释放0%销毁（慢速）
         if (releaseAmount > 0) {
-            aceToken.transfer(promoter, releaseAmount);
+            require(aceToken.transfer(promoter, releaseAmount), "Lock: send failed");
         }
 
         emit PromoterBoostReleased(promoter, releaseAmount, 0);
@@ -207,7 +207,7 @@ contract ACELock {
             s.released = s.totalLocked;
 
             if (remaining > 0) {
-                aceToken.transfer(user, remaining);
+                require(aceToken.transfer(user, remaining), "Lock: send failed");
             }
 
             emit RefundReleased(user, remaining);

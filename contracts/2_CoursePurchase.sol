@@ -53,6 +53,13 @@ contract ACECourse {
     address public owner;
     bool public ownershipRenounced = false;
     bool public paused = false;
+    uint256 private _guardCounter = 1;
+    modifier nonReentrant() {
+        require(_guardCounter == 1, "Course: reentrant");
+        _guardCounter = 2;
+        _;
+        _guardCounter = 1;
+    }
 
     // 钱包
     address public platformWallet;      // 平台运营
@@ -159,7 +166,7 @@ contract ACECourse {
     }
 
     // ============ 买课程 ============
-    function buyCourse(uint256 courseId) external whenNotPaused {
+    function buyCourse(uint256 courseId) external whenNotPaused nonReentrant {
         require(courses[courseId].active, "Course: not active");
         uint256 price = courses[courseId].price;
         require(price > 0, "Course: invalid price");
@@ -208,7 +215,7 @@ contract ACECourse {
     }
 
     // ============ 推广者注册 ============
-    function registerPromoter() external whenNotPaused {
+    function registerPromoter() external whenNotPaused nonReentrant {
         // 检查推荐人
         address ref = referralContract.referrer(msg.sender);
         require(ref != address(0), "Course: need referrer");
@@ -225,9 +232,9 @@ contract ACECourse {
         uint256 charityAmount = (fee * 100) / RATE_DENOM;
         uint256 aceUsdValue = fee - platformAmount - poolAmount - charityAmount;
 
-        usdtToken.transfer(platformWallet, platformAmount);
-        usdtToken.transfer(poolWallet, poolAmount);
-        usdtToken.transfer(charityWallet, charityAmount);
+        require(usdtToken.transfer(platformWallet, platformAmount),"Course: tf");
+        require(usdtToken.transfer(poolWallet, poolAmount),"Course: tf");
+        require(usdtToken.transfer(charityWallet, charityAmount),"Course: tf");
         totalCharity += charityAmount;
         emit CharityDeposited(charityAmount);
 
@@ -238,7 +245,7 @@ contract ACECourse {
             uint256 directRate = _getDirectRate(refLevel, refIsPromoter);
             uint256 directAmount = (fee * directRate) / RATE_DENOM;
             if (directAmount > 0 && directAmount <= platformAmount) {
-                usdtToken.transfer(ref, directAmount);
+                require(usdtToken.transfer(ref, directAmount), "Course: transfer failed");
             }
         }
 
@@ -268,7 +275,7 @@ contract ACECourse {
     }
 
     // ============ 学员代币释放 ============
-    function releaseStudentStage2(address student) external whenNotPaused {
+    function releaseStudentStage2(address student) external whenNotPaused nonReentrant {
         StudentRecord storage s = students[student];
         require(s.aceAllocated > 0, "Course: no allocation");
         require(s.coursesCompleted >= 1, "Course: need complete 1 course");
@@ -280,7 +287,7 @@ contract ACECourse {
         emit StudentACEReleased(student, 1, releaseAmount);
     }
 
-    function releaseStudentStage3(address student) external whenNotPaused {
+    function releaseStudentStage3(address student) external whenNotPaused nonReentrant {
         StudentRecord storage s = students[student];
         require(s.aceAllocated > 0, "Course: no allocation");
         require(s.examPassed, "Course: need exam passed");
@@ -293,7 +300,7 @@ contract ACECourse {
     }
 
     // ============ 推广者代币释放 ============
-    function releasePromoterMonthly(address promoter) external whenNotPaused {
+    function releasePromoterMonthly(address promoter) external whenNotPaused nonReentrant {
         PromoterRecord storage p = promoters[promoter];
         require(p.active, "Course: not active");
         require(p.aceReleased < p.aceAllocated, "Course: all released");
@@ -308,7 +315,7 @@ contract ACECourse {
         emit PromoterACEReleased(promoter, releaseAmount, "monthly");
     }
 
-    function releasePromoterByLevel(address promoter, uint8 newLevel) external whenNotPaused {
+    function releasePromoterByLevel(address promoter, uint8 newLevel) external whenNotPaused nonReentrant {
         PromoterRecord storage p = promoters[promoter];
         require(p.active, "Course: not active");
         require(newLevel > p.teamLevel, "Course: level not increased");
@@ -321,7 +328,7 @@ contract ACECourse {
     }
 
     // ============ 退课 ============
-    function refundCourse(address student) external whenNotPaused {
+    function refundCourse(address student) external whenNotPaused nonReentrant {
         StudentRecord storage s = students[student];
         require(s.aceAllocated > 0, "Course: no allocation");
         require(!s.refunded, "Course: already refunded");
@@ -342,32 +349,26 @@ contract ACECourse {
     function _distributeFunds(uint256 amount, address student, address ref) internal {
         // 直推奖
         uint8 refLevel = referralContract.getTeamLevel(ref);
-        bool refIsPromoter = referralContract.isPromoter(ref);
-        uint256 directRate = _getDirectRate(refLevel, refIsPromoter);
-        uint256 directAmount = (amount * directRate) / RATE_DENOM;
+        uint256 directAmount = (amount * _getDirectRate(refLevel, referralContract.isPromoter(ref))) / RATE_DENOM;
 
-        // 底池
-        uint256 poolAmount = (amount * POOL_RATE) / RATE_DENOM;
+        // 逐笔转账，复用变量减少栈压力
+        if (directAmount > 0) require(usdtToken.transfer(ref, directAmount),"Course: tf");
 
-        // 学员ACE等值
-        uint256 aceUsdValue = (amount * STUDENT_ACE_RATE) / RATE_DENOM;
+        // 底池 20%
+        require(usdtToken.transfer(poolWallet, (amount * POOL_RATE) / RATE_DENOM),"Course: tf");
 
-        // 团队奖励
-        uint256 teamReward = (amount * TEAM_REWARD_RATE) / RATE_DENOM;
-
-        // 公益基金
+        // 公益基金 1%
         uint256 charityAmount = (amount * CHARITY_RATE) / RATE_DENOM;
+        require(usdtToken.transfer(charityWallet, charityAmount),"Course: tf");
 
-        // 平台运营 = 剩余
-        uint256 platformAmount = amount - directAmount - poolAmount - aceUsdValue - teamReward - charityAmount;
-
-        // 转账
-        if (directAmount > 0) usdtToken.transfer(ref, directAmount);
-        usdtToken.transfer(poolWallet, poolAmount);
-        usdtToken.transfer(charityWallet, charityAmount);
-        // teamReward留在合约，由推广奖励合约提取
-        // platformAmount转给平台
-        usdtToken.transfer(platformWallet, platformAmount);
+        // 平台运营 = 剩余（底池+学员ACE+团队+公益+直推扣除）
+        // 学员ACE 20% + 团队4% 留在合约供后续分配
+        uint256 sent = directAmount
+            + (amount * POOL_RATE) / RATE_DENOM
+            + charityAmount
+            + (amount * STUDENT_ACE_RATE) / RATE_DENOM   // 学员ACE
+            + (amount * TEAM_REWARD_RATE) / RATE_DENOM;  // 团队
+        if (sent < amount) require(usdtToken.transfer(platformWallet, amount - sent),"Course: tf");
 
         totalCharity += charityAmount;
         emit CharityDeposited(charityAmount);
@@ -377,8 +378,8 @@ contract ACECourse {
     function _getDirectRate(uint8 level, bool isPromoter) internal pure returns (uint256) {
         // 学员：15%, 17%, 19%, 21%, 23%
         // 推广者：20%, 22%, 24%, 26%, 28%
-        uint256[5] memory studentRates = [1500, 1700, 1900, 2100, 2300];
-        uint256[5] memory promoterRates = [2000, 2200, 2400, 2600, 2800];
+        uint256[5] memory studentRates = [uint256(1500), uint256(1700), uint256(1900), uint256(2100), uint256(2300)];
+        uint256[5] memory promoterRates = [uint256(2000), uint256(2200), uint256(2400), uint256(2600), uint256(2800)];
         
         if (level > 4) level = 4;
         return isPromoter ? promoterRates[level] : studentRates[level];
@@ -459,7 +460,7 @@ contract ACECourse {
 
     function rescueToken(address token, uint256 amount) external onlyOwner {
         require(token != address(aceToken), "Course: cannot rescue ACE");
-        IERC20(token).transfer(msg.sender, amount);
+        require(IERC20(token).transfer(msg.sender, amount),"Course: rescue failed");
     }
 
     // ============ 查询 ============

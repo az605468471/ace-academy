@@ -15,6 +15,8 @@ pragma solidity ^0.8.19;
 
 interface IERC20 {
     function transfer(address to, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
 }
 
 interface ICourse {
@@ -150,7 +152,7 @@ contract ACEReferral {
         // 每新增1000U业绩奖多少币
         uint256 reward = (newUSD * levelTokenRewards[level]) / (1000 * 10**18);
         if (reward > 0 && aceToken.balanceOf(address(this)) >= reward) {
-            aceToken.transfer(upline, reward);
+            require(aceToken.transfer(upline, reward), "Ref: reward failed");
             emit TeamRewardSent(upline, reward);
         }
     }
@@ -170,7 +172,7 @@ contract ACEReferral {
                 }
             } else {
                 if (teamCount >= levelConditions[i].minTeamCount && teamUSD >= levelConditions[i].minTeamUSD) {
-                    return i + 1 > levelConditions.length ? levelConditions.length - 1 : i + 1;
+                    return uint8(i + 1 > levelConditions.length ? levelConditions.length - 1 : i + 1);
                 }
             }
         }
@@ -234,6 +236,6 @@ contract ACEReferral {
 
     function rescueToken(address token, uint256 amount) external onlyOwner {
         require(token != address(aceToken), "Referral: cannot rescue ACE");
-        IERC20(token).transfer(msg.sender, amount);
+        require(IERC20(token).transfer(msg.sender, amount), "Ref: rescue failed");
     }
 }

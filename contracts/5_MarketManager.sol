@@ -15,12 +15,13 @@ pragma solidity ^0.8.19;
 
 interface IERC20 {
     function transfer(address to, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
     function balanceOf(address account) external view returns (uint256);
-    function totalBurned() external view returns (uint256);
 }
 
 interface IACEToken {
     function transfer(address to, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
     function balanceOf(address account) external view returns (uint256);
 }
 
@@ -153,7 +154,7 @@ contract ACEMarketManager {
         
         // 买入的ACE全部销毁
         if (aceBought > 0) {
-            aceToken.transfer(BURN_ADDRESS, aceBought);
+            require(aceToken.transfer(BURN_ADDRESS, aceBought),"Market: burn failed");
         }
 
         protectionFund -= buyAmount;
@@ -187,12 +188,12 @@ contract ACEMarketManager {
         
         if (buyAmount == 0) return;
 
-        usdtToken.transferFrom(platformWallet, address(this), buyAmount);
+        require(usdtToken.transferFrom(platformWallet, address(this), buyAmount),"Market: tf failed");
         usdtToken.transfer(dexAddress, buyAmount);
         uint256 aceBought = IDEX(dexAddress).buyWithUSDT(buyAmount);
 
         if (aceBought > 0) {
-            aceToken.transfer(BURN_ADDRESS, aceBought);
+            require(aceToken.transfer(BURN_ADDRESS, aceBought),"Market: burn failed");
         }
 
         lastMonthlyBuyback = block.timestamp;
@@ -210,7 +211,7 @@ contract ACEMarketManager {
         if (protectionFund > PROTECTION_BASE) {
             uint256 excess = protectionFund - PROTECTION_BASE;
             protectionFund = PROTECTION_BASE;
-            usdtToken.transfer(platformWallet, excess);
+            require(usdtToken.transfer(platformWallet, excess),"Market: withdraw failed");
             emit ProtectionFundWithdrawn(platformWallet, excess);
         }
     }

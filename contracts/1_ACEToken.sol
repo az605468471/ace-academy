@@ -212,6 +212,6 @@ contract ACEToken is IERC20 {
     // 紧急情况下回收非ACE代币
     function rescueToken(address token, uint256 amount) external onlyOwner {
         require(token != address(this), "ACE: cannot rescue ACE");
-        IERC20(token).transfer(msg.sender, amount);
+        require(IERC20(token).transfer(msg.sender, amount),"ACE: rescue failed");
     }
 }
