@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>王牌学院 · 学习中心</title>
+    <title>王牌学院 · 学习</title>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -37,28 +37,23 @@
 <body>
 <div class="bg"></div>
 <div class="wrap">
-
     <div class="progress-card">
         <div class="progress-num"><span data-i18n="learning_progress">学习进度</span> 2/5</div>
         <div class="bar"><div class="bar-fill" style="width:40%"></div></div>
     </div>
-
     <div class="mini-stats">
-        <div class="mini"><div class="mini-num">17h</div><div class="mini-label" data-i18n="total_hours">总时长</div></div>
-        <div class="mini"><div class="mini-num">8h</div><div class="mini-label">已学</div></div>
+        <div class="mini"><div class="mini-num">17</div><div class="mini-label" data-i18n="hours_short">小时</div></div>
+        <div class="mini"><div class="mini-num">8</div><div class="mini-label" data-i18n="learned">已学</div></div>
         <div class="mini"><div class="mini-num">40%</div><div class="mini-label" data-i18n="tokens_released">已释放代币</div></div>
     </div>
-
     <div class="sec-title" data-i18n="course_list">课程列表</div>
-    <div class="course-item done"><div class="course-info"><div class="t">AI人人通 — 什么是AI</div><div class="d">3小时 · <span data-i18n="complete_2">已完成</span></div></div><span class="status done">✓</span></div>
-    <div class="course-item done"><div class="course-info"><div class="t">ChatGPT实战 — 提示词</div><div class="d">4小时 · <span data-i18n="complete_2">已完成</span></div></div><span class="status done">✓</span></div>
-    <div class="course-item current"><div class="course-info"><div class="t">AI做图片 — MJ/SD</div><div class="d">3小时 · <span data-i18n="in_progress">进行中</span></div></div><button class="btn"><span data-i18n="learn_now">开始学习</span></button></div>
-    <div class="course-item"><div class="course-info"><div class="t">AI做视频 — 剪映AI</div><div class="d">3小时</div></div><span class="status lock"><span data-i18n="locked">未解锁</span></span></div>
-    <div class="course-item"><div class="course-info"><div class="t">AI办公 — PPT/Excel</div><div class="d">4小时</div></div><span class="status lock"><span data-i18n="locked">未解锁</span></span></div>
-
+    <div class="course-item done"><div class="course-info"><div class="t" data-i18n="c_ai_basic">AI人人通 — 什么是AI</div><div class="d">3 <span data-i18n="hours_short">小时</span> · <span data-i18n="completed">已完成</span></div></div><span class="status done">✓</span></div>
+    <div class="course-item done"><div class="course-info"><div class="t" data-i18n="c_chatgpt">ChatGPT实战 — 提示词</div><div class="d">4 <span data-i18n="hours_short">小时</span> · <span data-i18n="completed">已完成</span></div></div><span class="status done">✓</span></div>
+    <div class="course-item current"><div class="course-info"><div class="t" data-i18n="c_ai_img">AI做图片 — MJ/SD</div><div class="d">3 <span data-i18n="hours_short">小时</span> · <span data-i18n="in_progress">进行中</span></div></div><button class="btn"><span data-i18n="learn_now">开始学习</span></button></div>
+    <div class="course-item"><div class="course-info"><div class="t" data-i18n="c_ai_video">AI做视频 — 剪映AI</div><div class="d">3 <span data-i18n="hours_short">小时</span></div></div><span class="status lock"><span data-i18n="locked">未解锁</span></span></div>
+    <div class="course-item"><div class="course-info"><div class="t" data-i18n="c_ai_office">AI办公 — PPT/Excel</div><div class="d">4 <span data-i18n="hours_short">小时</span></div></div><span class="status lock"><span data-i18n="locked">未解锁</span></span></div>
     <button class="exam-btn" onclick="location.href='exam.html'"><i class="ph-fill ph-exam"></i> <span data-i18n="take_exam">参加考试</span></button>
 </div>
-
 <script src="i18n.js"></script>
 <script src="frame.js"></script>
 <script>initFrame('learning','learn');</script>

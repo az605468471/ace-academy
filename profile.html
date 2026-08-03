@@ -32,18 +32,18 @@
     <div class="card">
         <div class="row"><span class="l" data-i18n="wallet_addr">钱包地址</span><span class="v">0xABC1...23DEF</span></div>
         <div class="row"><span class="l" data-i18n="user_id">用户ID</span><span class="v">100235</span></div>
-        <div class="row"><span class="l" data-i18n="role">身份</span><span class="v">学员</span></div>
+        <div class="row"><span class="l" data-i18n="role">身份</span><span class="v" data-i18n="student_role">学员</span></div>
         <div class="row"><span class="l" data-i18n="referrer">推荐人</span><span class="v">0x90F8...c9C1</span></div>
     </div>
 
     <div class="card">
         <div class="sec-t"><i class="ph-fill ph-coins"></i> <span data-i18n="my_assets">我的资产</span></div>
         <div class="grid3">
-            <div class="b"><div class="n">720</div><div class="l">可用ACE</div></div>
-            <div class="b"><div class="n" style="color:var(--dim)">480</div><div class="l">锁定ACE</div></div>
+            <div class="b"><div class="n">720</div><div class="l" data-i18n="available_ace">可用ACE</div></div>
+            <div class="b"><div class="n" style="color:var(--dim)">480</div><div class="l" data-i18n="locked_ace">锁定ACE</div></div>
             <div class="b"><div class="n" style="color:var(--green)">500U</div><div class="l">USDT</div></div>
         </div>
-        <div style="font-size:12px;color:var(--dim);text-align:center">已释放 60%</div>
+        <div style="font-size:12px;color:var(--dim);text-align:center"><span data-i18n="released_pct">已释放</span> 60%</div>
         <div style="height:6px;background:#333;border-radius:3px;margin-top:6px;overflow:hidden"><div style="height:100%;width:60%;background:linear-gradient(90deg,var(--accent),var(--green))"></div></div>
     </div>
 
@@ -51,13 +51,13 @@
         <div class="sec-t"><i class="ph-fill ph-certificate"></i> <span data-i18n="my_cert">我的证书</span></div>
         <div class="cert">
             <i class="ph-fill ph-seal-check"></i>
-            <div><div style="font-weight:700;color:var(--green)" data-i18n="cert_title">AI应用认证</div><div style="font-size:11px;color:var(--dim)">ACE-20697-1 · 5门课 · 95分</div></div>
+            <div><div style="font-weight:700;color:var(--green)" data-i18n="cert_title">AI应用认证</div><div style="font-size:11px;color:var(--dim)">ACE-20697-1 · <span data-i18n="courses_points">5门课 · 95分</span></div></div>
         </div>
     </div>
 
     <div class="card">
         <div class="sec-t"><i class="ph-fill ph-vault"></i> <span data-i18n="staking">质押生息</span></div>
-        <div class="row"><span class="l" data-i18n="stake_amount">质押</span><span class="v">1,000 ACE · 90天</span></div>
+        <div class="row"><span class="l" data-i18n="stake_amount">质押</span><span class="v">1,000 ACE · <span data-i18n="days_90">90天</span></span></div>
         <div class="row"><span class="l" data-i18n="annual_rate">年化</span><span class="v" style="color:var(--green)">10%</span></div>
         <button class="btn" data-i18n="staking">质押生息</button>
     </div>
@@ -65,7 +65,7 @@
     <div class="card">
         <div class="sec-t"><i class="ph-fill ph-medal"></i> <span data-i18n="holding_benefits">持有权益</span></div>
         <div class="row"><span class="l">1,200 ACE</span><span class="v" style="color:var(--green)" data-i18n="coupon95">课程9.5折</span></div>
-        <div class="row"><span class="l" data-i18n="unlock5000">持有5,000 ACE解锁</span><span class="v">课程9折+社群</span></div>
+        <div class="row"><span class="l" data-i18n="unlock5000">持有5,000 ACE解锁</span><span class="v"><span data-i18n="discount_community">课程9折+社群</span></span></div>
     </div>
 
     <button class="btn btn-out" data-i18n="apply_refund">申请退课</button>

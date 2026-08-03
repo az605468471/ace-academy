@@ -201,6 +201,25 @@ const I18N = {
     apply_refund: {zh:'申请退课', en:'Apply Refund', ja:'返金申請', ko:'환불 신청', es:'Solicitar'},
     admin_panel_2: {zh:'管理后台', en:'Admin Panel', ja:'管理', ko:'관리', es:'Admin'},
     global_stats_2: {zh:'全网统计', en:'Stats', ja:'統計', ko:'통계', es:'Estadísticas'},
+
+    // 个人中心-动态值
+    available_ace: {zh:'可用ACE', en:'Available ACE', ja:'利用可能ACE', ko:'사용가능 ACE', es:'ACE Disponible'},
+    locked_ace: {zh:'锁定ACE', en:'Locked ACE', ja:'ロックACE', ko:'잠금 ACE', es:'ACE Bloqueado'},
+    student_role: {zh:'学员', en:'Student', ja:'学生', ko:'학생', es:'Estudiante'},
+    released_pct: {zh:'已释放', en:'Released', ja:'解放済み', ko:'해제됨', es:'Liberado'},
+    courses_points: {zh:'5门课 · 95分', en:'5 courses · 95 pts', ja:'5コース · 95点', ko:'5강의 · 95점', es:'5 cursos · 95 pts'},
+    days_90: {zh:'90天', en:'90 days', ja:'90日', ko:'90일', es:'90 días'},
+    discount_community: {zh:'课程9折+社群', en:'10% off + Community', ja:'コース10%OFF+コミュニティ', ko:'강의 10%할인+커뮤니티', es:'10% off + Comunidad'},
+
+    // 学习中心-课程名
+    c_ai_basic: {zh:'AI人人通 — 什么是AI', en:'AI Essentials', ja:'AI基礎', ko:'AI 기초', es:'Fundamentos IA'},
+    c_chatgpt: {zh:'ChatGPT实战 — 提示词', en:'ChatGPT Practice', ja:'ChatGPT実践', ko:'ChatGPT 실전', es:'Práctica ChatGPT'},
+    c_ai_img: {zh:'AI做图片 — MJ/SD', en:'AI Image — MJ/SD', ja:'AI画像', ko:'AI 이미지', es:'Imagen IA'},
+    c_ai_video: {zh:'AI做视频 — 剪映AI', en:'AI Video — CapCut', ja:'AI動画', ko:'AI 영상', es:'Video IA'},
+    c_ai_office: {zh:'AI办公 — PPT/Excel', en:'AI Office — PPT/Excel', ja:'AIオフィス', ko:'AI 오피스', es:'Oficina IA'},
+    completed: {zh:'已完成', en:'Completed', ja:'完了済み', ko:'완료됨', es:'Completado'},
+    hours_short: {zh:'小时', en:'hrs', ja:'時間', ko:'시간', es:'hrs'},
+    learned: {zh:'已学', en:'Learned', ja:'学習済', ko:'학습', es:'Aprendido'},
 };
 
 // ========================================
