@@ -53,7 +53,7 @@
         <div class="price-stats">
             <div class="ps"><div class="v">8,500U</div><div class="l" data-i18n="pool">底池</div></div>
             <div class="ps"><div class="v">15,000</div><div class="l" data-i18n="burned">已销毁</div></div>
-            <div class="ps"><div class="v">9,985,000</div><div class="l">总量</div></div>
+            <div class="ps"><div class="v">9,985,000</div><div class="l"><span data-i18n="total_supply"></span></div></div>
         </div>
     </div>
 
@@ -66,7 +66,7 @@
         <div class="trade-title" style="color:var(--green)"><i class="ph-fill ph-arrow-down-left"></i> <span data-i18n="buy_ace">买入ACE</span></div>
         <input type="number" class="input-box" placeholder="USDT 金额" id="buyAmt">
         <div class="info">
-            <div class="info-row"><span class="l">预计获得</span><span class="v" style="color:var(--green)" id="buyOut">-- ACE</span></div>
+            <div class="info-row"><span class="l"><span data-i18n="expected_gain"></span></span><span class="v" style="color:var(--green)" id="buyOut">-- ACE</span></div>
             <div class="info-row"><span class="l">价格</span><span class="v">1 ACE = 0.1 U</span></div>
         </div>
         <button class="btn-buy" onclick="buy()"><span data-i18n="buy_ace">买入ACE</span></button>
@@ -76,9 +76,9 @@
         <div class="trade-title" style="color:var(--red)"><i class="ph-fill ph-arrow-up-right"></i> <span data-i18n="sell_ace">卖出ACE</span></div>
         <input type="number" class="input-box" placeholder="ACE 数量" id="sellAmt">
         <div class="info">
-            <div class="info-row"><span class="l">预计获得</span><span class="v" style="color:var(--green)" id="sellOut">-- USDT</span></div>
-            <div class="info-row"><span class="l">手续费(2%)</span><span class="v">0.1 U</span></div>
-            <div class="info-row"><span class="l">销毁1.5%+公益0.5%</span><span class="v">0.08+0.02 U</span></div>
+            <div class="info-row"><span class="l"><span data-i18n="expected_gain"></span></span><span class="v" style="color:var(--green)" id="sellOut">-- USDT</span></div>
+            <div class="info-row"><span class="l"><span data-i18n="fee"></span></span><span class="v">0.1 U</span></div>
+            <div class="info-row"><span class="l"><span data-i18n="burn_share"></span>+<span data-i18n="charity_share"></span></span><span class="v">0.08+0.02 U</span></div>
         </div>
         <button class="btn-sell" onclick="sell()"><span data-i18n="sell_ace">卖出ACE</span></button>
     </div>

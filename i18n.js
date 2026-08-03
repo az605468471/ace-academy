@@ -151,6 +151,7 @@ const I18N = {
     income: {zh:'收入', en:'Income', ja:'収入', ko:'수입', es:'Ingresos'},
     team: {zh:'团队', en:'Team', ja:'チーム', ko:'팀', es:'Equipo'},
     upgrade_partner: {zh:'升级合伙人', en:'Be Partner', ja:'パートナー', ko:'파트너', es:'Ser Socio'},
+    ambassador: {zh:'大使', en:'Ambassador', ja:'アンバサダー', ko:'앰버서더', es:'Embajador'},
 
     // ===== 我的 =====
     my_assets: {zh:'我的资产', en:'My Assets', ja:'資産', ko:'내 자산', es:'Mis Activos'},
@@ -175,6 +176,31 @@ const I18N = {
     // ===== 至尊套餐 =====
     premium_plan: {zh:'至尊套餐', en:'Premium Plan', ja:'プレミアム', ko:'프리미엄', es:'Premium'},
     all_access: {zh:'全部课程终身有效', en:'All courses lifetime', ja:'全コース永久', ko:'전체 강의 평생', es:'Todos los cursos'},
+
+    // 补充翻译
+    total_supply: {zh:'总量', en:'Supply', ja:'総量', ko:'총량', es:'Suministro'},
+    expected_gain: {zh:'预计获得', en:'Expected', ja:'獲得予定', ko:'예상 획득', es:'Esperado'},
+    fee: {zh:'手续费', en:'Fee', ja:'手数料', ko:'수수료', es:'Comisión'},
+    burn_share: {zh:'销毁1.5%', en:'Burn 1.5%', ja:'焼却1.5%', ko:'소각1.5%', es:'Quemar 1.5%'},
+    charity_share: {zh:'公益0.5%', en:'Charity 0.5%', ja:'公益0.5%', ko:'공익0.5%', es:'Caridad 0.5%'},
+    cert_title: {zh:'AI应用认证', en:'AI Application Cert', ja:'AI応用証明書', ko:'AI 응용 인증', es:'Cert IA'},
+    stake_amount: {zh:'质押', en:'Stake', ja:'ステーク', ko:'트테이크', es:'Stake'},
+    annual_rate: {zh:'年化', en:'APR', ja:'年利', ko:'연수익', es:'APR'},
+    holding_benefits: {zh:'持有权益', en:'Benefits', ja:'特典', ko:'혜택', es:'Beneficios'},
+    coupon95: {zh:'课程9.5折', en:'Course 5% off', ja:'コース5%OFF', ko:'강의 5%할인', es:'Curso -5%'},
+    unlock5000: {zh:'持有5,000 ACE解锁', en:'Unlock at 5,000 ACE', ja:'5,000 ACEで解放', ko:'5,000 ACE 해제', es:'Desbloquea con 5,000'},
+    my_cert: {zh:'我的证书', en:'My Certs', ja:'マイ証明書', ko:'내 자격증', es:'Mis Certificados'},
+    direct_referrals: {zh:'直推人数', en:'Direct Count', ja:'直接紹介', ko:'직추천', es:'Directos'},
+    team_members: {zh:'团队总人数', en:'Team Total', ja:'チーム数', ko:'팀 총원', es:'Total Equipo'},
+    team_rev: {zh:'团队业绩', en:'Team Revenue', ja:'チーム業績', ko:'팀 실적', es:'Ingresos Equipo'},
+    current_level: {zh:'当前级别', en:'Current Level', ja:'現レベル', ko:'현재 등급', es:'Nivel'},
+    next_level: {zh:'下一级', en:'Next Level', ja:'次のレベル', ko:'다음 등급', es:'Siguiente'},
+    upgrade_to: {zh:'升级为', en:'Upgrade to', ja:'へ昇格', ko:'로 승격', es:'Subir a'},
+    role: {zh:'身份', en:'Role', ja:'役割', ko:'역할', es:'Rol'},
+    learn_now: {zh:'开始学习', en:'Start', ja:'開始', ko:'시작', es:'Empezar'},
+    apply_refund: {zh:'申请退课', en:'Apply Refund', ja:'返金申請', ko:'환불 신청', es:'Solicitar'},
+    admin_panel_2: {zh:'管理后台', en:'Admin Panel', ja:'管理', ko:'관리', es:'Admin'},
+    global_stats_2: {zh:'全网统计', en:'Stats', ja:'統計', ko:'통계', es:'Estadísticas'},
 };
 
 // ========================================
