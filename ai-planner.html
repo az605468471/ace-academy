@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>王牌学院 · AI学习规划师</title>
+    <title>王牌学院 · 专属学习规划师</title>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -127,7 +127,7 @@ function planHTML(plan){
 
 // ===== 对话流程 =====
 function start(){
-    addMsg(`你好！很高兴认识你 😊<br>我是你的<b>专属AI学习规划师</b>。<br><br>帮你<b>选对方向 → 定制路径 → 拿到证书</b>。<br><br>先聊聊：你最近<b>为什么想学</b>这些技能？`);
+    addMsg(`你好！很高兴认识你 😊<br>我是你的<b>专属学习规划师</b>。<br><br>帮你<b>选对方向 → 定制路径 → 拿到证书</b>。<br><br>先聊聊：你最近<b>为什么想学</b>这些技能？`);
     addInput(v=>{state.goal=v;askTime();},'例如：想学AI做副业、转行、提升技能...');
 }
 function askTime(){
