@@ -230,6 +230,27 @@ const I18N = {
     can_cert: {zh:'可拿证', en:'Ready', ja:'合格可能', ko:'인증 가능', es:'Listo'},
     need_credit: {zh:'差', en:'need', ja:'あと', ko:'부족', es:'necesita'},
     continue_learn: {zh:'继续学习', en:'Continue Learning', ja:'学習続行', ko:'학습 계속', es:'Seguir'},
+
+    // ==== 交易补充 ====
+    ace_balance: {zh:'ACE余额',en:'ACE Balance',ja:'ACE残高',ko:'ACE 잔액',es:'Saldo ACE'},
+    usdt_balance: {zh:'USDT余额',en:'USDT Balance',ja:'USDT残高',ko:'USDT 잔액',es:'Saldo USDT'},
+    pay_amount: {zh:'支付金额',en:'Amount',ja:'金額',ko:'금액',es:'Monto'},
+    sell_amount_in: {zh:'卖出数量',en:'Sell Amount',ja:'売却数',ko:'판매량',es:'Vender'},
+    my_assets_3: {zh:'我的资产',en:'My Assets',ja:'マイ資産',ko:'내자산',es:'Mis Activos'},
+    price: {zh:'价格',en:'Price',ja:'価格',ko:'가격',es:'Precio'},
+
+    // ==== 管理补充 ====
+    market_mgmt: {zh:'做市管理',en:'Market Mgmt',ja:'市場管理',ko:'시장관리',es:'Mercado'},
+    promo_stats: {zh:'推广统计',en:'Promo Stats',ja:'推進統計',ko:'홍보통계',es:'Promoción'},
+    contracts: {zh:'合约地址',en:'Contracts',ja:'契約',ko:'컨트랙트',es:'Contratos'},
+    platform_fund: {zh:'平台运营USDT',en:'Platform USDT',ja:'運営USDT',ko:'플랫폼 USDT',es:'USDT'},
+    protection_fund: {zh:'护盘基金',en:'Protection',ja:'保護基金',ko:'보호기금',es:'Protección'},
+    topup_protection: {zh:'补充护盘基金',en:'Top Up',ja:'補充',ko:'보충',es:'Recargar'},
+    monthly_buyback: {zh:'月度回购',en:'Buyback',ja:'買戻し',ko:'매수',es:'Recompra'},
+    emergency_pause: {zh:'紧急暂停',en:'Pause',ja:'停止',ko:'정지',es:'Pausar'},
+    question_count: {zh:'题目数量',en:'Questions',ja:'問題数',ko:'문제수',es:'Preguntas'},
+    passing_score: {zh:'及格分数',en:'Pass',ja:'合格点',ko:'합격점',es:'Aprob'},
+    exam_duration: {zh:'考试时长',en:'Duration',ja:'時間',ko:'시간',es:'Duración'},
 };
 
 // ========================================
