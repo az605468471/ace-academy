@@ -12,7 +12,7 @@
         :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--red:#f87171;--dim:#666;--text:#e0e0e0;}
         body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
-        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
+        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;padding-bottom:80px;}
         .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
         .row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(139,137,255,.05);}
         .row:last-child{border:none;}.row .l{color:var(--dim);}.row .v{font-weight:600;font-family:monospace;}
@@ -20,10 +20,56 @@
         .b{background:rgba(10,10,26,.4);border-radius:10px;padding:12px;text-align:center;}
         .b .n{font-family:'Orbitron';font-size:18px;font-weight:800;color:var(--accent);}.b .l{font-size:11px;color:var(--dim);}
         .sec-t{font-size:14px;font-weight:700;margin-bottom:10px;}
-        .cert{background:linear-gradient(135deg,rgba(26,58,26,.6),rgba(42,90,42,.3));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;}
+        .cert{background:linear-gradient(135deg,rgba(26,58,26,.6),rgba(42,90,42,.3));border:1px solid rgba(74,222,128,.2);border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:border-color .2s;}
+        .cert:hover{border-color:var(--green);}
         .cert i{font-size:32px;color:var(--green);}
+        .cert .more{margin-left:auto;color:var(--accent);font-size:18px;}
         .btn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;}
         .btn-out{background:transparent;color:var(--red);border:1px solid var(--red);}
+        .click-card{cursor:pointer;transition:border-color .2s;}
+        .click-card:hover{border-color:var(--accent);}
+        /* 弹窗 */
+        .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+        .overlay.show{display:flex;}
+        .modal{background:linear-gradient(160deg,rgba(30,30,54,.98),rgba(20,20,40,.98));border:1px solid var(--border);border-radius:18px;padding:24px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.5);max-height:90vh;overflow-y:auto;}
+        .modal-title{font-size:17px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;justify-content:space-between;}
+        .modal-title .mt{display:flex;align-items:center;gap:8px;}
+        .modal-x{cursor:pointer;color:var(--dim);font-size:18px;}
+        .modal-x:hover{color:var(--text);}
+        .modal-row{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid rgba(139,137,255,.08);}
+        .modal-row .l{color:var(--dim);}.modal-row .v{font-weight:700;}
+        .modal-btns{display:flex;gap:10px;margin-top:18px;}
+        .modal-btn{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;font-family:inherit;}
+        .modal-btn-ok{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
+        .modal-btn-cancel{background:rgba(255,255,255,.08);color:var(--text);}
+        .modal-note{font-size:11px;color:var(--dim);margin-top:10px;line-height:1.6;}
+        /* 输入 */
+        .input-row{display:flex;align-items:center;background:rgba(10,10,26,.6);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:8px 0;}
+        .input-box{flex:1;background:transparent;border:none;padding:12px;color:#fff;font-size:14px;outline:none;font-family:inherit;min-width:0;}
+        .input-unit{padding:0 12px;color:var(--accent);font-weight:700;font-size:13px;white-space:nowrap;}
+        /* 选项卡片/段 */
+        .optrow{display:flex;gap:8px;flex-wrap:wrap;}
+        .opt{flex:1;min-width:90px;background:rgba(10,10,26,.5);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;font-size:12px;transition:all .15s;color:var(--text);}
+        .opt.on{border-color:var(--accent);background:rgba(139,137,255,.12);}
+        .opt .t{font-weight:700;}
+        .opt .s{font-size:10px;color:var(--dim);margin-top:2px;}
+        .demo-tip{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--dim);margin:12px 0 0;}
+        /* 证书详情样式 */
+        .cert-card{background:linear-gradient(135deg,rgba(30,30,54,.6),rgba(58,58,120,.3));border:1px solid var(--accent);border-radius:14px;padding:24px;text-align:center;margin:6px 0 12px;border-top:6px solid var(--accent);}
+        .cert-card .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:26px;color:#fff;}
+        .cert-card .name{font-size:18px;font-weight:800;margin-bottom:4px;}
+        .cert-card .sub{font-size:12px;color:var(--dim);}
+        .cert-card .detail{text-align:left;background:rgba(10,10,26,.4);border-radius:10px;padding:12px;margin-top:14px;font-size:12px;}
+        .cert-card .detail .dr{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(139,137,255,.06);}
+        .cert-card .detail .dr:last-child{border:none;}
+        .cert-card .detail .dl{color:var(--dim);}
+        .cert-verify{margin-top:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);border-radius:10px;padding:10px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:8px;justify-content:center;}
+        /* 成功块 */
+        .success-icon{width:56px;height:56px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;color:#fff;}
+        .success-title{font-size:17px;font-weight:800;text-align:center;margin-bottom:8px;}
+        .success-sub{font-size:13px;color:var(--dim);text-align:center;line-height:1.7;margin-bottom:14px;}
+        .info-block{background:rgba(10,10,26,.5);border-radius:10px;padding:12px;font-size:12px;color:var(--dim);line-height:1.8;margin-bottom:14px;}
+        .info-block b{color:var(--accent);}
     </style>
 </head>
 <body>
@@ -39,7 +85,7 @@
     <div class="card">
         <div class="sec-t"><i class="ph-fill ph-coins"></i> <span data-i18n="my_assets">我的资产</span></div>
         <div class="grid3">
-            <div class="b"><div class="n">720</div><div class="l" data-i18n="available_ace">可用ACE</div></div>
+            <div class="b"><div class="n" id="pAvailable">720</div><div class="l" data-i18n="available_ace">可用ACE</div></div>
             <div class="b"><div class="n" style="color:var(--dim)">480</div><div class="l" data-i18n="locked_ace">锁定ACE</div></div>
             <div class="b"><div class="n" style="color:var(--green)">500U</div><div class="l">USDT</div></div>
         </div>
@@ -49,29 +95,125 @@
 
     <div class="card">
         <div class="sec-t"><i class="ph-fill ph-certificate"></i> <span data-i18n="my_cert">我的证书</span></div>
-        <div class="cert">
+        <div class="cert" onclick="openCert()">
             <i class="ph-fill ph-seal-check"></i>
             <div><div style="font-weight:700;color:var(--green)" data-i18n="cert_title">AI应用认证</div><div style="font-size:11px;color:var(--dim)">ACE-20697-1 · <span data-i18n="courses_points">5门课 · 95分</span></div></div>
+            <i class="ph-fill ph-chevron-right more"></i>
         </div>
+        <div style="font-size:11px;color:var(--dim);margin-top:8px"><i class="ph ph-link"></i> <span data-i18n="cert_chain">已上链 · 可验证</span></div>
     </div>
 
     <div class="card">
         <div class="sec-t"><i class="ph-fill ph-vault"></i> <span data-i18n="staking">质押生息</span></div>
         <div class="row"><span class="l" data-i18n="stake_amount">质押</span><span class="v">1,000 ACE · <span data-i18n="days_90">90天</span></span></div>
         <div class="row"><span class="l" data-i18n="annual_rate">年化</span><span class="v" style="color:var(--green)">10%</span></div>
-        <button class="btn" data-i18n="staking">质押生息</button>
+        <button class="btn" onclick="openStake()"><span data-i18n="staking">质押生息</span></button>
     </div>
 
-    <div class="card">
+    <div class="card click-card" onclick="openBenefits()">
         <div class="sec-t"><i class="ph-fill ph-medal"></i> <span data-i18n="holding_benefits">持有权益</span></div>
         <div class="row"><span class="l">1,200 ACE</span><span class="v" style="color:var(--green)" data-i18n="coupon95">课程9.5折</span></div>
         <div class="row"><span class="l" data-i18n="unlock5000">持有5,000 ACE解锁</span><span class="v"><span data-i18n="discount_community">课程9折+社群</span></span></div>
+        <div style="font-size:11px;color:var(--accent);margin-top:8px;text-align:right"><span data-i18n="view_detail">查看详情</span> <i class="ph-fill ph-chevron-right"></i></div>
     </div>
 
-    <button class="btn btn-out" data-i18n="apply_refund">申请退课</button>
+    <button class="btn btn-out" onclick="openRefund()"><span data-i18n="apply_refund">申请退课</span></button>
+    <div class="demo-tip"><i class="ph ph-info"></i><span data-i18n="demo_modal">(模拟演示)</span></div>
 </div>
+
+<!-- 证书详情弹窗 -->
+<div class="overlay" id="certOverlay" onclick="this.classList.remove('show')">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-title"><span class="mt"><i class="ph-fill ph-certificate"></i> <span data-i18n="cert_detail">证书详情</span></span><span class="modal-x" onclick="closeOverlay('certOverlay')"><i class="ph ph-x"></i></span></div>
+        <div class="cert-card">
+            <div class="logo"><i class="ph-fill ph-graduation-cap"></i></div>
+            <div class="name">ACE ACADEMY</div>
+            <div class="sub" data-i18n="cert_title">AI应用认证</div>
+            <div class="detail">
+                <div class="dr"><span class="dl" data-i18n="cert_no">证书编号</span><span>ACE-20697-1</span></div>
+                <div class="dr"><span class="dl" data-i18n="cert_courses">修读课程</span><span>5门</span></div>
+                <div class="dr"><span class="dl" data-i18n="cert_score">成绩</span><span>95分</span></div>
+                <div class="dr"><span class="dl" data-i18n="cert_issued">颁发日期</span><span>2026-08-01</span></div>
+                <div class="dr"><span class="dl" data-i18n="holder">持有人</span><span>0xABC1...23DEF</span></div>
+            </div>
+            <div class="cert-verify"><i class="ph-fill ph-seal-check"></i> <span data-i18n="cert_chain">已上链 · 可验证</span></div>
+        </div>
+        <button class="modal-btn modal-btn-ok" onclick="closeOverlay('certOverlay')"><span data-i18n="close">关闭</span></button>
+    </div>
+</div>
+
+<!-- 质押弹窗 -->
+<div class="overlay" id="stakeOverlay">
+    <div class="modal">
+        <div class="modal-title"><span class="mt"><i class="ph-fill ph-vault"></i> <span data-i18n="staking">质押生息</span></span><span class="modal-x" onclick="closeOverlay('stakeOverlay')"><i class="ph ph-x"></i></span></div>
+        <div style="font-size:12px;color:var(--dim);margin-bottom:6px"><span data-i18n="available">可用</span>: <b id="stkAvailable" style="color:var(--accent)">720</b> ACE</div>
+        <div class="input-row">
+            <input type="number" class="input-box" id="stakeInput" placeholder="0" min="0">
+            <span class="input-unit">ACE</span>
+            <button style="background:var(--accent);border:none;color:#fff;padding:6px 12px;font-size:11px;border-radius:20px;margin-right:8px;cursor:pointer" onclick="stakeMax()">MAX</button>
+        </div>
+        <div style="font-size:12px;color:var(--dim);margin:10px 0 6px" data-i18n="stake_days">选择期限</div>
+        <div class="optrow">
+            <div class="opt" onclick="pickDay(30,this)"><div class="t" data-i18n="day30">30天</div><div class="s">8%</div></div>
+            <div class="opt on" onclick="pickDay(90,this)"><div class="t" data-i18n="day90">90天</div><div class="s">10%</div></div>
+            <div class="opt" onclick="pickDay(180,this)"><div class="t" data-i18n="day180">180天</div><div class="s">14%</div></div>
+        </div>
+        <div class="info-block" style="background:rgba(10,10,26,.5);border-radius:10px;padding:12px;font-size:12px;color:var(--dim);line-height:1.8;margin-top:12px">
+            <div class="dr" style="display:flex;justify-content:space-between"><span data-i18n="stake_days">选择期限</span><b id="stkDays" style="color:var(--accent)">90</b></div>
+            <div class="dr" style="display:flex;justify-content:space-between"><span data-i18n="annual_rate">年化</span><b id="stkRate" style="color:var(--green)">10%</b></div>
+            <div class="dr" style="display:flex;justify-content:space-between"><span data-i18n="stake_interest">预计年化收益</span><b id="stkInterest" style="color:var(--green)">-- ACE</b></div>
+        </div>
+        <button class="modal-btn modal-btn-ok" onclick="confirmStake()"><span data-i18n="staked_cta">确认质押</span></button>
+    </div>
+</div>
+
+<!-- 持有权益弹窗 -->
+<div class="overlay" id="benefitsOverlay" onclick="this.classList.remove('show')">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-title"><span class="mt"><i class="ph-fill ph-medal"></i> <span data-i18n="holding_benefits">持有权益</span></span><span class="modal-x" onclick="closeOverlay('benefitsOverlay')"><i class="ph ph-x"></i></span></div>
+        <div class="info-block">
+            <div class="dr" style="display:flex;justify-content:space-between;padding:6px 0"><span>≥ 1,200 ACE</span><b style="color:var(--green)" data-i18n="coupon95">课程9.5折</b></div>
+            <div class="dr" style="display:flex;justify-content:space-between;padding:6px 0"><span data-i18n="unlock5000">持有5,000 ACE解锁</span><b data-i18n="discount_community">课程9折+社群</b></div>
+        </div>
+        <div class="modal-note" data-i18n="benefit_tip">持币越多，权益越高。ACE可在交易市场购买。</div>
+        <button class="modal-btn modal-btn-ok" onclick="closeOverlay('benefitsOverlay')"><span data-i18n="close">关闭</span></button>
+    </div>
+</div>
+
+<!-- 退课弹窗 -->
+<div class="overlay" id="refundOverlay">
+    <div class="modal">
+        <div class="modal-title"><span class="mt"><i class="ph-fill ph-receipt"></i> <span data-i18n="refund_title">申请退课</span></span><span class="modal-x" onclick="closeOverlay('refundOverlay')"><i class="ph ph-x"></i></span></div>
+        <div style="font-size:12px;color:var(--dim);margin:6px 0" data-i18n="refund_reason">退课原因</div>
+        <div class="optrow">
+            <div class="opt" onclick="pickReason(1,this)"><div class="t" data-i18n="refund_reason1">课程不感兴趣</div></div>
+            <div class="opt" onclick="pickReason(2,this)"><div class="t" data-i18n="refund_reason2">学习时间不足</div></div>
+            <div class="opt" onclick="pickReason(3,this)"><div class="t" data-i18n="refund_reason3">重复购买</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--dim);margin:12px 0 6px" data-i18n="refund_plan">退课方案选择</div>
+        <div class="optrow">
+            <div class="opt" onclick="pickRefund(1,this)"><div class="t" data-i18n="refund_option1">退ACE币</div></div>
+            <div class="opt" onclick="pickRefund(2,this)"><div class="t" data-i18n="refund_option2">退USDT(扣10%)</div></div>
+        </div>
+        <div class="modal-note"><i class="ph ph-warning"></i> <span data-i18n="refund_agree">退课需扣除已学课程费用</span></div>
+        <button class="modal-btn modal-btn-ok" onclick="submitRefund()"><span data-i18n="refund_submit">提交申请</span></button>
+    </div>
+</div>
+
+<!-- 成功弹窗 -->
+<div class="overlay" id="okOverlay">
+    <div class="modal">
+        <div class="success-icon"><i class="ph-fill ph-check"></i></div>
+        <div class="success-title" id="okTitle"><span data-i18n="success">成功</span></div>
+        <div class="success-sub" id="okSub"></div>
+        <div class="info-block" id="okInfo" style="display:none"></div>
+        <button class="modal-btn modal-btn-ok" onclick="closeOverlay('okOverlay')"><span data-i18n="done">完成</span></button>
+    </div>
+</div>
+
 <script src="i18n.js"></script>
 <script src="frame.js"></script>
-<script>initFrame('profile','profile');</script>
+<script src="profile-app.js"></script>
+<script>initFrame('profile','profile');initProfileApp();</script>
 </body>
 </html>
