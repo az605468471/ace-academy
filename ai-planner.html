@@ -12,216 +12,203 @@
         :root{--bg:#080816;--card:rgba(20,20,40,.7);--border:rgba(139,137,255,.15);--accent:#8b89ff;--accent2:#7c3aed;--green:#4ade80;--dim:#666;--text:#e0e0e0;}
         body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);}
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(8,8,22,.9),rgba(8,8,22,1));z-index:0;}
-        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;}
-        .top-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0;}
-        .tl{display:flex;gap:8px;align-items:center;}.tl img{width:34px;height:34px;border-radius:8px;}
-        .lang{background:rgba(20,20,40,.8);border:1px solid var(--border);color:#ccc;padding:5px 10px;border-radius:8px;font-size:12px;outline:none;}
-        .back-link{color:var(--accent);font-size:12px;text-decoration:none;}
-
-        .chat-wrap{display:flex;flex-direction:column;}
-        .msg{display:flex;gap:10px;margin-bottom:14px;}
+        .wrap{position:relative;z-index:10;max-width:500px;margin:0 auto;padding:15px;padding-bottom:80px;}
+        .chat-section{display:flex;flex-direction:column;gap:14px;}
+        .msg{display:flex;gap:10px;align-items:flex-start;}
         .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
         .avatar i{color:#fff;font-size:18px;}
-        .bubble{background:var(--card);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:12px 14px;max-width:85%;}
-        .msg.user{justify-content:flex-end;}
-        .msg.user .bubble{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px 14px 4px 14px;}
-        .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
-        .opt{background:rgba(20,20,40,.6);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:left;}
-        .opt:hover{border-color:var(--accent);background:rgba(30,30,54,.8);}
-        .opt i{color:var(--accent);font-size:20px;display:block;margin-bottom:4px;}
-        .ot{font-size:13px;font-weight:600;}
-        .od{font-size:11px;color:var(--dim);margin-top:2px;}
-        .opt-full{grid-column:1/-1;text-align:center;}
-        .opt.sel{border-color:var(--green);background:rgba(74,222,128,.08);}
-        .free-input{width:100%;background:rgba(10,10,26,.6);border:1px solid var(--border);border-radius:10px;padding:12px;color:#fff;font-size:14px;outline:none;margin-top:10px;font-family:inherit;resize:none;}
-        .input-row{display:flex;gap:8px;margin-top:10px;}
-        .free-input2{flex:1;background:rgba(10,10,26,.6);border:1px solid var(--border);border-radius:10px;padding:12px;color:#fff;font-size:14px;outline:none;font-family:inherit;resize:none;}
-        .send-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;padding:0 18px;cursor:pointer;font-size:16px;}
-        .btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;}
-        .btn-out{background:transparent;color:var(--accent);border:1px solid var(--accent);}
-        .plan-card{background:rgba(10,10,26,.4);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;}
+        .bubble{background:var(--card);border:1px solid var(--border);border-radius:14px 14px 14px 4px;padding:12px 15px;max-width:85%;line-height:1.6;font-size:14px;}
+        .msg.user{flex-direction:row-reverse;}
+        .msg.user .bubble{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px 14px 4px 14px;color:#fff;}
+        .bubble b{color:var(--accent);}
+        .msg.user .bubble b{color:#fff;}
+        .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+        .chip{background:rgba(30,30,54,.8);border:1px solid var(--border);border-radius:16px;padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text);transition:all .2s;}
+        .chip:hover{border-color:var(--accent);background:rgba(40,40,70,.8);}
+        .free-input{flex:1;background:rgba(10,10,26,.6);border:1px solid var(--border);border-radius:10px;padding:12px;color:#fff;font-size:14px;outline:none;font-family:inherit;resize:none;min-height:44px;}
+        .input-row{display:flex;gap:8px;margin-top:10px;align-items:center;}
+        .send-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;padding:0 18px;cursor:pointer;font-size:16px;height:44px;}
+        .typing{dot}
+        .plan-card{background:rgba(10,10,26,.4);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;}
         .pw{font-size:12px;color:var(--accent);font-weight:700;margin-bottom:4px;}
         .pt{font-size:13px;font-weight:600;}
         .pm{font-size:11px;color:var(--dim);margin-top:2px;}
-        .plan-actions{display:flex;gap:8px;margin-top:12px;}
-        .plan-actions .btn{flex:1;margin-top:0;}
-        .book-link{font-size:11px;color:var(--accent);margin-top:6px;text-decoration:none;display:inline-block;}
+        .personality{border:1px solid var(--accent);background:rgba(139,137,255,.08);border-radius:12px;padding:14px;margin-top:10px;}
+        .personality .pname{font-size:15px;font-weight:800;color:var(--accent);}
+        .personality .pdesc{font-size:12px;color:var(--text);margin-top:6px;line-height:1.6;}
+        .btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin:8px 6px 0 0;}
+        .btn-out{background:transparent;color:var(--accent);border:1px solid var(--accent);}
+        .radar{max-width:180px;margin:0 auto;}
     </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="wrap">
-    
-    </div>
-
-    <div style="text-align:center;margin-bottom:14px">
-        <div style="font-size:18px;font-weight:800"><i class="ph-fill ph-brain" style="color:var(--accent)"></i> AI学习规划师</div>
-    </div>
-
-    <div class="chat-wrap" id="chat">
-        <!-- 动态生成 -->
-    </div>
+    <div id="chat" class="chat-section"></div>
 </div>
-
 <script src="i18n.js"></script>
 <script src="frame.js"></script>
-<script>initFrame("learning","learn");</script>
-
-
 <script>
-// 课程数据
-const COURSES = {
-    ai: [
-        {t:'AI人人通 — 什么是AI',d:'3小时 · 入门',url:'https://www.bilibili.com/video/BV1uNk1YxEJQ/'},
-        {t:'ChatGPT实战 — 提示词',d:'4小时 · 入门',url:'https://www.bilibili.com/video/BV1FvXLYSEQj/'},
-        {t:'AI做图片 — MJ/SD',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
-        {t:'AI做视频 — 剪映AI',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1KJYrz4Epm/'},
-        {t:'AI办公 — PPT/Excel',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1xwVr6FEh4/'},
-    ],
-    block: [
-        {t:'区块链入门 — 比特币',d:'3小时 · 入门',url:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
-        {t:'钱包使用 — MetaMask',d:'2小时 · 入门',url:'https://www.bilibili.com/video/BV1RL4y1T7qK/'},
-        {t:'DeFi基础',d:'3小时 · 进阶',url:'https://learnblockchain.cn/courses'},
-        {t:'智能合约 — Solidity',d:'5小时 · 高级',url:'https://learnblockchain.cn/article/4376'},
-        {t:'NFT与数字资产',d:'3小时 · 进阶',url:'https://learnblockchain.cn/courses'},
-    ],
-    ecom: [
-        {t:'跨境电商入门',d:'3小时 · 入门',url:'https://www.bilibili.com/video/BV1RYqHYnEw8/'},
-        {t:'选品策略',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1qG4y1s7G3/'},
-        {t:'店铺运营',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1jM4y1w7Fj/'},
-        {t:'物流与支付',d:'2小时 · 入门',url:'https://www.bilibili.com/video/BV1RYqHYnEw8/'},
-        {t:'TikTok带货',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1jM4y1w7Fj/'},
-    ],
-    mkt: [
-        {t:'营销思维',d:'3小时 · 入门',url:'https://www.coursera.org/courses?query=digital+marketing'},
-        {t:'社交媒体运营',d:'4小时 · 进阶',url:'https://www.bilibili.com/video/BV1uNk1YxEJQ/'},
-        {t:'内容创作',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1FvXLYSEQj/'},
-        {t:'私域流量',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1qG4y1s7G3/'},
-        {t:'数据分析',d:'4小时 · 高级',url:'https://www.coursera.org/courses?query=data+analytics'},
-    ],
-    code: [
-        {t:'编程思维',d:'3小时 · 入门',url:'https://www.khanacademy.org/computing'},
-        {t:'Python基础',d:'5小时 · 进阶',url:'https://www.bilibili.com/video/BV1Jgf6YvE8e/'},
-        {t:'网页制作',d:'5小时 · 进阶',url:'https://www.freecodecamp.org/chinese/'},
-        {t:'AI辅助编程',d:'3小时 · 进阶',url:'https://www.bilibili.com/video/BV1xwVr6FEh4/'},
-        {t:'项目实战',d:'6小时 · 高级',url:'https://www.freecodecamp.org/chinese/'},
-    ],
-};
-const DIR_NAMES={ai:'AI应用',block:'区块链/Web3',ecom:'跨境电商',mkt:'数字营销',code:'编程入门'};
-
-let step=0, answers={}, plan=[];
+initFrame('learning','learn');
 const chat=document.getElementById('chat');
+let step=0;
+let profile={goals:[],time:'',basis:'',direction:'',freeInput:''};
 
-function addMsg(text, isUser){
+function addMsg(text,isUser){
     const d=document.createElement('div');
     d.className='msg'+(isUser?' user':'');
     d.innerHTML=`<div class="avatar"><i class="${isUser?'ph-fill ph-user':'ph-fill ph-sparkle'}"></i></div><div class="bubble">${text}</div>`;
     chat.appendChild(d);
-    chat.scrollTop=chat.scrollHeight;
+    scrollBottom();
     return d;
 }
-function addOpts(optsArr, cb){
+function addChips(chips,cb){
     const d=document.createElement('div');
     d.className='msg';
-    d.innerHTML=`<div class="avatar"><i class="ph-fill ph-sparkle"></i></div><div class="bubble"><div class="opts" id="optGroup"></div></div>`;
+    let html='<div class="bubble"><div class="chips">';
+    chips.forEach((c,i)=>html+=`<div class="chip" onclick="pickChip(this,${i})">${c}</div>`);
+    html+='</div></div>';
+    d.dataset.cb='';
+    d.innerHTML=html;
     chat.appendChild(d);
-    const g=d.querySelector('#optGroup');
-    optsArr.forEach(o=>{
-        const b=document.createElement('div');
-        b.className='opt'+(o.full?' opt-full':'');
-        b.innerHTML=`<i class="ph ${o.icon}"></i><div class="ot">${o.title}</div>${o.desc?`<div class="od">${o.desc}</div>`:''}`;
-        b.onclick=()=>{
-            g.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
-            b.classList.add('sel');
-            setTimeout(()=>cb(o),300);
-        };
-        g.appendChild(b);
+    d._cb=cb;
+    scrollBottom();
+    return d;
+}
+function pickChip(el,idx){
+    const d=el.closest('.msg');
+    const cb=d._cb;
+    cb(el.textContent);
+}
+function addInput(cb){
+    const d=document.createElement('div');
+    d.className='msg';
+    d.innerHTML=`<div class="avatar"><i class="ph-fill ph-sparkle"></i></div><div class="bubble" style="width:100%"><div class="input-row"><input class="free-input" id="freeIn"><button class="send-btn" onclick="submitIn()">→</button></div></div>`;
+    chat.appendChild(d);
+    d._cb=cb;
+    scrollBottom();
+    document.getElementById('freeIn').focus();
+    document.getElementById('freeIn').addEventListener('keypress',e=>{if(e.key==='Enter')submitIn();});
+}
+function submitIn(){
+    const el=document.getElementById('freeIn');
+    const val=el.value.trim();
+    if(!val) return;
+    const msg=el.closest('.msg');
+    const cb=msg._cb;
+    addMsg(val,true);
+    setTimeout(()=>cb(val),300);
+    scrollBottom();
+}
+function scrollBottom(){chat.scrollTop=chat.scrollHeight;window.scrollTo(0,document.body.scrollHeight);}
+
+// 破冰
+function start(){
+    addMsg(`你好！很高兴认识你 😊<br>我是你的<b>专属学习规划师</b>，不是来给你填表格的，而是想真正了解你，然后帮你<b>拿到结果</b>。<br><br>先聊聊：<b>你最近为什么想学AI/区块链/电商这些？</b>`);
+    addInput(v=>{profile.goals.push('起步');askMore1(v);});
+}
+function askMore1(v){
+    profile.goals.push(v);
+    addMsg(`我明白了，你说的「${v}」我能理解。<br>很多人都是这样的，<b>想改变但不知道从哪开始</b>。<br><br>我想再深入一点：你现在每天大概能抽出多少时间学习？`);
+    addChips(['30分钟/天','1小时/天','2小时以上','看情况'],t=>{
+        profile.time=t;
+        addMsg(t,true);
+        setTimeout(()=>askBasis(),300);
     });
-    chat.scrollTop=chat.scrollHeight;
 }
-function addFree(ph, cb, allowSkip){
-    const row=document.createElement('div');
-    row.className='msg';
-    row.innerHTML=`<div class="avatar"><i class="ph-fill ph-sparkle"></i></div><div class="bubble"><input class="free-input2" id="freeInput" placeholder="${ph}"><div class="input-row"><button class="send-btn" id="freeSend">→</button></div></div>`;
-    chat.appendChild(row);
-    const send=()=>{const v=document.getElementById('freeInput').value.trim(); if(!v&&!allowSkip)return; cb(v||'跳过');};
-    document.getElementById('freeSend').onclick=send;
-    document.getElementById('freeInput').addEventListener('keypress',e=>{if(e.key==='Enter')send();});
-    chat.scrollTop=chat.scrollHeight;
+function askBasis(){
+    addMsg(`好的，${profile.time}，这个节奏很稳。<br><br>接下来：你之前接触过这些领域吗？比如<a>钱包</a>、AI工具之类？`);
+    addChips(['完全没接触','用过一点','比较熟练'],t=>{
+        profile.basis=t;
+        addMsg(t,true);
+        setTimeout(()=>askDirection(),300);
+    });
 }
-
-// 问题流程
-function askQ(n){
-    const q=[{
-        type:'opts', text:'你想学什么方向？', options:[
-            {icon:'ph-robot',title:'AI应用',desc:'ChatGPT·AI绘画·AI视频',val:'ai'},
-            {icon:'ph-currency-btc',title:'区块链/Web3',desc:'钱包·DeFi·合约',val:'block'},
-            {icon:'ph-storefront',title:'跨境电商',desc:'亚马逊·TikTok',val:'ecom'},
-            {icon:'ph-megaphone',title:'数字营销',desc:'社媒·内容·私域',val:'mkt'},
-            {icon:'ph-code',title:'编程入门',desc:'Python·网页',val:'code',full:true},
-        ]
-    },{
-        type:'opts', text:'你的基础怎么样？', options:[
-            {icon:'ph-seedling',title:'零基础',val:'zero'},
-            {icon:'ph-tree',title:'有一些了解',val:'some'},
-            {icon:'ph-tree-evergreen',title:'比较熟练',val:'pro',full:true},
-        ]
-    },{
-        type:'opts', text:'你的目标是？', options:[
-            {icon:'ph-briefcase',title:'找工作',val:'job'},
-            {icon:'ph-rocket-launch',title:'创业',val:'biz'},
-            {icon:'ph-chart-line-up',title:'提升技能',val:'skill'},
-            {icon:'ph-heart',title:'兴趣',val:'interest',full:true},
-        ]
-    },{
-        type:'opts', text:'每天能学多久？', options:[
-            {icon:'ph-clock',title:'30分钟',val:'30'},
-            {icon:'ph-clock',title:'1小时',val:'60'},
-            {icon:'ph-clock',title:'2小时+',val:'120',full:true},
-        ]
-    },{
-        type:'free', text:'具体想学什么？（可跳过）', ph:'输入你的想法...', skip:true,
-    }];
-
-    if(n>=q.length){genPlan();return;}
-    const cur=q[n];
-    step=n;
-    addMsg(cur.text);
-    if(cur.type==='opts') addOpts(cur.options, o=>{answers[n]=o.val;addMsg(o.title,true);setTimeout(()=>askQ(n+1),300);});
-    else addFree(cur.ph, v=>{answers[n]=v;addMsg(v,true);setTimeout(()=>askQ(n+1),300);}, cur.skip);
+function askDirection(){
+    addMsg(`了解！那咱们聊聊方向。<br><b>你最想突破的是哪方面？</b>`);
+    addChips(['AI / 智能工具','区块链 / Web3','跨境电商','数字营销','编程开发'],t=>{
+        profile.direction=t;
+        addMsg(t,true);
+        setTimeout(()=>askDetail(),300);
+    });
+}
+function askDetail(){
+    addMsg(`选${profile.direction}很有眼光，这方向需求大、前景好。<br><br>最后告诉我：你<b>具体想实现什么？</b>（可以自由说，越具体越好）<br>比如："想学会用AI做副业变现"或"想把产品卖到海外"`);
+    addInput(v=>{profile.freeInput=v;finish();});
 }
 
-function genPlan(){
-    const dir=answers[0];
-    const courses=COURSES[dir]||[];
-    const startIdx = answers[1]==='zero'?0 : answers[1]==='some'?1:2;
-    const perWeek = answers[3]==='30'?1 : answers[3]==='60'?2:3;
-    plan=[]; let wk=1, buf=[];
-    for(let i=startIdx;i<courses.length;i++){
-        buf.push(courses[i]);
-        if(buf.length>=perWeek||i===courses.length-1){plan.push({week:wk,courses:[...buf]});buf=[];wk++;}
+// 生成人格画像 + 方案
+function genPersonality(){
+    let type='行动派实干家', desc='';
+    if(profile.time.includes('2小时')||profile.time.includes('2小时以上')){type='冲刺型高效者';desc='你时间投入足，适合快速推进、多动手实践。';}
+    else if(profile.freeInput.includes('副业')||profile.freeInput.includes('变现')||profile.freeInput.includes('赚钱')){type='变现导向型';desc='你目标明确，想快速看到结果，适合项目制学习+实战。';}
+    else if(profile.basis.includes('没用')||profile.basis.includes('完全')){type='稳健起步型';desc='你从零开始但很认真，适合循序渐进、打好基础。';}
+    else if(profile.basis.includes('熟练')){type='进阶突破型';desc='你有基础，适合直接挑战实战和进阶内容。';}
+    else{type='思考者型';desc='你习惯先想清楚再行动，适合理解原理再实践。';}
+    return {type,desc};
+}
+
+function genPlan(dir){
+    const plans={
+        'AI / 智能工具':['AI人人通','ChatGPT实战','AI做图片','AI做视频','AI办公'],
+        '区块链 / Web3':['区块链入门','钱包使用','DeFi基础','智能合约','NFT'],
+        '跨境电商':['跨境电商入门','选品策略','店铺运营','物流支付','TikTok'],
+        '数字营销':['营销思维','社媒运营','内容创作','私域','数据分析'],
+        '编程开发':['编程思维','Python','网页制作','AI编程','项目实战'],
+    };
+    return plans[dir]||plans['AI / 智能工具'];
+}
+
+function radarSvg(percent){
+    return `<div class="radar"><svg viewBox="0 0 100 100">
+        <polygon points="50,5 88,25 88,75 50,95 12,75 12,25" fill="rgba(139,137,255,.1)" stroke="rgba(139,137,255,.3)"/>
+        <polygon points="50,5 88,25 88,75 50,95 12,75 12,25" fill="rgba(139,137,255,.3)" stroke="#8b89ff" stroke-width="2" transform="scale(${percent/100}) translate(${100-percent},${100-percent})"/>
+        <text x="50" y="52" text-anchor="middle" font-size="14" fill="#4ade80" font-weight="700">${percent}%</text>
+      </svg></div>`;
+}
+
+function finish(){
+    const p=genPersonality();
+    addMsg('收到！让我为你生成专属方案。<br>请稍等一会儿...');
+    setTimeout(()=>{
+        // 人格画像
+        addMsg(`根据你的回答，我给你做了一个<b>学习人格画像</b>：`);
+        const per=addMsg(`<div class="personality">
+            <div class="pname">${p.type}</div>
+            <div class="pdesc">${p.desc} 你的学习档案：<br>投入：${profile.time}｜基础：${profile.basis}｜方向：${profile.direction}</div>
+        </div>`,false);
+        setTimeout(()=>{
+            // 方案
+            const courses=genPlan(profile.direction);
+            addMsg(`基于你的情况，这是你的<b>3个月专属学习路径</b>（完成即修满该方向100学分）：`);
+            courses.forEach((c,i)=>{
+                const week=Math.floor(i/2)+1;
+                addMsg(`<div class="plan-card">
+                    <div class="pw">第${week}周</div>
+                    <div class="pt">${i+1}. ${c}</div>
+                    <div class="pm">目标：掌握XXX</div>
+                </div>`);
+            });
+            setTimeout(()=>{
+                addMsg(`完成这套路径，你将：<br>✅ 独立完成该方向项目<br>✅ 拿到<b>链上认证证书</b><br>✅ 修满<b>100学分</b><br>✅ 获赠等值<b>ACE代币</b><br><br>你觉得这个方案符合你的预期吗？`);
+                addChips(['确认，开始学习','想调整一下','先了解价格'],t=>{
+                    addMsg(t,true);
+                    setTimeout(()=>ending(t),300);
+                });
+            },400);
+        },400);
+    },600);
+}
+function ending(choice){
+    if(choice.includes('确认')){
+        addMsg(`太棒了！你的方案已锁定。<br>单门课500U / 方向套餐1500U（5门全含）/ 至尊5000U（全部+终身）。<br>随时可以开始，3个月内修满80分即可持证。`);
+    }else if(choice.includes('调整')){
+        addMsg(`没问题，告诉我你想调整哪里？比如换方向、改节奏、加内容都可以。`);
+    }else{
+        addMsg(`告诉你三个价位：<br>单门课 <b>500U</b>（送等值ACE）<br>方向套餐 <b>1500U</b>（含5门+证书）<br>至尊 <b>5000U</b>（全部方向+终身）<br>课程都是增值服务：路径+测验+答疑+证书，不是简单链接。`);
     }
-    addMsg('计划生成！');
-    plan.forEach(w=>{
-        const d=document.createElement('div');d.className='msg';
-        let html=`<div class="avatar"><i class="ph-fill ph-clipboard-text"></i></div><div class="bubble">`;
-        html+=`<div class="pw">第${w.week}周</div>`;
-        w.courses.forEach(c=>{
-            html+=`<div class="plan-card"><div class="pt">${c.t}</div><div class="pm">${c.d}</div><a href="${c.url}" target="_blank" class="book-link">去学习 →</a></div>`;
-        });
-        html+=`</div>`;
-        d.innerHTML=html;chat.appendChild(d);
-    });
-    const actions=document.createElement('div');actions.className='msg';
-    actions.innerHTML=`<div class="avatar"><i class="ph-fill ph-check"></i></div><div class="bubble"><div class="plan-actions"><button class="btn" onclick="confirmPlan()">确认方案</button><button class="btn btn-out" onclick="location.reload()">重新规划</button></div></div>`;
-    chat.appendChild(actions);
-    chat.scrollTop=chat.scrollHeight;
 }
-function confirmPlan(){
-    addMsg('方案已确认！付费5,000U（至尊）或500U（单门）后即可开始学习。');
-    addMsg('你学完了我建议的这门课了吗？',true);
-}
-askQ(0);
+start();
 </script>
 </body>
 </html>

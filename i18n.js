@@ -220,6 +220,16 @@ const I18N = {
     completed: {zh:'已完成', en:'Completed', ja:'完了済み', ko:'완료됨', es:'Completado'},
     hours_short: {zh:'小时', en:'hrs', ja:'時間', ko:'시간', es:'hrs'},
     learned: {zh:'已学', en:'Learned', ja:'学習済', ko:'학습', es:'Aprendido'},
+
+    // 修读档案(学分制)
+    credit_total: {zh:'总学分', en:'Total Credits', ja:'総単位', ko:'총학점', es:'Créditos'},
+    credit_progress: {zh:'整体进度', en:'Overall Progress', ja:'全体進捗', ko:'전체진행', es:'Progreso'},
+    learn_deadline: {zh:'学习周期截止', en:'Milestone Deadline', ja:'学習締切', ko:'학습 마감', es:'Plazo'},
+    days_left: {zh:'天后', en:'days left', ja:'日後', ko:'일 후', es:'días'},
+    delay_hint: {zh:'到期未修满80学分，未释放代币将降速', en:'If not complete in time, token release slows', ja:'期日未達成でトークン減速', ko:'기한 미달 시 토큰 감속', es:'Token ralentiza'},
+    can_cert: {zh:'可拿证', en:'Ready', ja:'合格可能', ko:'인증 가능', es:'Listo'},
+    need_credit: {zh:'差', en:'need', ja:'あと', ko:'부족', es:'necesita'},
+    continue_learn: {zh:'继续学习', en:'Continue Learning', ja:'学習続行', ko:'학습 계속', es:'Seguir'},
 };
 
 // ========================================
