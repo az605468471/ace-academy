@@ -211,9 +211,45 @@ function ending(choice){
     if(choice.includes('确认')){
         addMsg(`太棒了！你的方案已锁定。<br>单门课500U / 方向套餐1500U（5门全含）/ 至尊5000U（全部+终身）。<br>随时可以开始，3个月内修满80分即可持证。`);
     }else if(choice.includes('调整')){
-        addMsg(`没问题，告诉我你想调整哪里？比如换方向、改节奏、加内容都可以。`);
+        addMsg(`没问题，你的调整我来处理。<br><br>你可以告诉我想调整哪些，比如：<br>① <b>换方向</b>（AI→区块链）<br>② <b>改节奏</b>（每周多学/少学）<br>③ <b>加内容</b>（想多学某一块）<br>④ <b>减课程</b>（某门课不想要）<br><br>直接跟我说就行：`);
+        addInput(v=>{handleAdjust(v);});
+    }else if(choice.includes('价格')||choice.includes('了解')){
+        addMsg(`告诉你三个价位：<br>单门课 <b>500U</b>（送等值ACE）<br>方向套餐 <b>1500U</b>（含5门+证书）<br>至尊 <b>5000U</b>（全部方向+终身）<br>课程都是增值服务：路径+测验+答疑+证书，不是简单链接。<br><br>需要我根据你的预算推荐吗？`);
+        addChips(['推荐下性价比','还是先学起来','再想想'],t=>{
+            addMsg(t,true);
+            setTimeout(()=>ending(t),300);
+        });
+    }
+}
+
+function handleAdjust(input){
+    // 识别调整意图
+    let reply='';
+    if(input.includes('方向')||input.includes('区块链')||input.includes('电商')||input.includes('营销')||input.includes('编程')){
+        reply=`明白了，你想调整方向。<br>我可以帮你重新规划一个新的学习路径，把课程按新方向排好。<br>要不要我现在就重新生成？`;
+    }else if(input.includes('节奏')||input.includes('时间')||input.includes('快')||input.includes('慢')){
+        reply=`收到，调整学习节奏没问题。<br>想更紧凑还是更轻松都可以，<b>学分和证书标准不变</b>，3个月内修满80分即可。<br>要我现在调整学习周期计划吗？`;
+    }else if(input.includes('加')||input.includes('多学')||input.includes('增加')){
+        reply=`想多学没问题的，可以顺延方向往深了学，<b>学分能累计</b>，不会浪费。<br>建议先把当前方向修满，再加新方向，拿更多证书和学分。<br>要我重新规划吗？`;
     }else{
-        addMsg(`告诉你三个价位：<br>单门课 <b>500U</b>（送等值ACE）<br>方向套餐 <b>1500U</b>（含5门+证书）<br>至尊 <b>5000U</b>（全部方向+终身）<br>课程都是增值服务：路径+测验+答疑+证书，不是简单链接。`);
+        reply=`收到你的调整需求了（${input}）。<br>我已经记下来，会在最终方案中体现。<br>如果你还想改别的，也可以继续告诉我，或者咱们先这样，然后进入确认报价？`;
+    }
+    addMsg(reply);
+    addChips(['确认调整，重新生成','先按这个来','还要继续改'],t=>{
+        addMsg(t,true);
+        setTimeout(()=>adjustNext(t),300);
+    });
+}
+
+function adjustNext(t){
+    if(t.includes('重新')){
+        addMsg('好的，方案已重新生成！<br>学分/证书/代币标准不变，按你调整后的路径学习即可。<br>准备好了就可以开始，选一门课报名就行。');
+    }else if(t.includes('继续改')){
+        addMsg('请告诉我还想调整什么？');
+        addInput(v=>{handleAdjust(v);});
+    }else{
+        addMsg('好，方案确定！<br>随时可以报名开课，祝你学有所成 🎓');
+        addChips(['去选课','看看价格','问别的'],t2=>{addMsg(t2,true);setTimeout(()=>ending(t2),300);});
     }
 }
 start();
