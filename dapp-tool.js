@@ -90,10 +90,13 @@ function dappSetAccount(w) { currentWallet = w; try { localStorage.setItem('ace_
 // 签名登录验证 (方式A：钱包签名消息证明持有人身份)
 async function dappSignLogin(msg) {
     if (!window.ethereum || !currentWallet) return null;
-    const provider = dappProvider();
-    const signer = provider.getSigner();
     try {
-        const sig = await signer.signMessage(msg);
+        // 用最底层 personal_sign，明确当前钱包地址，不触发重新选择/连接
+        const from = currentWallet;
+        const sig = await window.ethereum.request({
+            method: 'personal_sign',
+            params: [msg, from]
+        });
         return sig;
     } catch(e) {
         console.warn('签名失败或已取消', e);
