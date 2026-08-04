@@ -250,6 +250,11 @@
 </div>
 
 <script src="i18n.js"></script>
+<!-- Ethers + 合约配置 -->
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="contracts-config.js"></script>
+<script src="contracts-abi.js"></script>
+<script src="dapp-tool.js"></script>
 <script>
 let curTab = 'register', regVerified = false, logVerified = false, walletMode = '';
 
@@ -273,9 +278,10 @@ function goPhase(mode, phase) {
         document.getElementById('regStepLabel').textContent = t(['','step1','step2','step3','step4'][phase]);
         if (phase === 3) document.getElementById('confirmRef').textContent = document.getElementById('refInput').value.slice(0,10)+'...';
         if (phase === 4) {
-            document.getElementById('regWallet').textContent = '0x' + Math.random().toString(16).slice(2,8)+'...';
-            document.getElementById('regUid').textContent = '10'+Math.floor(Math.random()*9000+1000);
-            document.getElementById('regRef').textContent = document.getElementById('refInput').value.slice(0,10)+'...';
+            const w = currentWallet || '0x...';
+            document.getElementById('regWallet').textContent = w.slice(0,8)+'...'+w.slice(-4);
+            document.getElementById('regUid').textContent = (w ? w.slice(0,8) : '10') + '001';
+            document.getElementById('regRef').textContent = (document.getElementById('refInput').value || '—').slice(0,10)+'...';
         }
     } else { // 登录
         document.querySelectorAll('#loginSection .phase').forEach((p,i) => p.classList.toggle('active', i === phase-1));
@@ -283,7 +289,10 @@ function goPhase(mode, phase) {
             s.className = 'step ' + (i < phase-1 ? 'done' : i === phase-1 ? 'active' : '');
         });
         document.getElementById('logStepLabel').textContent = t(['','step2','step3','sign_to_login'][phase]);
-        if (phase === 3) document.getElementById('loginWallet').textContent = '0x' + Math.random().toString(16).slice(2,8)+'...';
+        if (phase === 3) {
+            const w = currentWallet || '0x';
+            document.getElementById('loginWallet').textContent = w.slice(0,8)+'...'+(w && w.slice(-4));
+        }
     }
 }
 
@@ -297,20 +306,48 @@ function connectWallet(mode) {
     document.getElementById('walletOverlay').classList.add('show');
 }
 
-function pickWallet() {
+async function pickWallet() {
     closeOverlay('walletOverlay');
+    // 真实连接钱包
+    const account = await dappConnect();
+    if (!account) {
+        document.getElementById('signOverlay').classList.add('show');
+        document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-wallet"></i>';
+        document.getElementById('signIcon').style.color = 'var(--red)';
+        document.getElementById('signTitle').textContent = '连接失败';
+        document.getElementById('signDesc').textContent = '请确认已安装/授权 MetaMask 或 TP 钱包';
+        return;
+    }
+    dappSetAccount(account);
+
     document.getElementById('signOverlay').classList.add('show');
-    // 模拟：自动通过（演示版）
+    document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-check-circle"></i>';
+    document.getElementById('signIcon').style.color = 'var(--green)';
+    document.getElementById('signTitle').textContent = walletMode === 'register' ? '钱包已连接' : '授权成功';
+    document.getElementById('signDesc').textContent = account.slice(0,8)+'...'+account.slice(-4);
+
+    if (walletMode === 'register') {
+        // 真实注册: 绑定推荐关系
+        try {
+            const refInput = (document.getElementById('refInput').value || '').trim();
+            if (refInput && refInput.startsWith('0x')) {
+                const rf = dappC('Referral');
+                const existing = await rf.referrer(account);
+                if (existing === '0x0000000000000000000000000000000000000000') {
+                    const c = dappC('Referral', true);
+                    const tx = await c.registerReferral(account, refInput);
+                    await tx.wait();
+                }
+            }
+        } catch(e) {
+            console.warn('注册推荐未完成(可能已有推荐人或参数问题)', e);
+        }
+    }
+
     setTimeout(() => {
-        document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-check-circle"></i>';
-        document.getElementById('signIcon').style.color = 'var(--green)';
-        document.getElementById('signTitle').textContent = '授权成功';
-        document.getElementById('signDesc').textContent = '验证通过';
-        setTimeout(() => {
-            closeOverlay('signOverlay');
-            if (walletMode === 'register') goPhase('register', 4);
-            else goPhase('login', 3);
-        }, 1000);
+        closeOverlay('signOverlay');
+        if (walletMode === 'register') goPhase('register', 4);
+        else goPhase('login', 3);
     }, 800);
 }
 
