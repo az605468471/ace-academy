@@ -76,21 +76,25 @@
 <div class="bg"></div>
 <div class="wrap">
     <div class="card">
-        <div class="row"><span class="l" data-i18n="wallet_addr">钱包地址</span><span class="v">0xABC1...23DEF</span></div>
-        <div class="row"><span class="l" data-i18n="user_id">用户ID</span><span class="v">100235</span></div>
-        <div class="row"><span class="l" data-i18n="role">身份</span><span class="v" data-i18n="student_role">学员</span></div>
-        <div class="row"><span class="l" data-i18n="referrer">推荐人</span><span class="v">0x90F8...c9C1</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div class="sec-t" style="margin:0"><i class="ph-fill ph-wallet"></i> 我的账户</div>
+            <button class="btn" style="width:auto;padding:8px 16px;margin:0" onclick="dappProfileConnect()"><i class="ph-fill ph-plug"></i> <span id="connText" data-i18n="connect_wallet">连接钱包</span></button>
+        </div>
+        <div class="row"><span class="l" data-i18n="wallet_addr">钱包地址</span><span class="v" id="pWallet">未连接</span></div>
+        <div class="row"><span class="l" data-i18n="user_id">用户ID</span><span class="v" id="pUserId">--</span></div>
+        <div class="row"><span class="l" data-i18n="role">身份</span><span class="v" id="pRole" data-i18n="student_role">学员</span></div>
+        <div class="row" id="pRefRow"><span class="l" data-i18n="referrer">推荐人</span><span class="v" id="pReferrer">--</span></div>
     </div>
 
     <div class="card">
         <div class="sec-t"><i class="ph-fill ph-coins"></i> <span data-i18n="my_assets">我的资产</span></div>
         <div class="grid3">
-            <div class="b"><div class="n" id="pAvailable">720</div><div class="l" data-i18n="available_ace">可用ACE</div></div>
-            <div class="b"><div class="n" style="color:var(--dim)">480</div><div class="l" data-i18n="locked_ace">锁定ACE</div></div>
-            <div class="b"><div class="n" style="color:var(--green)">500U</div><div class="l">USDT</div></div>
+            <div class="b"><div class="n" id="pAvailable">--</div><div class="l" data-i18n="available_ace">可用ACE</div></div>
+            <div class="b"><div class="n" style="color:var(--dim)" id="pLocked">--</div><div class="l" data-i18n="locked_ace">锁定ACE</div></div>
+            <div class="b"><div class="n" style="color:var(--green)" id="pUsdt">--</div><div class="l">USDT</div></div>
         </div>
-        <div style="font-size:12px;color:var(--dim);text-align:center"><span data-i18n="released_pct">已释放</span> 60%</div>
-        <div style="height:6px;background:#333;border-radius:3px;margin-top:6px;overflow:hidden"><div style="height:100%;width:60%;background:linear-gradient(90deg,var(--accent),var(--green))"></div></div>
+        <div style="font-size:12px;color:var(--dim);text-align:center" id="pReleasedPct"><span data-i18n="released_pct">已释放</span> --</div>
+        <div style="height:6px;background:#333;border-radius:3px;margin-top:6px;overflow:hidden"><div id="pReleasedBar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--green))"></div></div>
     </div>
 
     <div class="card">
@@ -189,9 +193,9 @@
         <div id="refundBody">
             <div style="font-size:12px;color:var(--dim);margin:6px 0" data-i18n="refund_reason">退课原因</div>
             <div class="optrow">
-                <div class="opt" onclick="pickReason(1,this)"><div class="t" data-i18n="refund_reason1">课程不感兴趣</div></div>
-                <div class="opt" onclick="pickReason(2,this)"><div class="t" data-i18n="refund_reason2">学习时间不足</div></div>
-                <div class="opt" onclick="pickReason(3,this)"><div class="t" data-i18n="refund_reason3">重复购买</div></div>
+                <div class="opt" onclick="pickReasonRefund(1,this)"><div class="t" data-i18n="refund_reason1">课程不感兴趣</div></div>
+                <div class="opt" onclick="pickReasonRefund(2,this)"><div class="t" data-i18n="refund_reason2">学习时间不足</div></div>
+                <div class="opt" onclick="pickReasonRefund(3,this)"><div class="t" data-i18n="refund_reason3">重复购买</div></div>
             </div>
             <div class="modal-note"><i class="ph ph-warning"></i> <span data-i18n="refund_tip2">退课后课程作废，不可继续学习</span></div>
             <button class="modal-btn modal-btn-ok" id="refundBtn" onclick="submitRefund()"><span data-i18n="refund_submit">确认退课</span></button>
@@ -216,6 +220,11 @@
 
 <script src="i18n.js"></script>
 <script src="frame.js"></script>
+<!-- Ethers + 合约配置 -->
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="contracts-config.js"></script>
+<script src="contracts-abi.js"></script>
+<script src="dapp-tool.js"></script>
 <script src="profile-app.js"></script>
 <script>initFrame('profile','profile');initProfileApp();</script>
 </body>
