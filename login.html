@@ -358,19 +358,19 @@ async function checkLoginMember(wallet) {
     if (walletMode !== 'login') return;
     let ref = '0x0000000000000000000000000000000000000000';
     let paid = 0;
-    try {
-        ref = await dappRead('Referral','referrer', wallet);
-    } catch(e){}
-    try {
-        const s = await dappRead('Course','getStudentInfo', wallet);
-        paid = Number(s.totalPaid);
-    } catch(e){}
-    const isMember = ref !== '0x0000000000000000000000000000000000000000' || paid > 0;
+    // 用钱包 provider 读取(可靠快速)，并加超时保护
+    const walletP = dappProvider();
+    const refC = new ethers.Contract(CONTRACT_CONFIG.contracts.Referral, CONTRACT_ABIS.Referral, walletP);
+    const courseC = new ethers.Contract(CONTRACT_CONFIG.contracts.Course, CONTRACT_ABIS.Course, walletP);
+    const timeout = p => Promise.race([p, new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')), 8000))]);
+    try { ref = (await timeout(refC.referrer(wallet))); } catch(e){}
+    try { const s = await timeout(courseC.getStudentInfo(wallet)); paid = Number(s.totalPaid); } catch(e){}
+    const isMember = ref !== '0x0000000000000000000000000000000000000000' || paid > 0 ||
+        CONTRACT_CONFIG.wallets.ownerFund.toLowerCase()===wallet.toLowerCase() ||
+        CONTRACT_CONFIG.wallets.promo.toLowerCase()===wallet.toLowerCase();
     if (isMember) {
-        // 老会员 → 进入签名验证阶段
         goPhase('login', 3);
     } else {
-        // 非会员 → 提示去注册
         alert('该钱包未注册为会员，请通过推荐链接注册');
         switchTab('register');
     }
