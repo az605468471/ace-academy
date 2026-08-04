@@ -37,20 +37,20 @@
 <body>
 <div class="bg"></div>
 <div class="wrap">
-    <div class="note"><i class="ph ph-info"></i> 管理后台只读取链上数据 · 连接: 0x90F8...c9C1（管理员）</div>
+    <div class="note"><i class="ph ph-info"></i> 管理后台读取链上真实数据 · <button style="background:var(--accent);color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer" onclick="dappAdminConnect()"><i class="ph ph-plug"></i> <span id="adminConn">连接Owner钱包</span></button></div>
 
     <div class="grid2">
-        <div class="card"><div class="cn" data-i18n="ace_price">ACE价格</div><div class="cv g" data-i18n="ace_price">0.1U</div></div>
-        <div class="card"><div class="cn">总用户</div><div class="cv">128</div></div>
-        <div class="card"><div class="cn" data-i18n="pool">底池</div><div class="cv">8,500U</div></div>
-        <div class="card"><div class="cn" data-i18n="burned">已销毁</div><div class="cv r">15,000</div></div>
-        <div class="card"><div class="cn">总学费</div><div class="cv g">26,000U</div></div>
-        <div class="card"><div class="cn" data-i18n="stat_total_ace">ACE总量</div><div class="cv">9.98M</div></div>
+        <div class="card"><div class="cn" data-i18n="ace_price">ACE价格</div><div class="cv g" id="aPrice">--</div></div>
+        <div class="card"><div class="cn">总用户</div><div class="cv" id="aStudents">--</div></div>
+        <div class="card"><div class="cn" data-i18n="pool">底池</div><div class="cv" id="aPool">--</div></div>
+        <div class="card"><div class="cn" data-i18n="burned">已销毁</div><div class="cv r" id="aBurned">--</div></div>
+        <div class="card"><div class="cn">总学费</div><div class="cv g" id="aRevenue">--</div></div>
+        <div class="card"><div class="cn" data-i18n="stat_total_ace">ACE总量</div><div class="cv" id="aTot">--</div></div>
     </div>
 
     <div class="sec">
         <div class="st"><i class="ph-fill ph-wallet"></i> <span data-i18n="fund_wallets">资金钱包</span></div>
-        <div class="row"><span class="l"><span data-i18n="platform_fund">平台运营USDT</span></span><span class="v g">12,000U</span></div>
+        <div class="row"><span class="l"><span data-i18n="platform_fund">平台运营USDT</span></span><span class="v g" id="aPlatformUsdt">--</span></div>
         <div class="row"><span class="l"><span data-i18n="protection_fund">护盘基金</span></span><span class="v">4,800U / 5,000U</span></div>
         <div class="row"><span class="l">公益基金</span><span class="v g">1,240U + 2,500 ACE</span></div>
     </div>
@@ -91,7 +91,52 @@
     </div>
 </div>
 <script src="i18n.js"></script>
-<script src="frame.js"></script><script>initFrame("admin","home")</script>
-<script>createBottomNav("home");</script>
+<script src="frame.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="contracts-config.js"></script>
+<script src="contracts-abi.js"></script>
+<script src="dapp-tool.js"></script>
+<script>initFrame("admin","home")</script>
+<script>
+createBottomNav("home");
+const OWNER = CONTRACT_CONFIG.wallets.ownerFund;
+const ACE_ADDR = CONTRACT_CONFIG.contracts.ACE;
+
+async function dappAdminConnect() {
+    const account = await dappConnect();
+    if (!account) return;
+    dappSetAccount(account);
+    const isOwner = account.toLowerCase() === OWNER.toLowerCase();
+    document.getElementById('adminConn').textContent = account.slice(0,8)+'...'+account.slice(-4) + (isOwner?' (Owner)':' (非Owner)');
+    if (!isOwner) alert('当前钱包非Owner，仅能查看部分数据');
+    await loadAdminData();
+}
+
+async function loadAdminData() {
+    const p = new ethers.providers.JsonRpcProvider(CONTRACT_CONFIG.network.rpc);
+    const ace = new ethers.Contract(ACE_ADDR, CONTRACT_ABIS.ACE, p);
+    try {
+        // 总量
+        const tot = await ace.totalSupply();
+        setVal('aTot', (Number(ethers.utils.formatEther(tot))/1e6).toFixed(2)+'M');
+        // 已销毁
+        const burned = await ace.balanceOf('0x000000000000000000000000000000000000dEaD');
+        setVal('aBurned', Math.floor(Number(ethers.utils.formatEther(burned))));
+    } catch(e){}
+    // Course stats
+    try {
+        const st = await dappRead('Course','getStats');
+        setVal('aStudents', Number(st[0]));
+        setVal('aPromoters', Number(st[1]));
+        setVal('aRevenue', (Number(ethers.utils.formatEther(st[2]))/100).toFixed(0)+'U');
+    } catch(e){}
+    // 平台USDT余额
+    try {
+        const usdtBal = await dappTokenBalance(OWNER, CONTRACT_CONFIG.usdt);
+        setVal('aPlatformUsdt', Math.floor(Number(usdtBal.eth))+'U');
+    } catch(e){}
+}
+function setVal(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+</script>
 </body>
 </html>
