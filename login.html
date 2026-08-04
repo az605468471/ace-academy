@@ -256,7 +256,7 @@
 <script src="contracts-abi.js"></script>
 <script src="dapp-tool.js"></script>
 <script>
-let curTab = 'register', regVerified = false, logVerified = false, walletMode = '';
+let curTab = 'register', regVerified = false, logVerified = false, walletMode = '', walletConnected = false;
 
 function switchTab(t) {
     curTab = t;
@@ -315,15 +315,17 @@ async function pickWallet() {
         document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-wallet"></i>';
         document.getElementById('signIcon').style.color = 'var(--red)';
         document.getElementById('signTitle').textContent = '连接失败';
-        document.getElementById('signDesc').textContent = '请确认已安装/授权 MetaMask 或 TP 钱包';
+        document.getElementById('signDesc').textContent = '请在 TP/MetaMask 钱包内置浏览器中打开并授权';
         return;
     }
     dappSetAccount(account);
+    localStorage.setItem('ace_wallet', account);  // 持久化钱包地址
+    walletConnected = true;
 
     document.getElementById('signOverlay').classList.add('show');
     document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-check-circle"></i>';
     document.getElementById('signIcon').style.color = 'var(--green)';
-    document.getElementById('signTitle').textContent = walletMode === 'register' ? '钱包已连接' : '授权成功';
+    document.getElementById('signTitle').textContent = walletMode === 'register' ? '钱包已连接' : '钱包连接成功';
     document.getElementById('signDesc').textContent = account.slice(0,8)+'...'+account.slice(-4);
 
     if (walletMode === 'register') {
@@ -347,15 +349,30 @@ async function pickWallet() {
     setTimeout(() => {
         closeOverlay('signOverlay');
         if (walletMode === 'register') goPhase('register', 4);
-        else goPhase('login', 3);
+        else { goPhase('login', 3); document.getElementById('loginSignBtn').textContent = walletConnected ? '已授权' : '签名授权登录'; };
     }, 800);
 }
 
 function signLogin() {
-    document.getElementById('successOverlay').classList.add('show');
+    // 强制验证已连接钱包
+    if (!currentWallet) {
+        alert('请先连接钱包');
+        goPhase('login', 2);
+        return;
+    }
+    localStorage.setItem('ace_wallet', currentWallet);
+    // 登录成功，跳转学习中心
+    window.location.href = 'learning.html?wallet=' + currentWallet;
 }
 
-function enterPlatform() { location.href = 'learning.html'; }
+function enterPlatform() {
+    if (!currentWallet) {
+        alert('连接失败，请确认钱包已授权');
+        return;
+    }
+    localStorage.setItem('ace_wallet', currentWallet);
+    window.location.href = 'learning.html?wallet=' + currentWallet;
+}
 function closeOverlay(id) { document.getElementById(id).classList.remove('show'); }
 
 // 滑动验证

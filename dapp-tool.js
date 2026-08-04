@@ -6,11 +6,18 @@
 
 let currentWallet = null;
 
+// 恢复已保存的钱包地址 (各页面加载时读取)
+try {
+    const saved = localStorage.getItem('ace_wallet');
+    if (saved && saved.startsWith('0x')) currentWallet = saved;
+} catch(e){}
+
 // 连接钱包并返回地址
 async function dappConnect() {
-    if (!window.ethereum) { alert('请安装 MetaMask 或 TP 钱包'); return null; }
+    if (!window.ethereum) { alert('未检测到钱包，请在 TP/MetaMask 内置浏览器中打开'); return null; }
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     currentWallet = accounts[0];
+    dappSetAccount(currentWallet);
     await dappEnsureChain();
     return currentWallet;
 }
@@ -78,4 +85,4 @@ async function dappUsdtBalance(wallet) {
 
 // 已连接地址
 function dappAccount() { return currentWallet; }
-function dappSetAccount(w) { currentWallet = w; }
+function dappSetAccount(w) { currentWallet = w; try { localStorage.setItem('ace_wallet', w); } catch(e){} }

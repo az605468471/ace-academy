@@ -77,6 +77,13 @@
 <script src="dapp-tool.js"></script>
 <script>
 initFrame('learning','learn');
+// 自动恢复已连接钱包
+(function(){
+    if (currentWallet) {
+        const c = document.getElementById('learnConnText'); if (c) c.textContent = currentWallet.slice(0,8)+'...'+currentWallet.slice(-4);
+        loadLearnData(currentWallet);
+    }
+})();
 const LEARN_DIRECTIONS = { ai: ['AI人人通','ChatGPT实战','AI做图片','AI做视频','AI办公'], block: ['区块链入门','钱包使用','DeFi基础','智能合约','NFT'], ecom: ['跨境电商入门','选品策略','店铺运营','物流支付','TikTok'], mkt: ['营销思维','社媒运营','内容创作','私域','数据分析'], code: ['编程思维','Python','网页制作','AI编程','项目实战'] };
 async function dappLearnConnect() {
     const account = await dappConnect();

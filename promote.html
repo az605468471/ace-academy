@@ -79,6 +79,13 @@
 <script src="dapp-tool.js"></script>
 <script>
 initFrame('promote','promote');
+(function(){
+    if (currentWallet) {
+        document.getElementById('promoConn').textContent = currentWallet.slice(0,8)+'...'+currentWallet.slice(-4);
+        document.getElementById('promoLink').textContent = 'https://ace-academy.com/?ref=' + currentWallet;
+        loadPromoData(currentWallet);
+    }
+})();
 const LEVELS = ['学者','导师','学士','硕士','院长'];
 const LEVEL_KEYS = ['level_learner','level_mentor','level_scholar','level_master','level_chancellor'];
 

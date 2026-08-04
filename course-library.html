@@ -137,6 +137,15 @@ function renderCourses(){
     document.getElementById('courseContent').innerHTML=html;
 }
 renderCourses();
+// 自动恢复钱包并加载价格
+(function(){
+    if (currentWallet) {
+        const c = document.getElementById('courseConn'); if (c) c.textContent = currentWallet.slice(0,8)+'...'+currentWallet.slice(-4);
+        loadPrices(currentWallet);
+    } else {
+        loadPrices();
+    }
+})();
 function showDir(k,el){
     document.querySelectorAll('.directions').forEach(d=>d.classList.remove('active'));
     document.getElementById('dir-'+k).classList.add('active');
