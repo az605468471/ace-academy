@@ -75,6 +75,7 @@
 <script src="contracts-config.js"></script>
 <script src="contracts-abi.js"></script>
 <script src="dapp-tool.js"></script>
+<script src="pricing-config.js"></script>
 <script>
 initFrame('learning','learn');
 // 自动恢复已连接钱包
@@ -101,13 +102,20 @@ async function loadLearnData(wallet) {
             const s = await dappRead('Course','getStudentInfo', wallet);
             alloc = Number(ethers.utils.formatEther(s.aceAllocated));
             release = Number(ethers.utils.formatEther(s.aceReleased));
-            completed = Number(s.coursesCompleted); exams = s.examPassed ? 1 : 0;
+            exams = s.examPassed ? 1 : 0;
         } catch(e) {}
+        let unlocked=0, allAccess=false, hasTrial=false;
+        if (alloc>0) {
+            try { const u=await dappRead('Course','getUnlockedDirections',wallet); unlocked=u.length; } catch(e){}
+            try { allAccess=await dappRead('Course','isAllAccess',wallet); } catch(e){}
+            try { hasTrial=await dappRead('Course','hasTrial',wallet); } catch(e){}
+        }
+        completed = allAccess ? 5 : unlocked;
         const pct = alloc>0 ? Math.min(100, Math.round(release/alloc*100)) : 0;
         document.getElementById('learnProgress').textContent = completed + '/5';
         document.getElementById('learnBar').style.width = pct+'%';
         document.getElementById('learnPct').textContent = pct+'%';
-        document.getElementById('learnCourses').textContent = completed;
+        document.getElementById('learnCourses').textContent = completed + (hasTrial?'+体验':'') + (allAccess?' 全部':'');
         renderLearnCourses(wallet, alloc, completed, exams);
     } catch(e) { console.error(e); }
 }

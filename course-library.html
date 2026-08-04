@@ -46,9 +46,21 @@
 <body>
 <div class="bg"></div>
 <div class="wrap">
+    <!-- 连接钱包 -->
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <div style="font-size:15px;font-weight:700"><i class="ph-fill ph-books"></i> 课程库</div>
         <button class="course-link" style="background:linear-gradient(135deg,var(--accent),var(--accent2))" onclick="dappCourseConnect()"><i class="ph ph-plug"></i> <span id="courseConn">连接钱包</span></button>
+    </div>
+
+    <!-- 套餐购买区 -->
+    <div style="background:var(--card);border:1px solid var(--accent);border-radius:14px;padding:16px;margin-bottom:14px" id="planBox">
+        <div style="font-size:15px;font-weight:700;margin-bottom:12px"><i class="ph-fill ph-ticket"></i> 选择课程套餐</div>
+        <div id="planPlans">加载套餐价格...</div>
+        <div id="planDirections" style="display:none;margin-top:10px">
+            <div style="font-size:12px;color:var(--dim);margin-bottom:6px" id="planDirLabel"></div>
+            <div class="dir-tabs" id="planDirSel"></div>
+        </div>
+        <button class="course-link" id="planBuyBtn" style="display:none;width:100%;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;margin-top:12px;padding:12px" onclick="planBuy()">购买</button>
     </div>
 
     <div class="stats">
@@ -120,16 +132,15 @@ function renderCourses(){
                 <a href="${c.src}" target="_blank" class="course-link"><i class="ph-fill ph-play-circle"></i> ${isEn?'Learn':'学习'} ${c.srcName}</a>
             </div>`;
         });
-        // 方向购买区
-        const cid = directionCourseId(k);
+        // 方向说明(购买走顶部套餐)
         dirHTML+=`
         <div class="course-card" style="border-color:var(--accent);background:rgba(139,137,255,.06)">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
                 <div>
-                    <div style="font-size:14px;font-weight:700;color:var(--accent)">${isEn?'Buy this direction':'购买该方向'}</div>
-                    <div style="font-size:11px;color:var(--dim);margin-top:4px" id="dirPrice-${k}">读取价格中...</div>
+                    <div style="font-size:14px;font-weight:700;color:var(--accent)">${isEn?'This direction':'该方向课程'}</div>
+                    <div style="font-size:11px;color:var(--dim);margin-top:4px;id="dirPrice-${k}">${isEn?'Select a package above to unlock this direction':'选择上方套餐购买以解锁该方向'}</div>
                 </div>
-                <button class="course-link" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff" onclick="buyDirection('${k}')"><i class="ph-fill ph-shopping-cart"></i> ${isEn?'Buy':'购买'}</button>
+                <button class="course-link" style="background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff" onclick="scrollToPlans()"><i class="ph-fill ph-shopping-cart"></i> ${isEn?'Buy package':'选择套餐'}</button>
             </div>
         </div>`;
         dirHTML+='</div>';
@@ -188,64 +199,108 @@ async function dappCourseConnect() {
     await loadPrices(account);
 }
 
-async function loadPrices(wallet) {
-    try {
-        // 读每个方向对应course的真实价格(合约 course 价格)
-        for (const k of Object.keys(DIRECTIONS)) {
-            const cid = directionCourseId(k);
-            const el = document.getElementById('dirPrice-'+k);
-            if (!el) continue;
-            try {
-                const c = await dappRead('Course','courses', cid);
-                const p = Number(ethers.utils.formatEther(c[0]));
-                // 是否已购
-                let bought = false;
-                if (wallet) {
-                    try {
-                        const s = await dappRead('Course','getStudentInfo', wallet);
-                        bought = Number(s.totalPaid) > 0;
-                    } catch(e){}
-                }
-                el.textContent = bought ? ('已购 · 方向 ' + p.toFixed(0) + ' USDT') : ('方向 ' + p.toFixed(0) + ' USDT');
-            } catch(e) {
-                el.textContent = '价格读取失败';
-            }
-        }
-    } catch(e){ console.error(e); }
+// ===== 套餐购买(方向套餐模型) =====
+let selPlan = null;       // 0=体验课 1=方向 2=4方向 3=至尊
+let selDirs = [];         // 选中的方向key
+const PLAN_META = {
+    0: { name:'体验课', price:200, dirCount:0, all:false, aceTxt:'1节自制体验课' },
+    1: { name:'方向套餐', price:500, dirCount:1, all:false, aceTxt:'1个方向 · 送5000ACE' },
+    2: { name:'4方向套餐', price:1500, dirCount:4, all:false, aceTxt:'4个方向 · 送18000ACE' },
+    3: { name:'至尊套餐', price:5000, dirCount:0, all:true, aceTxt:'全部方向+未来 · 送75000ACE' }
+};
+
+async function dappCourseConnect() {
+    const account = await dappConnect();
+    if (!account) return; dappSetAccount(account);
+    const c = document.getElementById('courseConn'); if (c) c.textContent = account.slice(0,8)+'...'+account.slice(-4);
+    renderPlans();
 }
 
-async function buyDirection(dir) {
-    if (!currentWallet) { alert('请先连接钱包'); return; }
-    const cid = directionCourseId(dir);
-    // 检查是否已有推荐人
-    let hasRef = false;
-    try {
-        const ref = await dappRead('Referral','referrer', currentWallet);
-        hasRef = ref !== '0x0000000000000000000000000000000000000000';
-    } catch(e){}
-    if (!hasRef) { alert('请先通过推荐链接注册(绑定推荐人)后方可购买'); location.href='login.html'; return; }
+async function renderPlans() {
+    const box = document.getElementById('planPlans');
+    if (!box) return;
+    let h='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+    for (const pid of [0,1,2,3]) {
+        const m = PLAN_META[pid];
+        h += `<div style="background:rgba(20,20,40,.5);border:1px solid ${pid===3?'var(--green)':'var(--border)'};border-radius:10px;padding:12px;text-align:center;cursor:pointer;border:1.5px solid ${selPlan===pid?'var(--green)':'var(--border)'}" onclick="pickPlan(${pid})">
+            <div style="font-size:13px;font-weight:700;color:${selPlan===pid?'var(--green)':'var(--text)'}">${m.name}</div>
+            <div style="font-family:Orbitron;font-size:20px;font-weight:800;color:var(--green);margin:4px 0">${m.price}U</div>
+            <div style="font-size:10px;color:var(--dim)">${m.aceTxt}</div>
+        </div>`;
+    }
+    h+='</div>';
+    box.innerHTML = h;
+    // 方向选择
+    const dsel = document.getElementById('planDirections');
+    const dlabel = document.getElementById('planDirLabel');
+    const dtabs = document.getElementById('planDirSel');
+    const buyBtn = document.getElementById('planBuyBtn');
+    if (selPlan===null || selPlan===undefined) { dsel.style.display='none'; buyBtn.style.display='none'; return; }
+    const m = PLAN_META[selPlan];
+    if (m.all) { dsel.style.display='none'; dlabel.textContent=''; buyBtn.style.display='flex'; buyBtn.textContent='立即购买 '+m.name+' '+m.price+'U'; }
+    else if (m.dirCount>0) {
+        dsel.style.display='block';
+        dlabel.textContent = (m.dirCount===1?'选择解锁的方向':'选择 '+m.dirCount+' 个方向');
+        let th='';
+        dirKeys.forEach((k,i)=>{
+            const d=DIRECTIONS[k]; const sel=selDirs.includes(k);
+            th+=`<div class="dir-tab ${sel?'active':''}" style="cursor:pointer;padding:6px 10px;font-size:11px" onclick="toggleDir('${k}')">${isEn?d.nameEn:d.name}</div>`;
+        });
+        dtabs.innerHTML=th;
+        buyBtn.style.display='flex';
+        buyBtn.textContent='立即购买 '+m.name+' '+m.price+'U';
+    } else { // 体验课
+        dsel.style.display='none'; buyBtn.style.display='flex'; buyBtn.textContent='购买体验课 200U';
+    }
+}
 
-    if (!confirm('确认购买该方向？将从您的 USDT 支付，并获取 ACE 奖励。')) return;
+function pickPlan(pid){ selPlan=pid; if(pid!==4){selDirs=[];} renderPlans(); }
+function toggleDir(k){
+    const m=PLAN_META[selPlan];
+    if(selDirs.includes(k)){ selDirs=selDirs.filter(x=>x!==k); }
+    else { if(selDirs.length>=m.dirCount){ alert('最多选'+m.dirCount+'个方向'); return; } selDirs.push(k); }
+    renderPlans();
+}
+function scrollToPlans(){ const p=document.getElementById('planBox'); if(p) p.scrollIntoView({behavior:'smooth'}); }
+
+async function planBuy() {
+    if (!currentWallet) { alert('请先连接钱包'); return; }
+    if (selPlan===null) { alert('请先选择套餐'); return; }
+    // 检查推荐人
+    let hasRef=false;
+    try { const ref=await dappRead('Referral','referrer',currentWallet); hasRef = ref !== '0x0000000000000000000000000000000000000000'; } catch(e){}
+    if (!hasRef) { alert('请先通过推荐链接注册(绑定推荐人)'); return; }
+    const m=PLAN_META[selPlan];
+    if (!confirm('确认购买 '+m.name+' '+m.price+' USDT？')) return;
     try {
-        // 读课程价格
-        const courseData = await dappRead('Course','courses', cid);
-        const price = courseData[0];
+        const courseA = CONTRACT_CONFIG.contracts.Course;
         // approve USDT
         const usdtC = new ethers.Contract(CONTRACT_CONFIG.usdt,
             ['function approve(address,uint256) returns (bool)'], dappProvider().getSigner());
-        const ap = await usdtC.approve(CONTRACT_CONFIG.contracts.Course, price);
+        const priceWei = ethers.utils.parseEther(String(m.price));
+        const ap = await usdtC.approve(courseA, priceWei.mul(3));
         await ap.wait();
-        // buyCourse
         const courseC = dappC('Course', true);
-        const tx = await courseC.buyCourse(cid);
-        await tx.wait();
-        alert('购买成功！已获 ACE 奖励，可前往学习中心查看');
-        loadPrices(currentWallet);
+        // 体验课
+        if (selPlan===0) { const t=await courseC.buyTrial(); await t.wait(); }
+        // 至尊
+        else if (m.all) { const t=await courseC.buyPackage(3,[]); await t.wait(); }
+        // 方向/4方向: 映射方向key到合约方向ID(ai:1,ecom:2,block:3,mkt:4,code:5)
+        else {
+            const dirToId={ai:1,ecom:2,block:3,mkt:4,code:5};
+            const dirIds = selDirs.map(k=>dirToId[k]).filter(x=>x);
+            if (selDirs.length < m.dirCount) { alert('请选够 '+m.dirCount+' 个方向'); return; }
+            const pid = selPlan===1?1:2;
+            const t=await courseC.buyPackage(pid, dirIds); await t.wait();
+        }
+        alert('购买成功！已解锁课程并获 ACE 奖励');
+        renderPlans();
     } catch(e) {
         console.error(e);
-        alert(e.message && e.message.includes('user rejected') ? '已取消' : '购买失败:' + (e.message||'').slice(0,80));
+        alert(e.message && e.message.includes('user rejected') ? '已取消' : '购买失败:' + (e.message||'').slice(0,120));
     }
 }
+
 // 从URL定位到指定方向(规划师跳转而来)
 (function(){
     const p = new URLSearchParams(location.search);
