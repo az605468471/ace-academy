@@ -61,7 +61,11 @@
         <div class="brand"><img src="images/ace-logo.png" alt="ACE"> ACE ACADEMY</div>
         <a class="back" href="profile.html"><i class="ph ph-arrow-left"></i> 返回</a>
     </div>
-    <div style="text-align:center;font-size:13px;color:#666;margin-bottom:20px">链上认证 · 区块链可验证</div>
+    <div style="text-align:center;font-size:13px;color:#666;margin-bottom:16px">链上认证 · 区块链可验证</div>
+    <div style="text-align:center;margin-bottom:16px">
+        <button onclick="dappCertConnect()" style="background:linear-gradient(135deg,#8b89ff,#7c3aed);color:#fff;border:none;padding:10px 24px;border-radius:24px;font-size:14px;font-weight:600;cursor:pointer"><i class="ph ph-plug"></i> <span id="certConn">连接钱包查看证书</span></button>
+        <div style="font-size:12px;color:#777;margin-top:8px" id="certStatus"></div>
+    </div>
 
     <div class="cert-wrap">
         <div class="cert">
@@ -76,18 +80,18 @@
                 </div>
             </div>
             <div style="font-size:15px;color:#ccc;text-align:left;margin:26px 0 22px;letter-spacing:1px">链上认证 · <span style="font-family:'Orbitron'">BLOCKCHAIN CERTIFICATE</span></div>
-                <div class="cert-degree">AI 应用</div>
-                <div class="cert-desc">王牌学院 · 人工智能应用认证</div>
+                <div class="cert-degree" id="cDegree">--</div>
+                <div class="cert-desc" id="cDesc">王牌学院 · 链上认证</div>
                 <div class="cert-line">— ARTIFICIAL INTELLIGENCE CERTIFICATE —</div>
                 <div class="decorate">"以链为凭 · 学以致用"</div>
 
                 <div class="info">
-                    <div class="info-row"><span class="l">证书编号 CERT NO.</span><span class="v">ACE-20697-1</span></div>
-                    <div class="info-row"><span class="l">持有人 HOLDER</span><span class="v">0x5450f7...2a4e</span></div>
-                    <div class="info-row"><span class="l">完成课程 COURSES</span><span class="v gld">5 门 / 5 门</span></div>
-                    <div class="info-row"><span class="l">考试成绩 SCORE</span><span class="v grn">95 分</span></div>
-                    <div class="info-row"><span class="l">颁发时间 ISSUED</span><span class="v">2026-08-04</span></div>
-                    <div class="info-row"><span class="l">学分 CREDIT</span><span class="v">100 学分</span></div>
+                    <div class="info-row"><span class="l">证书编号 CERT NO.</span><span class="v" id="cNo">--</span></div>
+                    <div class="info-row"><span class="l">持有人 HOLDER</span><span class="v" id="cHolder">--</span></div>
+                    <div class="info-row"><span class="l">完成方向 DIRECTION</span><span class="v gld" id="cDir">--</span></div>
+                    <div class="info-row"><span class="l">考试成绩 SCORE</span><span class="v grn" id="cScore">--</span></div>
+                    <div class="info-row"><span class="l">颁发时间 ISSUED</span><span class="v" id="cIssued">--</span></div>
+                </div>
                 </div>
 
                 <div class="sign">
@@ -104,5 +108,10 @@
         可通过浏览器合约验证，归属唯一、永久有效
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="contracts-config.js"></script>
+<script src="contracts-abi.js"></script>
+<script src="dapp-tool.js"></script>
+<script src="certificate-app.js"></script>
 </body>
 </html>
