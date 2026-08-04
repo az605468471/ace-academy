@@ -74,6 +74,7 @@
 <script src="contracts-config.js"></script>
 <script src="contracts-abi.js"></script>
 <script src="dapp-tool.js"></script>
+<script src="pricing-config.js"></script>
 <script>
 initFrame('courses','course');
 
@@ -189,24 +190,26 @@ async function dappCourseConnect() {
 
 async function loadPrices(wallet) {
     try {
-        const p = await dappRead('Course','acePrice');
-        const priceUsdt = Number(ethers.utils.formatEther(p));
+        // 读每个方向对应course的真实价格(合约 course 价格)
         for (const k of Object.keys(DIRECTIONS)) {
+            const cid = directionCourseId(k);
             const el = document.getElementById('dirPrice-'+k);
-            if (el) el.textContent = '价格: ' + priceUsdt.toFixed(2) + ' USDT / 方向';
-        }
-        // 已购状态
-        if (wallet) {
+            if (!el) continue;
             try {
-                const s = await dappRead('Course','getStudentInfo', wallet);
-                if (Number(s.totalPaid) > 0) {
-                    const pa = Number(ethers.utils.formatEther(s.totalPaid));
-                    for (const k of Object.keys(DIRECTIONS)) {
-                        const el = document.getElementById('dirPrice-'+k);
-                        if (el) el.textContent = '已购, 累计支付 ' + pa.toFixed(2) + ' USDT';
-                    }
+                const c = await dappRead('Course','courses', cid);
+                const p = Number(ethers.utils.formatEther(c[0]));
+                // 是否已购
+                let bought = false;
+                if (wallet) {
+                    try {
+                        const s = await dappRead('Course','getStudentInfo', wallet);
+                        bought = Number(s.totalPaid) > 0;
+                    } catch(e){}
                 }
-            } catch(e){}
+                el.textContent = bought ? ('已购 · 方向 ' + p.toFixed(0) + ' USDT') : ('方向 ' + p.toFixed(0) + ' USDT');
+            } catch(e) {
+                el.textContent = '价格读取失败';
+            }
         }
     } catch(e){ console.error(e); }
 }
