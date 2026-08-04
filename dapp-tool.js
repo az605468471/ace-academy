@@ -86,3 +86,22 @@ async function dappUsdtBalance(wallet) {
 // 已连接地址
 function dappAccount() { return currentWallet; }
 function dappSetAccount(w) { currentWallet = w; try { localStorage.setItem('ace_wallet', w); } catch(e){} }
+
+// 签名登录验证 (方式A：钱包签名消息证明持有人身份)
+async function dappSignLogin(msg) {
+    if (!window.ethereum || !currentWallet) return null;
+    const provider = dappProvider();
+    const signer = provider.getSigner();
+    try {
+        const sig = await signer.signMessage(msg);
+        return sig;
+    } catch(e) {
+        console.warn('签名失败或已取消', e);
+        return null;
+    }
+}
+
+// 生成登录消息
+function dappLoginMsg(wallet) {
+    return 'ACE Academy 登录验证\n\n请输入你的学习地址进行身份验证:\n' + wallet.toLowerCase() + '\n\n时间: ' + new Date().toLocaleString();
+}

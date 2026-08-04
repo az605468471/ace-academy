@@ -348,9 +348,32 @@ async function pickWallet() {
 
     setTimeout(() => {
         closeOverlay('signOverlay');
-        if (walletMode === 'register') goPhase('register', 4);
-        else { goPhase('login', 3); document.getElementById('loginSignBtn').textContent = walletConnected ? '已授权' : '签名授权登录'; };
+        if (walletMode === 'register') { goPhase('register', 4); }
+        else { void checkLoginMember(account); }
     }, 800);
+}
+
+// 登录: 连接钱包后检查是否老会员
+async function checkLoginMember(wallet) {
+    if (walletMode !== 'login') return;
+    let ref = '0x0000000000000000000000000000000000000000';
+    let paid = 0;
+    try {
+        ref = await dappRead('Referral','referrer', wallet);
+    } catch(e){}
+    try {
+        const s = await dappRead('Course','getStudentInfo', wallet);
+        paid = Number(s.totalPaid);
+    } catch(e){}
+    const isMember = ref !== '0x0000000000000000000000000000000000000000' || paid > 0;
+    if (isMember) {
+        // 老会员 → 进入签名验证阶段
+        goPhase('login', 3);
+    } else {
+        // 非会员 → 提示去注册
+        alert('该钱包未注册为会员，请通过推荐链接注册');
+        switchTab('register');
+    }
 }
 
 function signLogin() {
@@ -360,9 +383,34 @@ function signLogin() {
         goPhase('login', 2);
         return;
     }
-    localStorage.setItem('ace_wallet', currentWallet);
-    // 登录成功，跳转学习中心
-    window.location.href = 'learning.html?wallet=' + currentWallet;
+    // 真实签名验证 (方式A)
+    document.getElementById('successOverlay').classList.remove('show');
+    document.getElementById('signOverlay').classList.add('show');
+    document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-fingerprint"></i>';
+    document.getElementById('signIcon').style.color = '#8b89ff';
+    document.getElementById('signTitle').textContent = '等待签名验证';
+    document.getElementById('signDesc').textContent = '请在钱包中签名确认身份';
+
+    (async () => {
+        const msg = dappLoginMsg(currentWallet);
+        const sig = await dappSignLogin(msg);
+        if (sig) {
+            // 签名成功 → 身份验证通过 → 登录成功
+            document.getElementById('signIcon').innerHTML = '<i class="ph-fill ph-check-circle"></i>';
+            document.getElementById('signIcon').style.color = 'var(--green)';
+            document.getElementById('signTitle').textContent = '验证通过，登录成功';
+            document.getElementById('signDesc').textContent = currentWallet.slice(0,8)+'...'+currentWallet.slice(-4);
+            localStorage.setItem('ace_wallet', currentWallet);
+            setTimeout(() => {
+                closeOverlay('signOverlay');
+                window.location.href = 'learning.html?wallet=' + currentWallet;
+            }, 900);
+        } else {
+            closeOverlay('signOverlay');
+            document.getElementById('signOverlay').classList.remove('show');
+            alert('签名未完成或已取消，登录失败');
+        }
+    })();
 }
 
 function enterPlatform() {
