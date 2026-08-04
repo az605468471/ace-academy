@@ -82,7 +82,7 @@ initFrame('promote','promote');
 (function(){
     if (currentWallet) {
         document.getElementById('promoConn').textContent = currentWallet.slice(0,8)+'...'+currentWallet.slice(-4);
-        document.getElementById('promoLink').textContent = 'https://ace-academy.com/?ref=' + currentWallet;
+        document.getElementById('promoLink').textContent = location.origin + '/login.html?ref=' + currentWallet;
         loadPromoData(currentWallet);
     }
 })();
@@ -95,7 +95,7 @@ async function dappPromoConnect() {
     dappSetAccount(account);
     document.getElementById('promoConn').textContent = account.slice(0,8)+'...'+account.slice(-4);
     // 推荐链接
-    document.getElementById('promoLink').textContent = 'https://ace-academy.com/?ref=' + account;
+    document.getElementById('promoLink').textContent = location.origin + '/login.html?ref=' + account;
     await loadPromoData(account);
 }
 

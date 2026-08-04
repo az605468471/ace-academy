@@ -259,7 +259,8 @@ async function buyDirection(dir) {
         if (idx >= 0 && tabs[idx]) {
             document.querySelectorAll('.dir-tab').forEach(t=>t.classList.remove('active'));
             tabs[idx].classList.add('active');
-            showDir(dir);
+            document.querySelectorAll('.directions').forEach(d=>d.classList.remove('active'));
+            const tg = document.getElementById('dir-'+dir); if (tg) tg.classList.add('active');
         }
         if (currentWallet) loadPrices(currentWallet);
     }
