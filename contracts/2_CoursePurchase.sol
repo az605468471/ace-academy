@@ -12,7 +12,7 @@ pragma solidity ^0.8.19;
  *  P3 至尊   5000U  → 全部当前+未来新增方向,终身
  *
  * 功能：
- *  1. 按unicode"方向/套餐"购买(而非单门课)
+ *  1. 按"方向/套餐"购买(而非单门课)
  *  2. 用户解锁方向/至尊记录, 判定可访问
  *  3. USDT收付 → 资金分配(直推/底池/公益/学员ACE)
  *  4. 学员代币分阶段释放(30%+30%+40%)
@@ -62,7 +62,7 @@ contract ACECourse {
     bool public paused = false;
     uint256 private _guardCounter = 1;
     modifier nonReentrant() {
-        require(_guardCounter == 1, "Course: reentrantunicode");
+        require(_guardCounter == 1, "Course: reentrant");
         _guardCounter = 2;
         _;
         _guardCounter = 1;
@@ -175,7 +175,7 @@ contract ACECourse {
         address _poolWallet,
         address _owner
     ) {
-        require(_aceToken != address(0) && _usdt != address(0), "Course: zero addressunicode");
+        require(_aceToken != address(0) && _usdt != address(0), "Course: zero address");
         aceToken = IACEToken(_aceToken);
         usdtToken = IERC20(_usdt);
         platformWallet = _platformWallet;
@@ -212,7 +212,7 @@ contract ACECourse {
         require(!trialHold[msg.sender].bought, "Course: trial already bought");
 
         address ref = getReferrerOrFail(msg.sender);
-        require(usdtToken.transferFrom(msg.sender, address(this), trialPrice), "Course: USDT failedunicode");
+        require(usdtToken.transferFrom(msg.sender, address(this), trialPrice), "Course: USDT failed");
 
         _distributeFunds(trialPrice, msg.sender, ref);
 
@@ -229,7 +229,7 @@ contract ACECourse {
     function buyPackage(uint256 packageId, uint256[] calldata dirIds) external whenNotPaused nonReentrant {
         Package storage p = packages[packageId];
         require(p.active, "Course: package inactive");
-        require(p.price > 0, "Course: invalid packageunicode");
+        require(p.price > 0, "Course: invalid package");
 
         address ref = getReferrerOrFail(msg.sender);
 
@@ -243,7 +243,7 @@ contract ACECourse {
             require(dirIds.length == p.dirCount, "Course: dir count mismatch");
         }
 
-        require(usdtToken.transferFrom(msg.sender, address(this), p.price), "Course: USDT failedunicode");
+        require(usdtToken.transferFrom(msg.sender, address(this), p.price), "Course: USDT failed");
 
         // 分配资金
         _distributeFunds(p.price, msg.sender, ref);
@@ -251,14 +251,14 @@ contract ACECourse {
         // 计算ACE赠送 (按赠送系数)
         uint256 aceAmount;
         if (p.allAccess) {
-            aceAmount = (p.price * p.aceBonusMul) / 1000 / acePrice; // USD值→ACE
+            aceAmount = (p.price * p.aceBonusMul * 1e18) / (1000 * acePrice); // USD值→ACE数量(wei,防丢精度)
         } else {
-            aceAmount = (p.price * p.aceBonusMul) / 1000 / acePrice;
+            aceAmount = (p.price * p.aceBonusMul * 1e18) / (1000 * acePrice);
         }
 
         // 发放ACE (分阶段: 先锁到Lock, 释放30%)
         if (aceAmount > 0) {
-            require(aceToken.transfer(address(lockContract), aceAmount), "Course: ACE transfer failedunicode");
+            require(aceToken.transfer(address(lockContract), aceAmount), "Course: ACE transfer failed");
             lockContract.depositStudent(msg.sender, aceAmount);
         }
 
@@ -268,7 +268,7 @@ contract ACECourse {
             emit AllAccessUnlocked(msg.sender);
         } else {
             for (uint256 i = 0; i < dirIds.length; i++) {
-                require(dirIds[i] >= 1 && dirIds[i] <= directionCount, "Course: invalid dirunicode");
+                require(dirIds[i] >= 1 && dirIds[i] <= directionCount, "Course: invalid dir");
                 if (!_hasDirection(msg.sender, dirIds[i])) {
                     userDirections[msg.sender].push(dirIds[i]);
                     emit DirectionUnlocked(msg.sender, dirIds[i]);
@@ -302,7 +302,7 @@ contract ACECourse {
     // ============ 辅助 ============
     function getReferrerOrFail(address user) internal view returns (address) {
         address ref = referralContract.referrer(user);
-        require(ref != address(0), "Course: need referrerunicode");
+        require(ref != address(0), "Course: need referrer");
         return ref;
     }
 
@@ -353,7 +353,7 @@ contract ACECourse {
             + charityAmount
             + (amount * STUDENT_ACE_RATE) / RATE_DENOM
             + (amount * TEAM_REWARD_RATE) / RATE_DENOM;
-        if (sent < amount) require(usdtToken.transfer(platformWallet, amount - sent), "Course: tfunicode");
+        if (sent < amount) require(usdtToken.transfer(platformWallet, amount - sent), "Course: tf");
 
         totalCharity += charityAmount;
         emit CharityDeposited(charityAmount);
@@ -371,7 +371,7 @@ contract ACECourse {
         StudentRecord storage s = students[student];
         require(s.aceAllocated > 0, "Course: no allocation");
         require(!s.refunded, "Course: already refunded");
-        require(!s.examPassed, "Course: exam passed, no refundunicode");
+        require(!s.examPassed, "Course: exam passed, no refund");
 
         uint256 remaining = s.aceAllocated - s.aceReleased;
         if (remaining > 0) {
@@ -397,7 +397,7 @@ contract ACECourse {
         StudentRecord storage s = students[student];
         require(s.aceAllocated > 0, "Course: no allocation");
         require(s.examPassed, "Course: need exam passed");
-        require(s.aceReleased < s.aceAllocated, "Course: all releasedunicode");
+        require(s.aceReleased < s.aceAllocated, "Course: all released");
         lockContract.releaseStudent(student, 2);
         uint256 releaseAmount = (s.aceAllocated * 40) / 100;
         s.aceReleased += releaseAmount;
@@ -421,7 +421,7 @@ contract ACECourse {
     function releasePromoterByLevel(address promoter, uint8 newLevel) external whenNotPaused nonReentrant {
         PromoterRecord storage p = promoters[promoter];
         require(p.active, "Course: not active");
-        require(newLevel > p.teamLevel, "Course: level not increasedunicode");
+        require(newLevel > p.teamLevel, "Course: level not increased");
         lockContract.releasePromoterByLevel(promoter, newLevel);
         uint256 releaseAmount = (p.aceAllocated * 10) / 100;
         p.aceReleased += releaseAmount;

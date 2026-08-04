@@ -150,7 +150,7 @@ contract ACEMarketManager {
         if (buyAmount == 0) return;
 
         // 用USDT买ACE
-        usdtToken.transfer(dexAddress, buyAmount);
+        require(usdtToken.transfer(dexAddress, buyAmount), "Market: usdt failed");
         uint256 aceBought = IDEX(dexAddress).buyWithUSDT(buyAmount);
         
         // 买入的ACE全部销毁
@@ -171,7 +171,7 @@ contract ACEMarketManager {
         
         if (sellAmount == 0) return;
 
-        aceToken.transfer(dexAddress, sellAmount);
+        require(aceToken.transfer(dexAddress, sellAmount), "Market: ace failed");
         uint256 usdtReceived = IDEX(dexAddress).sellForUSDT(sellAmount);
 
         // 卖出的USDT进护盘基金
@@ -190,7 +190,7 @@ contract ACEMarketManager {
         if (buyAmount == 0) return;
 
         require(usdtToken.transferFrom(platformWallet, address(this), buyAmount),"Market: tf failed");
-        usdtToken.transfer(dexAddress, buyAmount);
+        require(usdtToken.transfer(dexAddress, buyAmount), "Market: usdt failed");
         uint256 aceBought = IDEX(dexAddress).buyWithUSDT(buyAmount);
 
         if (aceBought > 0) {
