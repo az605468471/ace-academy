@@ -1,0 +1,12 @@
+# 部署包
+*.zip
+# 模拟测试临时文件
+contracts/deploy_sim_info.json
+contracts/deploy_sim_v2.json
+contracts/deploy_info.json
+contracts/ACE_token_build.json
+# 本地构建/缓存
+node_modules/
+.DS_Store
+*.log
+.vercel/
