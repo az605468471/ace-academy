@@ -243,6 +243,27 @@ async function buyDirection(dir) {
         alert(e.message && e.message.includes('user rejected') ? '已取消' : '购买失败:' + (e.message||'').slice(0,80));
     }
 }
+// 从URL定位到指定方向(规划师跳转而来)
+(function(){
+    const p = new URLSearchParams(location.search);
+    const dir = p.get('dir');
+    const w = p.get('wallet');
+    if (w && currentWallet && w.toLowerCase()===currentWallet.toLowerCase()) {
+        const c = document.getElementById('courseConn'); if (c) c.textContent = currentWallet.slice(0,8)+'...'+currentWallet.slice(-4);
+    }
+    if (dir && DIRECTIONS[dir]) {
+        // 找到对应tab并激活
+        const tabs = document.querySelectorAll('.dir-tab');
+        const keys = Object.keys(DIRECTIONS);
+        const idx = keys.indexOf(dir);
+        if (idx >= 0 && tabs[idx]) {
+            document.querySelectorAll('.dir-tab').forEach(t=>t.classList.remove('active'));
+            tabs[idx].classList.add('active');
+            showDir(dir);
+        }
+        if (currentWallet) loadPrices(currentWallet);
+    }
+})();
 </script>
 </body>
 </html>

@@ -64,6 +64,10 @@
 </div>
 <script src="i18n.js"></script>
 <script src="frame.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="contracts-config.js"></script>
+<script src="contracts-abi.js"></script>
+<script src="dapp-tool.js"></script>
 <script>
 initFrame('learning','learn');
 const chat=document.getElementById('chat');
@@ -260,14 +264,31 @@ function finalDone(pkg){
         <div class="big">🎉 方案确定完成！</div>
         <div class="sub"><b>选择：${pkg}</b><br>方向：${state.dirName}｜${state.time}｜${state.basis}<br><br>接下来：<br>① 注册/登录账户<br>② 绑定推荐人<br>③ 连接钱包支付<br>④ 开始你的学习之旅<br><br>祝你修满学分、拿到证书、赚到代币！🚀</div>
     </div>`);
-    addChips(['去注册','去登录','再看看'],t=>{
-        addMsg(t,true);
-        setTimeout(()=>{
-            if(t.includes('注册'))location.href='login.html?ref=0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1';
-            else if(t.includes('登录'))location.href='login.html';
-            else restart();
-        },400);
-    });
+
+    // 判断当前是否已登录(钱包已连接)
+    const dirKey = state.dir || 'ai';
+    setTimeout(() => {
+        if (currentWallet) {
+            // 已登录 → 直接去付费(购买该方向)
+            addMsg(`检测到您已连接钱包 <b>${currentWallet.slice(0,8)}...</b>，可直接前往支付该方向课程。`);
+            addChips(['立即支付','再看看'], t=>{
+                addMsg(t,true);
+                setTimeout(()=>{
+                    if(t.includes('立即')) location.href='course-library.html?wallet='+currentWallet+'&dir='+dirKey;
+                    else restart();
+                },400);
+            });
+        } else {
+            // 未登录 → 先去登录/注册
+            addChips(['去登录','去注册'], t=>{
+                addMsg(t,true);
+                setTimeout(()=>{
+                    if(t.includes('登录')) location.href='login.html';
+                    else location.href=location.origin+location.pathname+'?ref='+(new URLSearchParams(location.search).get('ref')||CONTRACT_CONFIG.wallets.promo);
+                },400);
+            });
+        }
+    }, 100);
 }
 function restart(){location.reload();}
 
