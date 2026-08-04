@@ -34,41 +34,100 @@
 <body>
 <div class="bg"></div>
 <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:15px;font-weight:700"><i class="ph-fill ph-megaphone"></i> 推广中心</div>
+        <button class="copy-btn" style="background:linear-gradient(135deg,var(--accent),var(--accent2))" onclick="dappPromoConnect()"><i class="ph ph-plug"></i> <span id="promoConn">连接钱包</span></button>
+    </div>
     <div class="card" style="text-align:center">
-        <div class="role"><i class="ph-fill ph-star"></i> <span data-i18n="ambassador">大使</span> · <span data-i18n="level_learner">学者</span></div>
-        <div style="font-size:12px;color:var(--dim)">直推20% · <span data-i18n="team">团队</span>12人</div>
+        <div class="role"><i class="ph-fill ph-star"></i> <span id="promoRole">大使</span> · <span id="promoLevel" data-i18n="level_learner">学者</span></div>
+        <div style="font-size:12px;color:var(--dim)"><span id="promoDirect">--</span>直推 · 团队<span id="promoTeamCount">--</span>人</div>
     </div>
 
     <div class="card">
         <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-link"></i> <span data-i18n="my_ref_link">我的推荐链接</span></div>
         <div class="ref-box">
-            <div class="ref">https://ace-academy.com/?ref=0xABC123...</div>
+            <div class="ref" id="promoLink">连接钱包后生成推荐链接</div>
             <button class="copy-btn" onclick="copyLink()"><i class="ph-fill ph-copy"></i> <span data-i18n="copy">复制</span></button>
         </div>
     </div>
 
     <div class="grid2">
-        <div class="inc"><div class="n">48U</div><div class="l" data-i18n="income">收入</div></div>
-        <div class="inc w"><div class="n" style="color:var(--accent)">500 ACE</div><div class="l"><span data-i18n="team">团队</span></div></div>
+        <div class="inc"><div class="n" id="promoIncome">--</div><div class="l" data-i18n="income">收入</div></div>
+        <div class="inc w"><div class="n" id="promoTeamAce" style="color:var(--accent)">--</div><div class="l">团队分成(ACE)</div></div>
     </div>
 
     <div class="card">
         <div style="font-size:14px;font-weight:700;margin-bottom:10px"><i class="ph-fill ph-users-three"></i> <span data-i18n="team">团队数据</span></div>
         <div class="team">
-            <div class="tr"><span class="l" data-i18n="direct_referrals">直推人数</span><span class="v">12人</span></div>
-            <div class="tr"><span class="l" data-i18n="team_members">团队总人数</span><span class="v">45人</span></div>
-            <div class="tr"><span class="l" data-i18n="team_rev">团队业绩</span><span class="v">8,000U</span></div>
-            <div class="tr"><span class="l" data-i18n="current_level">当前级别</span><span class="v" data-i18n="level_learner">学者</span></div>
+            <div class="tr"><span class="l" data-i18n="direct_referrals">直推人数</span><span class="v" id="tDirect">--</span></div>
+            <div class="tr"><span class="l" data-i18n="team_members">团队总人数</span><span class="v" id="tMembers">--</span></div>
+            <div class="tr"><span class="l" data-i18n="team_rev">团队业绩</span><span class="v" id="tRev">--</span></div>
+            <div class="tr"><span class="l" data-i18n="current_level">当前级别</span><span class="v" id="tLevel">--</span></div>
         </div>
         <div class="level-bar">
-            <div style="font-size:12px;color:var(--dim)"><span data-i18n="next_level">下一级</span>：<span data-i18n="level_mentor">导师</span></div>
-            <div class="lvl"><div class="lvl-fill" style="width:60%"></div></div>
+            <div style="font-size:12px;color:var(--dim)"><span data-i18n="next_level">下一级</span>：<span id="tNext">--</span></div>
+            <div class="lvl"><div class="lvl-fill" id="tLevelBar" style="width:0%"></div></div>
         </div>
-        <button class="btn-up" onclick="alert('待接入')"><span data-i18n="upgrade_to">升级为</span> <span data-i18n="level_mentor">导师</span></button>
+        <button class="btn-up" onclick="alert('升级由链上团队业绩自动触发')"><span data-i18n="upgrade_to">升级为</span> <span id="tNextBtn">--</span></button>
     </div>
 </div>
 <script src="i18n.js"></script>
 <script src="frame.js"></script>
-<script>initFrame('promote','promote');</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="contracts-config.js"></script>
+<script src="contracts-abi.js"></script>
+<script src="dapp-tool.js"></script>
+<script>
+initFrame('promote','promote');
+const LEVELS = ['学者','导师','学士','硕士','院长'];
+const LEVEL_KEYS = ['level_learner','level_mentor','level_scholar','level_master','level_chancellor'];
+
+async function dappPromoConnect() {
+    const account = await dappConnect();
+    if (!account) return;
+    dappSetAccount(account);
+    document.getElementById('promoConn').textContent = account.slice(0,8)+'...'+account.slice(-4);
+    // 推荐链接
+    document.getElementById('promoLink').textContent = 'https://ace-academy.com/?ref=' + account;
+    await loadPromoData(account);
+}
+
+async function loadPromoData(wallet) {
+    try {
+        const st = await dappRead('Referral','getTeamStats', wallet);
+        // personalUSD, teamUSD, teamCount, level, isPromoter, isPartner
+        const personal = Number(ethers.utils.formatEther(st[0]));
+        const teamUSD = Number(ethers.utils.formatEther(st[1]));
+        const teamCount = Number(st[2]);
+        const level = Number(st[3]);
+        const isPromoter = st[4];
+        const directCount = await dappRead('Referral','getDirectCount', wallet);
+
+        document.getElementById('promoDirect').textContent = String(directCount);
+        document.getElementById('promoTeamCount').textContent = String(teamCount);
+        document.getElementById('tDirect').textContent = directCount + '人';
+        document.getElementById('tMembers').textContent = teamCount + '人';
+        document.getElementById('tRev').textContent = teamUSD.toFixed(2) + 'U';
+        document.getElementById('tLevel').textContent = LEVELS[level] || '—';
+        document.getElementById('promoLevel').textContent = LEVELS[level] || '学者';
+        document.getElementById('tNext').textContent = (level < 4 ? LEVELS[level+1] : '已达最高级');
+        document.getElementById('tNextBtn').textContent = (level < 4 ? LEVELS[level+1] : '—');
+        // 等级进度(简化: 用团队人数/业绩按等级门槛)
+        const reqs = [[3,0],[20,5000],[100,30000],[500,150000],[2000,500000]];
+        if (level < 4) {
+            const [rc, ru] = reqs[level];
+            const pct = Math.min(100, Math.round((teamCount/rc)*50 + (teamUSD/ru)*50));
+            document.getElementById('tLevelBar').style.width = Math.min(100,pct)+'%';
+        } else {
+            document.getElementById('tLevelBar').style.width = '100%';
+        }
+    } catch(e) { console.error(e); }
+}
+function copyLink(){
+    const link = document.getElementById('promoLink').textContent;
+    if (navigator.clipboard) navigator.clipboard.writeText(link);
+    alert('推荐链接已复制');
+}
+</script>
 </body>
 </html>
