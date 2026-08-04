@@ -161,7 +161,8 @@
                     <div class="bind-row"><span data-i18n="referrer">推荐人</span><span id="regRef">--</span></div>
                     <div class="bind-row"><span data-i18n="bound">已绑定</span><span style="color:var(--green)">✓</span></div>
                 </div>
-                <button class="btn-primary" onclick="enterPlatform()"><span data-i18n="enter_platform">进入学习</span></button>
+                <div style="font-size:12px;color:var(--dim);margin:12px 0">注册成功！正在跳转登录，请完成登录验证后进入平台。</div>
+                <button class="btn-primary" onclick="gotoLoginAfterReg()"><span data-i18n="have_account_login">去登录</span></button>
             </div>
         </div>
 
@@ -365,9 +366,7 @@ async function checkLoginMember(wallet) {
     const timeout = p => Promise.race([p, new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')), 8000))]);
     try { ref = (await timeout(refC.referrer(wallet))); } catch(e){}
     try { const s = await timeout(courseC.getStudentInfo(wallet)); paid = Number(s.totalPaid); } catch(e){}
-    const isMember = ref !== '0x0000000000000000000000000000000000000000' || paid > 0 ||
-        CONTRACT_CONFIG.wallets.ownerFund.toLowerCase()===wallet.toLowerCase() ||
-        CONTRACT_CONFIG.wallets.promo.toLowerCase()===wallet.toLowerCase();
+    const isMember = ref !== '0x0000000000000000000000000000000000000000' || paid > 0;
     if (isMember) {
         goPhase('login', 3);
     } else {
@@ -411,6 +410,12 @@ function signLogin() {
             alert('签名未完成或已取消，登录失败');
         }
     })();
+}
+
+// 注册完成后跳转到登录流程
+function gotoLoginAfterReg() {
+    switchTab('login');
+    goPhase('login', 1);  // 回到登录第一步(滑动验证)
 }
 
 function enterPlatform() {
@@ -463,6 +468,13 @@ initPuzzle('log');
 (function(){
     const p = new URLSearchParams(location.search).get('ref');
     if(p && p.startsWith('0x')) document.getElementById('refInput').value = p;
+})();
+
+// 根据 mode 参数初始化 tab (首页入口): login.html → 注册tab, ?mode=login → 登录tab
+(function(){
+    const mode = new URLSearchParams(location.search).get('mode');
+    if (mode === 'login') switchTab('login');
+    // 是推荐链接进来 → 注册tab (默认已是)
 })();
 </script>
 </body>

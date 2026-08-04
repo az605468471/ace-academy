@@ -110,13 +110,16 @@
     <!-- 按钮区 -->
     <div class="cta-section">
         <div class="cta-btns">
-            <a href="learning.html" class="cta-btn cta-btn-primary" id="startBtn">
-                <i class="ph-fill ph-rocket-launch"></i> <span data-i18n="start_learn">开始学习</span>
+            <a href="login.html?mode=login" class="cta-btn cta-btn-primary" id="loginBtn">
+                <i class="ph-fill ph-sign-in"></i> <span data-i18n="have_account_login">已有账户？登录</span>
+            </a>
+            <a href="login.html" class="cta-btn" style="background:linear-gradient(135deg,#7c3aed,#8b89ff);color:#fff;box-shadow:0 4px 24px rgba(124,58,237,.35);" id="regBtn">
+                <i class="ph-fill ph-user-plus"></i> <span data-i18n="no_account_reg">没有账户？注册</span>
             </a>
             <a href="course-library.html" class="cta-btn cta-btn-secondary">
                 <i class="ph-fill ph-books"></i> <span data-i18n="browse_courses">浏览课程</span>
             </a>
-            <a href="ai-planner.html" class="cta-btn" style="background:linear-gradient(135deg,#7c3aed,#8b89ff);color:#fff;box-shadow:0 4px 24px rgba(124,58,237,.35);">
+            <a href="ai-planner.html" class="cta-btn" style="background:linear-gradient(135deg,#8a2be2,#4b0082);color:#fff;border:1px solid rgba(139,137,255,.2);">
                 <i class="ph-fill ph-sparkle"></i> <span data-i18n="ai_planner">专属学习规划师</span>
             </a>
         </div>
@@ -226,31 +229,31 @@
 
 // 登录状态判断: 已登录(有钱包)则显示已登录状态, 否则显示登录/注册
 (function(){
-    const ref = new URLSearchParams(location.search).get('ref');
-    const acct = document.getElementById('acctLinks');
-    if (!acct) return;
-    // 已登录
-    if (currentWallet) {
-        const w = currentWallet;
-        acct.innerHTML =
-            '<a href="learning.html?wallet='+w+'" style="color:var(--accent)">进入学习中心</a>'+
-            '<span class="link-divider">|</span>'+
-            '<span style="color:var(--green)">已登录: '+w.slice(0,6)+'...'+w.slice(-4)+'</span>'+
-            '<span class="link-divider">|</span>'+
-            '<a href="javascript:void(0)" onclick="logout()">退出</a>';
-        // 开始学习指向学习中心
-        const sb = document.getElementById('startBtn');
-        if (sb) { sb.href = 'learning.html?wallet='+w; sb.innerHTML='<i class="ph-fill ph-graduation-cap"></i> '+lang==='en'?'Enter Learning':'进入学习'; }
-    } else {
-        // 未登录
-        const regRef = ref || CONTRACT_CONFIG.wallets.promo;
-        acct.innerHTML =
-            '<a href="login.html?ref='+regRef+'" style="color:var(--accent)">'+ (lang==='en'?'Register':'没有账户？注册') +'</a>'+
-            '<span class="link-divider">|</span>'+
-            '<a href="login.html">'+ (lang==='en'?'Login':'已有账户？登录') +'</a>';
-        const sb = document.getElementById('startBtn');
-        if (sb) { sb.href = currentWallet ? 'learning.html' : 'login.html?ref='+regRef; sb.innerHTML='<i class="ph-fill ph-rocket-launch"></i> '+ (lang==='en'?'Start':'开始学习'); }
-    }
+    try {
+        const ref = new URLSearchParams(location.search).get('ref');
+        const acct = document.getElementById('acctLinks');
+        if (!acct) return;
+        const startBtn = document.getElementById('startBtn');
+        let regRef = ref || (typeof CONTRACT_CONFIG!=='undefined' && CONTRACT_CONFIG.wallets.promo) || '';
+        // 已登录
+        if (typeof currentWallet!=='undefined' && currentWallet) {
+            const w = currentWallet;
+            acct.innerHTML =
+                '<a href="learning.html?wallet='+w+'" style="color:var(--accent)">进入学习中心</a>'+
+                '<span class="link-divider">|</span>'+
+                '<span style="color:var(--green)">已登录: '+w.slice(0,6)+'...'+w.slice(-4)+'</span>'+
+                '<span class="link-divider">|</span>'+
+                '<a href="javascript:void(0)" onclick="logout()">退出</a>';
+            if (startBtn) { startBtn.href='learning.html?wallet='+w; startBtn.innerHTML='<i class="ph-fill ph-graduation-cap"></i> '+'进入学习'; }
+        } else {
+            // 未登录 → 始终显示注册/登录
+            acct.innerHTML =
+                '<a href="login.html?ref='+regRef+'" style="color:var(--accent)">'+(typeof lang!=='undefined'&&lang==='en'?'Register':'没有账户？注册')+'</a>'+
+                '<span class="link-divider">|</span>'+
+                '<a href="login.html">'+(typeof lang!=='undefined'&&lang==='en'?'Login':'已有账户？登录')+'</a>';
+            if (startBtn) { startBtn.href='login.html?ref='+regRef; startBtn.innerHTML='<i class="ph-fill ph-rocket-launch"></i> '+(typeof lang!=='undefined'&&lang==='en'?'Start':'开始学习'); }
+        }
+    } catch(e) { console.error('index init err', e); }
 })();
 function logout() {
     try { localStorage.removeItem('ace_wallet'); } catch(e){}
